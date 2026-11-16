@@ -173,20 +173,14 @@ async function loadMarketData(){
  }finally{$('refresh').disabled=false}
 }
 
-let btcSocket=null,btcReconnectTimer=null,btcBaseCandles=[],btcLastTradePrice=null,btc24hChange=0;
+let btcSocket=null,btcReconnectTimer=null,btcBaseCandles=[],btcBaseTf=null,btcLastTradePrice=null,btc24hChange=0;
 const btcTfMs={'1m':60000,'5m':300000,'15m':900000,'1h':3600000,'4h':14400000,'1d':86400000};
 function stopBtcStream(){
  if(btcReconnectTimer){clearTimeout(btcReconnectTimer);btcReconnectTimer=null}
  if(btcSocket){btcSocket.onclose=null;btcSocket.close();btcSocket=null}
 }
 function aggregateBtcCandles(tf){
- const span=btcTfMs[tf]||60000,groups=new Map();
- for(const c of btcBaseCandles){
-  const bucket=Math.floor(c.time*1000/span)*span/1000;
-  if(!groups.has(bucket))groups.set(bucket,{time:bucket,open:c.open,tinggi:c.tinggi,rendah:c.rendah,close:c.close,volume:c.volume||0});
-  else{const g=groups.get(bucket);g.tinggi=Math.max(g.tinggi,c.tinggi);g.rendah=Math.min(g.rendah,c.rendah);g.close=c.close;g.volume+=(c.volume||0)}
- }
- return [...groups.values()].slice(-180);
+ return btcBaseTf===tf?btcBaseCandles.slice(-180):[];
 }
 function renderBtcLive(){
  if(!btcBaseCandles.length)return;
@@ -199,11 +193,11 @@ function renderBtcLive(){
  $('delta').style.color=btc24hChange>=0?'#38c990':'#ff7185';
  $('dataSource').textContent='Binance WebSocket';$('dayChange').textContent=(btc24hChange>=0?'+':'')+btc24hChange.toFixed(2)+'%';
  $('source').textContent='LIVE STREAM · BTC/USDT · '+tfNames[$('tf').value];
- $('dataNote').textContent='Harga BTC/USDT dari transaksi Binance melalui WebSocket. Candle M1 diperbarui saat transaksi masuk; timeframe lebih tinggi dibentuk dari candle 1 menit. Nilai USDT digunakan sebagai acuan USD, bukan kuotasi broker.';
+ $('dataNote').textContent='Harga BTC/USDT dari transaksi Binance melalui WebSocket. Candle timeframe terpilih diperbarui saat transaksi masuk; riwayat candle dimuat sesuai interval. Nilai USDT digunakan sebagai acuan USD, bukan kuotasi broker.';
  $('tfLabel').textContent=tfNames[$('tf').value];$('updated').textContent='Tick terakhir '+new Date().toLocaleTimeString();
  activeSource='Binance WebSocket BTC/USDT';
  draw();analyzeMarketData();
- setBrief('Streaming BTC aktif:','Harga dan candle diperbarui saat transaksi baru diterima. Candle timeframe '+tfNames[$('tf').value]+' dibentuk dari data M1. Ini adalah data pasar spot BTC/USDT, bukan harga eksekusi broker.');
+ setBrief('Streaming BTC aktif:','Harga dan candle timeframe '+tfNames[$('tf').value]+' diperbarui saat transaksi baru diterima. Ini adalah data pasar spot BTC/USDT, bukan harga eksekusi broker.');
 }
 function connectBtcSocket(){
  if($('asset').value!=='BTC/USD'||(btcSocket&&[WebSocket.OPEN,WebSocket.CONNECTING].includes(btcSocket.readyState)))return;
@@ -217,10 +211,10 @@ function connectBtcSocket(){
    try{
     const trade=JSON.parse(event.data),price=Number(trade.p),time=Number(trade.T),qty=Number(trade.q);
     if(!Number.isFinite(price)||!Number.isFinite(time))return;
-    const minute=Math.floor(time/60000)*60,tail=btcBaseCandles.at(-1);
+    const span=btcTfMs[$('tf').value]||60000,bucket=Math.floor(time/span)*span/1000,tail=btcBaseCandles.at(-1);
     btcLastTradePrice=price;
-    if(!tail||tail.time<minute)btcBaseCandles.push({time:minute,open:price,tinggi:price,rendah:price,close:price,volume:qty||0});
-    else if(tail.time===minute){tail.close=price;tail.tinggi=Math.max(tail.tinggi,price);tail.rendah=Math.min(tail.rendah,price);tail.volume+=(qty||0)}
+    if(!tail||tail.time<bucket)btcBaseCandles.push({time:bucket,open:price,tinggi:price,rendah:price,close:price,volume:qty||0});
+    else if(tail.time===bucket){tail.close=price;tail.tinggi=Math.max(tail.tinggi,price);tail.rendah=Math.min(tail.rendah,price);tail.volume+=(qty||0)}
     if(btcBaseCandles.length>1500)btcBaseCandles=btcBaseCandles.slice(-1200);
     renderBtcLive();
    }catch(_){}
@@ -236,16 +230,17 @@ function connectBtcSocket(){
  }catch(_){$('source').textContent='STREAM TIDAK DAPAT DIBUKA';}
 }
 async function startBtcLive(){
- if(!btcBaseCandles.length){
+ if(!btcBaseCandles.length||btcBaseTf!==$('tf').value){
   $('source').textContent='MEMUAT RIWAYAT BTC…';
   try{
    const [kRes,tRes]=await Promise.all([
-    fetch('https://data-api.binance.vision/api/v3/klines?symbol=BTCUSDT&interval=1m&limit=500'),
+    fetch('https://data-api.binance.vision/api/v3/klines?symbol=BTCUSDT&interval='+$('tf').value+'&limit=500'),
     fetch('https://data-api.binance.vision/api/v3/ticker/24hr?symbol=BTCUSDT')
    ]);
    if(!kRes.ok||!tRes.ok)throw Error('Binance history unavailable');
    const raw=await kRes.json(),ticker=await tRes.json();
    btcBaseCandles=raw.map(k=>({time:Math.floor(Number(k[0])/1000),open:Number(k[1]),tinggi:Number(k[2]),rendah:Number(k[3]),close:Number(k[4]),volume:Number(k[5])})).filter(c=>Number.isFinite(c.close));
+   btcBaseTf=$('tf').value;
    if(!btcBaseCandles.length)throw Error('No BTC candles');
    btcLastTradePrice=Number(ticker.lastPrice);btc24hChange=Number(ticker.priceChangePercent)||0;
   }catch(e){
