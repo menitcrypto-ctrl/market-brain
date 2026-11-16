@@ -75,7 +75,12 @@ async function loadLive(){
   activeSource='Live BTC/USD public data';draw();$('updated').textContent='Updated '+new Date().toLocaleTimeString();
   setBrief('BTC market snapshot:','The displayed 24-hour change is '+(change>=0?'+':'')+change.toFixed(2)+'%. This describes a recent market observation, not its cause or what may happen next. Compare independent reporting and macroeconomic releases for broader context.');
  }catch(e){
-  values=[];labels=[];draw();$('source').textContent='Live feed unavailable';$('dataSource').textContent='Unavailable';$('dataNote').textContent='Both public market-data sources could not be reached. Try Refresh data later. No simulated values are shown as live.';$('price').textContent='—';$('delta').textContent='No data';$('dayChange').textContent='—';$('updated').textContent='Not updated';setBrief('Data unavailable:','The public market-data services could not be reached from this browser. Check the internet connection and try again.');
+  demo();
+  $('source').textContent='DEMO FALLBACK · LIVE DATA UNAVAILABLE';
+  $('dataSource').textContent='Simulation only';
+  $('dataNote').textContent='The live public API could not be reached from this browser. This chart is simulated so the interface remains visible; it is NOT real market data.';
+  $('updated').textContent='Demo chart loaded';
+  setBrief('Live data unavailable:','A demo chart is shown so you can test the interface. These values are randomly generated and must not be interpreted as actual BTC prices or market movement.');
  }finally{$('refresh').disabled=false}
 }
 async function refresh(){if($('asset').value==='BTC/USD')await loadLive();else demo()}
