@@ -20,7 +20,7 @@
 <aside class="panel"><h2>Market Context</h2><p class="status"><span class="dot"></span> Educational overview</p><div class="insight" id="brief">Loading market context…</div><button id="explain" style="margin-top:15px">Explain this chart</button><p class="note">This explanation is generated in your browser from the displayed data. It is not an AI forecast or trading signal.</p><h2 style="margin-top:25px">Cross-market watch</h2><div class="list"><div class="item"><span>US Dollar Index</span><span class="muted">Not connected</span></div><div class="item"><span>US Treasury yields</span><span class="muted">Not connected</span></div><div class="item"><span>Equity indices</span><span class="muted">Not connected</span></div><div class="item"><span>Economic calendar</span><span class="muted">Not connected</span></div></div></aside>
 </div>
 <section class="panel wide"><h2>Global News & Research</h2><p class="note">These are source links, not a live news feed. Open the publishers to read current reporting and original releases.</p><div class="list newslinks"><div class="item"><span>Reuters — World & Markets</span><a href="https://www.reuters.com/markets/" target="_blank" rel="noopener">Open source ↗</a></div><div class="item"><span>Federal Reserve — Press releases</span><a href="https://www.federalreserve.gov/newsevents/pressreleases.htm" target="_blank" rel="noopener">Open source ↗</a></div><div class="item"><span>US Bureau of Labor Statistics — News releases</span><a href="https://www.bls.gov/news.release/" target="_blank" rel="noopener">Open source ↗</a></div><div class="item"><span>US Treasury — Press releases</span><a href="https://home.treasury.gov/news/press-releases" target="_blank" rel="noopener">Open source ↗</a></div></div></section>
-<footer>Market Brain · v0.6 · Educational use only · No investment advice, trade signals, or broker execution.</footer>
+<footer>Market Brain · v0.9 · Educational use only · No investment advice, trade signals, or broker execution.</footer>
 </main>
 <script>
 const $=id=>document.getElementById(id);let values=[],labels=[],candles=[],activeSource='Demo simulation';
@@ -98,7 +98,45 @@ function finishLive(price,change,provider,tf,description){
  activeSource='Live BTC/USD OHLC';draw();$('updated').textContent='Updated '+new Date().toLocaleTimeString();
  setBrief('BTC market snapshot:','The chart displays '+candles.length+' '+tfNames[tf]+' candles. The 24-hour change is '+(change>=0?'+':'')+change.toFixed(2)+'%. Candles show historical open, high, low, and close values; they do not predict future movement.');
 }
-async function refresh(){if($('asset').value==='BTC/USD')await loadLive();else demo()}
+async function loadGold(){
+ $('source').textContent='Connecting to XAUS gold data…';$('refresh').disabled=true;
+ try{
+  const spotRes=await fetch('https://xaus.com/api/v1/spot?compact=1&fresh='+Date.now());
+  if(!spotRes.ok)throw Error('Gold spot endpoint HTTP '+spotRes.status);
+  const spot=await spotRes.json(),price=Number(spot.spot_usd_oz);
+  if(!Number.isFinite(price)||price<=0)throw Error('Invalid XAU spot price');
+  let series=[],seriesLabel='',provider='XAUS public API',mode='intraday';
+  const tf=$('tf').value;
+  if(tf==='1d'){
+   const histRes=await fetch('https://xaus.com/api/v1/history?fresh='+Date.now());
+   if(!histRes.ok)throw Error('Gold daily history unavailable');
+   const hist=await histRes.json();
+   series=(hist.points||[]).slice(-90).map(p=>({t:Date.parse(p.d+'T00:00:00Z')/1000,p:Number(p.c)})).filter(p=>Number.isFinite(p.t)&&Number.isFinite(p.p));
+   seriesLabel='daily closes';mode='daily';
+  }else{
+   const hours={'1m':1,'5m':6,'15m':12,'1h':24,'4h':48}[tf]||24;
+   const intradayRes=await fetch('https://xaus.com/api/v1/intraday?symbol=xau&hours='+hours+'&fresh='+Date.now());
+   if(!intradayRes.ok)throw Error('Gold intraday endpoint HTTP '+intradayRes.status);
+   const intraday=await intradayRes.json();
+   series=(intraday.points||[]).map(p=>({t:Number(p.t),p:Number(p.p)})).filter(p=>Number.isFinite(p.t)&&Number.isFinite(p.p));
+   seriesLabel='recorded spot samples';mode='intraday';
+  }
+  if(series.length<2)throw Error('Not enough real XAU observations');
+  candles=[];values=series.map(p=>p.p);labels=series.map(p=>new Date(p.t*1000).toLocaleString([],{month:'short',day:'numeric',hour:'2-digit',minute:'2-digit'}));
+  const first=series[0].p,last=series[series.length-1].p,change=(last-first)/first*100;
+  $('price').textContent=price.toLocaleString('en-US',{style:'currency',currency:'USD',maximumFractionDigits:2});
+  $('delta').textContent=(change>=0?'+':'')+change.toFixed(2)+'% (visible period)';$('delta').style.color=change>=0?'#38c990':'#ff7185';
+  $('dataSource').textContent=provider;$('dayChange').textContent=(change>=0?'+':'')+change.toFixed(2)+'%';
+  const state=spot.data_state?.status||'unknown',asOf=spot.price_as_of||spot.updated_at||spot.data_state?.as_of;
+  $('source').textContent='LIVE · XAU/USD · '+state.toUpperCase();
+  $('dataNote').textContent='XAU/USD indicative spot price from XAUS, '+(state==='stale'?'last known real quote (stale)':state==='fresh'?'fresh reference quote':'provider freshness not confirmed')+'. Chart shows '+seriesLabel+'. '+(mode==='intraday'?'The source samples spot prices approximately every 2 minutes; it is a line series, not exchange OHLC candles. Selected timeframe controls the displayed history window, not exact M1 candle construction.':'Daily closing-price history; daily open/high/low candles are not supplied by this endpoint.')+' Not a tradable quote.';
+  activeSource='Live XAU/USD reference data';draw();$('updated').textContent=asOf?'As of '+new Date(asOf).toLocaleString():'Updated '+new Date().toLocaleTimeString();
+  setBrief('XAU/USD data note:','The current indicative spot reference is '+price.toLocaleString('en-US',{style:'currency',currency:'USD',maximumFractionDigits:2})+' per troy ounce. The chart contains '+series.length+' '+seriesLabel+'. These observations describe past/reference data and do not predict future prices.');
+ }catch(e){
+  candles=[];demo();$('source').textContent='DEMO FALLBACK · XAU LIVE DATA UNAVAILABLE';$('dataSource').textContent='Simulation only';$('dataNote').textContent='XAUS gold data could not be reached or did not return enough observations. The chart is simulated, not a real XAU/USD price series.';$('updated').textContent='Demo chart loaded';setBrief('Live gold data unavailable:','A simulated chart is shown. It is not actual XAU/USD market data.');
+ }finally{$('refresh').disabled=false}
+}
+async function refresh(){if($('asset').value==='BTC/USD')await loadLive();else await loadGold()}
 $('refresh').onclick=refresh;$('asset').onchange=refresh;$('tf').onchange=()=>{$('tfLabel').textContent=tfNames[$('tf').value];refresh()};$('explain').onclick=()=>{if(activeSource.startsWith('Live')&&values.length){const first=values[0],last=values.at(-1),pct=(last-first)/first*100,high=Math.max(...values),low=Math.min(...values);setBrief('Chart explainer:','Across the visible candles, BTC moved '+(pct>=0?'up ':'down ')+Math.abs(pct).toFixed(2)+'%. The displayed range is $'+low.toLocaleString('en-US')+' to $'+high.toLocaleString('en-US')+'. This describes past observations only; it does not identify causes or predict future prices.')}else setBrief('Demo explainer:','The selected chart is simulated and should not be used to understand actual market conditions.')};
 $('tfLabel').textContent=tfNames[$('tf').value];refresh();
 </script></body></html>
