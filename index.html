@@ -17,7 +17,7 @@
 <div><span class="price" id="price">Memuat…</span><span class="change" id="delta">—</span></div><div class="toolbar" style="margin:9px 0 0"><span class="pill" id="source">Menghubungkan ke data publik…</span><span class="pill" id="updated">Belum diperbarui</span></div><div class="chartbox"><canvas id="chart"></canvas></div>
 <div class="stats"><div class="stat"><small>SUMBER DATA</small><strong id="dataSource">Loading</strong></div><div class="stat"><small>PERUBAHAN 24 JAM</small><strong id="dayChange">—</strong></div><div class="stat"><small>KERANGKA WAKTU</small><strong id="tfLabel">M1</strong></div></div>
 <p class="note" id="dataNote">BTC/USD menggunakan data pasar publik BTC/USDT sebagai acuan perkiraan terhadap dolar AS. Instrumen lain akan diberi label simulasi.</p></section>
-<aside class="panel"><h2>Mesin Analisis Market Brain</h2><p class="status"><span class="dot"></span> Analisis edukatif berbasis data</p><div class="insight" id="brief">Menunggu data pasar…</div><div class="stats" style="grid-template-columns:1fr 1fr;margin-top:14px"><div class="stat"><small>BIAS KONDISI</small><strong id="marketBias">—</strong></div><div class="stat"><small>STRUKTUR PASAR</small><strong id="structure">—</strong></div><div class="stat"><small>MOMENTUM (RSI 14)</small><strong id="rsi">—</strong></div><div class="stat"><small>EMA 20 / EMA 50</small><strong id="emaState">—</strong></div><div class="stat"><small>VOLATILITAS (ATR%)</small><strong id="atr">—</strong></div><div class="stat"><small>RENTANG 20 CANDLE</small><strong id="marketRange">—</strong></div></div><button id="explain" style="margin-top:15px">Analisis data saat ini</button><p class="note" id="engineNote">Mesin menghitung indikator langsung dari candle OHLC yang dimuat. Hasilnya menjelaskan kondisi yang teramati, bukan meramalkan harga atau memberi instruksi transaksi.</p><h2 style="margin-top:25px">Kualitas data</h2><div class="list"><div class="item"><span>Instrumen terpilih</span><strong id="qualityAsset">—</strong></div><div class="item"><span>Jumlah candle dianalisis</span><strong id="qualityCount">—</strong></div><div class="item"><span>Ketersediaan volume</span><strong id="qualityVolume">—</strong></div><div class="item"><span>Kerangka waktu analisis</span><strong id="qualityTf">—</strong></div></div><h2 style="margin-top:25px">Pusat Belajar Makro</h2>
+<aside class="panel"><h2>Mesin Analisis Market Brain</h2><p class="status"><span class="dot"></span> Analisis edukatif berbasis data</p><div class="insight" id="brief">Menunggu data pasar…</div><div class="stats" style="grid-template-columns:1fr 1fr;margin-top:14px"><div class="stat"><small>BIAS KONDISI</small><strong id="marketBias">—</strong></div><div class="stat"><small>STRUKTUR PASAR</small><strong id="structure">—</strong></div><div class="stat"><small>MOMENTUM (RSI 14)</small><strong id="rsi">—</strong></div><div class="stat"><small>EMA 20 / EMA 50</small><strong id="emaState">—</strong></div><div class="stat"><small>VOLATILITAS (ATR%)</small><strong id="atr">—</strong></div><div class="stat"><small>RENTANG 20 CANDLE</small><strong id="marketRange">—</strong></div></div><button id="explain" style="margin-top:15px">Analisis data saat ini</button><button id="askAI" style="margin-top:10px;background:#2563eb">Minta penjelasan AI</button><div class="insight" id="aiResult" style="margin-top:12px">AI belum diminta. Tekan tombol untuk mengirim ringkasan indikator saat ini ke Market Brain AI.</div><p class="note" id="engineNote">Mesin menghitung indikator langsung dari candle OHLC yang dimuat. Hasilnya menjelaskan kondisi yang teramati, bukan meramalkan harga atau memberi instruksi transaksi.</p><h2 style="margin-top:25px">Kualitas data</h2><div class="list"><div class="item"><span>Instrumen terpilih</span><strong id="qualityAsset">—</strong></div><div class="item"><span>Jumlah candle dianalisis</span><strong id="qualityCount">—</strong></div><div class="item"><span>Ketersediaan volume</span><strong id="qualityVolume">—</strong></div><div class="item"><span>Kerangka waktu analisis</span><strong id="qualityTf">—</strong></div></div><h2 style="margin-top:25px">Pusat Belajar Makro</h2>
 <div class="list">
  <div class="item" style="display:block"><strong>DXY — Indeks Dolar AS</strong><p class="note">Menggambarkan kekuatan dolar AS terhadap sekeranjang mata uang utama. Perubahan DXY dapat memberi konteks tentang kondisi dolar, tetapi hubungannya dengan emas dan Bitcoin tidak selalu searah.</p></div>
  <div class="item" style="display:block"><strong>US Treasury Yield — Imbal Hasil Obligasi AS</strong><p class="note">Yield menunjukkan tingkat imbal hasil obligasi pemerintah AS. Yield nominal dan yield riil adalah dua hal berbeda; yield riil memperhitungkan ekspektasi inflasi.</p></div>
@@ -27,7 +27,7 @@
 <p class="note">Catatan: bagian ini bersifat edukatif dan belum mengambil data makro secara langsung. Korelasi bukan sebab-akibat; jangan menganggap satu indikator sebagai prediksi atau instruksi transaksi.</p></aside>
 </div>
 <section class="panel wide"><h2>Berita & Riset Global</h2><p class="note">Ini adalah tautan ke sumber berita, bukan umpan berita langsung. Buka situs penerbit untuk membaca laporan terbaru dan rilis resmi.</p><div class="list newslinks"><div class="item"><span>Reuters — Dunia & Pasar</span><a href="https://www.reuters.com/markets/" target="_blank" rel="noopener">Buka sumber ↗</a></div><div class="item"><span>Federal Reserve — Siaran Pers</span><a href="https://www.federalreserve.gov/newsevents/pressreleases.htm" target="_blank" rel="noopener">Buka sumber ↗</a></div><div class="item"><span>Biro Statistik Tenaga Kerja AS — Rilis Berita</span><a href="https://www.bls.gov/news.release/" target="_blank" rel="noopener">Buka sumber ↗</a></div><div class="item"><span>Departemen Keuangan AS — Siaran Pers</span><a href="https://home.treasury.gov/news/press-releases" target="_blank" rel="noopener">Buka sumber ↗</a></div></div></section>
-<footer>Market Brain · v1.6 · Khusus edukasi · Bukan nasihat investasi, sinyal transaksi, atau layanan eksekusi broker.</footer>
+<footer>Market Brain · v2.0 · Khusus edukasi · Bukan nasihat investasi, sinyal transaksi, atau layanan eksekusi broker.</footer>
 </main>
 <script>
 const $=id=>document.getElementById(id);let values=[],labels=[],candles=[],activeSource='Demo simulation';
@@ -363,6 +363,42 @@ $('refresh').onclick=refresh;
 $('asset').onchange=refresh;
 $('tf').onchange=()=>{$('tfLabel').textContent=tfNames[$('tf').value];refresh()};
 $('explain').onclick=()=>analyzeMarketData();
+async function requestAIAnalysis(){
+ const button=$('askAI'),output=$('aiResult');
+ if(!candles.length){output.textContent='Data candle belum tersedia. Tunggu data pasar dimuat terlebih dahulu.';return}
+ button.disabled=true;button.textContent='AI sedang menganalisis…';
+ output.textContent='Mengirim ringkasan indikator ke backend AI…';
+ const closes=candles.map(c=>c.close),last=closes.at(-1),e20=ema(closes,20),e50=ema(closes,50),rsi=calcRSI(closes);
+ const recent=candles.slice(-20),high=Math.max(...recent.map(c=>c.tinggi)),low=Math.min(...recent.map(c=>c.rendah));
+ const prev=closes.at(-6)??closes[0],momentum=prev?((last-prev)/prev)*100:0;
+ const tr=candles.slice(1).map((c,i)=>Math.max(c.tinggi-c.rendah,Math.abs(c.tinggi-candles[i].close),Math.abs(c.rendah-candles[i].close)));
+ const atr=tr.length>=14?tr.slice(-14).reduce((a,b)=>a+b,0)/14:null;
+ const analysis={
+  latestPrice:last,
+  candleCount:candles.length,
+  trend:e20&&e50?(last>e20&&e20>e50?'bullish':last<e20&&e20<e50?'bearish':'mixed'):'insufficient data',
+  ema20:e20,ema50:e50,rsi14:rsi,
+  momentum5CandlesPercent:Number(momentum.toFixed(4)),
+  recent20CandleHigh:high,recent20CandleLow:low,
+  atrPercent:atr&&last?Number((atr/last*100).toFixed(4)):null,
+  recentCandles:candles.slice(-5).map(c=>({open:c.open,high:c.tinggi,low:c.rendah,close:c.close}))
+ };
+ try{
+  const response=await fetch('https://market-brain.haimi.workers.dev/analyze',{
+   method:'POST',
+   headers:{'Content-Type':'application/json'},
+   body:JSON.stringify({asset:$('asset').value,timeframe:$('tf').value,analysis})
+  });
+  const data=await response.json().catch(()=>({}));
+  if(!response.ok)throw new Error(data.error||('HTTP '+response.status)+(data.detail?' · '+data.detail:''));
+  output.textContent=data.analysis||'Backend merespons, tetapi tidak ada teks analisis.';
+ }catch(error){
+  output.textContent='Belum berhasil menghubungi AI: '+error.message+'. Analisis teknikal lokal tetap tersedia. Coba lagi nanti.';
+ }finally{
+  button.disabled=false;button.textContent='Minta penjelasan AI';
+ }
+}
+$('askAI').onclick=requestAIAnalysis;
 $('tfLabel').textContent=tfNames[$('tf').value];
 refresh().then(startAutoRefresh);
 </script></body></html>
