@@ -2,7 +2,7 @@
 <html lang="id">
 <head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<meta name="theme-color" content="#090d16"><title>Market Brain — Global Market Intelligence</title>
+<meta name="theme-color" content="#090d16"><title>Market Brain — Intelijen Pasar Global</title>
 
 <style>
 :root{color-scheme:dark;--bg:#090d16;--panel:#111b2a;--line:#29384b;--muted:#91a0b5;--text:#eef3fb;--cyan:#57d6d0;--green:#38c990;--red:#ff7185}
@@ -10,17 +10,17 @@
 @media(max-width:800px){.grid{grid-template-columns:1fr}.wrap{padding:20px 14px 36px}.chartbox{height:270px}}@media(max-width:430px){.stats{grid-template-columns:1fr 1fr}.tag{display:none}}
 </style></head>
 <body><main class="wrap">
-<header class="top"><div class="brand"><div class="logo">MB</div>MARKET BRAIN</div><span class="tag">EDUCATIONAL · PAPER MODE</span></header>
-<h1>Global Market Intelligence</h1><p class="sub">Explore market data, follow global context, and learn how financial markets behave.</p>
+<header class="top"><div class="brand"><div class="logo">MB</div>MARKET BRAIN</div><span class="tag">EDUKASI · MODE SIMULASI</span></header>
+<h1>Intelijen Pasar Global</h1><p class="sub">Pantau data pasar, ikuti perkembangan ekonomi global, dan pelajari pergerakan pasar keuangan.</p>
 <div class="grid">
-<section class="panel"><div class="toolbar"><select id="asset"><option value="XAU/USD">XAU / USD</option><option value="BTC/USD">BTC / USD</option></select><select id="tf"><option value="1m">M1</option><option value="5m">M5</option><option value="15m">M15</option><option value="1h">H1</option><option value="4h">H4</option><option value="1d">D1</option></select><button id="refresh">Refresh data</button></div>
-<div><span class="price" id="price">Loading…</span><span class="change" id="delta">—</span></div><div class="toolbar" style="margin:9px 0 0"><span class="pill" id="source">Connecting to public data…</span><span class="pill" id="updated">Not updated</span></div><div class="chartbox"><canvas id="chart"></canvas></div>
-<div class="stats"><div class="stat"><small>DATA SOURCE</small><strong id="dataSource">Loading</strong></div><div class="stat"><small>24H CHANGE</small><strong id="dayChange">—</strong></div><div class="stat"><small>TIMEFRAME</small><strong id="tfLabel">M1</strong></div></div>
-<p class="note" id="dataNote">BTC/USD uses public BTC/USDT market data as an approximate USD reference. Other instruments remain clearly marked as demo data.</p></section>
-<aside class="panel"><h2>Market Brain Engine</h2><p class="status"><span class="dot"></span> Data-driven educational analysis</p><div class="insight" id="brief">Waiting for market data…</div><div class="stats" style="grid-template-columns:1fr 1fr;margin-top:14px"><div class="stat"><small>MARKET STRUCTURE</small><strong id="structure">—</strong></div><div class="stat"><small>MOMENTUM (RSI 14)</small><strong id="rsi">—</strong></div><div class="stat"><small>EMA 20 / EMA 50</small><strong id="emaState">—</strong></div><div class="stat"><small>VOLATILITY (ATR%)</small><strong id="atr">—</strong></div></div><button id="explain" style="margin-top:15px">Analyze current data</button><p class="note" id="engineNote">The engine calculates indicators directly from the loaded OHLC candles. It explains observed conditions; it does not forecast prices or produce trading instructions.</p><h2 style="margin-top:25px">Data quality</h2><div class="list"><div class="item"><span>Selected instrument</span><strong id="qualityAsset">—</strong></div><div class="item"><span>Candles analyzed</span><strong id="qualityCount">—</strong></div><div class="item"><span>Volume field</span><strong id="qualityVolume">—</strong></div><div class="item"><span>Analysis timeframe</span><strong id="qualityTf">—</strong></div></div><h2 style="margin-top:25px">Cross-market context</h2><div class="note">DXY, Treasury yields, inflation releases, and economic-calendar events are not connected yet. The engine will not invent macro explanations without those data sources.</div></aside>
+<section class="panel"><div class="toolbar"><select id="asset"><option value="XAU/USD">XAU / USD</option><option value="BTC/USD">BTC / USD</option></select><select id="tf"><option value="1m">M1</option><option value="5m">M5</option><option value="15m">M15</option><option value="1h">H1</option><option value="4h">H4</option><option value="1d">D1</option></select><button id="refresh">Perbarui data</button></div>
+<div><span class="price" id="price">Memuat…</span><span class="change" id="delta">—</span></div><div class="toolbar" style="margin:9px 0 0"><span class="pill" id="source">Menghubungkan ke data publik…</span><span class="pill" id="updated">Belum diperbarui</span></div><div class="chartbox"><canvas id="chart"></canvas></div>
+<div class="stats"><div class="stat"><small>SUMBER DATA</small><strong id="dataSource">Loading</strong></div><div class="stat"><small>PERUBAHAN 24 JAM</small><strong id="dayChange">—</strong></div><div class="stat"><small>KERANGKA WAKTU</small><strong id="tfLabel">M1</strong></div></div>
+<p class="note" id="dataNote">BTC/USD menggunakan data pasar publik BTC/USDT sebagai acuan perkiraan terhadap dolar AS. Instrumen lain akan diberi label simulasi.</p></section>
+<aside class="panel"><h2>Mesin Analisis Market Brain</h2><p class="status"><span class="dot"></span> Analisis edukatif berbasis data</p><div class="insight" id="brief">Menunggu data pasar…</div><div class="stats" style="grid-template-columns:1fr 1fr;margin-top:14px"><div class="stat"><small>STRUKTUR PASAR</small><strong id="structure">—</strong></div><div class="stat"><small>MOMENTUM (RSI 14)</small><strong id="rsi">—</strong></div><div class="stat"><small>EMA 20 / EMA 50</small><strong id="emaState">—</strong></div><div class="stat"><small>VOLATILITAS (ATR%)</small><strong id="atr">—</strong></div></div><button id="explain" style="margin-top:15px">Analisis data saat ini</button><p class="note" id="engineNote">Mesin menghitung indikator langsung dari candle OHLC yang dimuat. Hasilnya menjelaskan kondisi yang teramati, bukan meramalkan harga atau memberi instruksi transaksi.</p><h2 style="margin-top:25px">Kualitas data</h2><div class="list"><div class="item"><span>Instrumen terpilih</span><strong id="qualityAsset">—</strong></div><div class="item"><span>Jumlah candle dianalisis</span><strong id="qualityCount">—</strong></div><div class="item"><span>Ketersediaan volume</span><strong id="qualityVolume">—</strong></div><div class="item"><span>Kerangka waktu analisis</span><strong id="qualityTf">—</strong></div></div><h2 style="margin-top:25px">Konteks lintas pasar</h2><div class="note">Data DXY, imbal hasil obligasi pemerintah AS, rilis inflasi, dan kalender ekonomi belum terhubung. Mesin analisis tidak akan mengarang penjelasan makro tanpa sumber data tersebut.</div></aside>
 </div>
-<section class="panel wide"><h2>Global News & Research</h2><p class="note">These are source links, not a live news feed. Open the publishers to read current reporting and original releases.</p><div class="list newslinks"><div class="item"><span>Reuters — World & Markets</span><a href="https://www.reuters.com/markets/" target="_blank" rel="noopener">Open source ↗</a></div><div class="item"><span>Federal Reserve — Press releases</span><a href="https://www.federalreserve.gov/newsevents/pressreleases.htm" target="_blank" rel="noopener">Open source ↗</a></div><div class="item"><span>US Bureau of Labor Statistics — News releases</span><a href="https://www.bls.gov/news.release/" target="_blank" rel="noopener">Open source ↗</a></div><div class="item"><span>US Treasury — Press releases</span><a href="https://home.treasury.gov/news/press-releases" target="_blank" rel="noopener">Open source ↗</a></div></div></section>
-<footer>Market Brain · v1.0 · Educational use only · No investment advice, trade signals, or broker execution.</footer>
+<section class="panel wide"><h2>Berita & Riset Global</h2><p class="note">Ini adalah tautan ke sumber berita, bukan umpan berita langsung. Buka situs penerbit untuk membaca laporan terbaru dan rilis resmi.</p><div class="list newslinks"><div class="item"><span>Reuters — Dunia & Pasar</span><a href="https://www.reuters.com/markets/" target="_blank" rel="noopener">Buka sumber ↗</a></div><div class="item"><span>Federal Reserve — Siaran Pers</span><a href="https://www.federalreserve.gov/newsevents/pressreleases.htm" target="_blank" rel="noopener">Buka sumber ↗</a></div><div class="item"><span>Biro Statistik Tenaga Kerja AS — Rilis Berita</span><a href="https://www.bls.gov/news.release/" target="_blank" rel="noopener">Buka sumber ↗</a></div><div class="item"><span>Departemen Keuangan AS — Siaran Pers</span><a href="https://home.treasury.gov/news/press-releases" target="_blank" rel="noopener">Buka sumber ↗</a></div></div></section>
+<footer>Market Brain · v1.1 · Khusus edukasi · Bukan nasihat investasi, sinyal transaksi, atau layanan eksekusi broker.</footer>
 </main>
 <script>
 const $=id=>document.getElementById(id);let values=[],labels=[],candles=[],activeSource='Demo simulation';
@@ -29,21 +29,21 @@ function setBrief(title,detail){$('brief').innerHTML='<b>'+title+'</b> '+detail}
 function ema(data,period){if(data.length<period)return null;const k=2/(period+1);let v=data.slice(0,period).reduce((a,b)=>a+b,0)/period;for(let i=period;i<data.length;i++)v=data[i]*k+v*(1-k);return v}
 function calcRSI(data,period=14){if(data.length<=period)return null;let gains=0,losses=0;for(let i=1;i<=period;i++){const d=data[i]-data[i-1];if(d>0)gains+=d;else losses-=d}let ag=gains/period,al=losses/period;for(let i=period+1;i<data.length;i++){const d=data[i]-data[i-1];ag=(ag*(period-1)+Math.max(0,d))/period;al=(al*(period-1)+Math.max(0,-d))/period}return al===0?100:100-(100/(1+ag/al))}
 function analyzeMarketData(){
- if(candles.length<20){$('structure').textContent='Insufficient data';$('rsi').textContent='—';$('emaState').textContent='—';$('atr').textContent='—';return}
- const closes=candles.map(c=>c.close),e20=ema(closes,20),e50=ema(closes,50),rsi=calcRSI(closes),trs=candles.slice(1).map((c,i)=>Math.max(c.high-c.low,Math.abs(c.high-candles[i].close),Math.abs(c.low-candles[i].close))),atr=trs.length>=14?trs.slice(-14).reduce((a,b)=>a+b,0)/14:null,last=closes.at(-1),prior=closes[Math.max(0,closes.length-6)],momentum=prior?(last-prior)/prior*100:0,rangeHigh=Math.max(...candles.slice(-20).map(c=>c.high)),rangeLow=Math.min(...candles.slice(-20).map(c=>c.low)),rangePos=rangeHigh===rangeLow?50:(last-rangeLow)/(rangeHigh-rangeLow)*100;
- const structure=e20&&e50?(last>e20&&e20>e50?'Bullish alignment':last<e20&&e20<e50?'Bearish alignment':'Mixed / sideways'):'Short history';
- const momentumText=rsi===null?'not available':rsi>=60?'positive':rsi<=40?'negative':'neutral';
+ if(candles.length<20){$('structure').textContent='Data belum cukup';$('rsi').textContent='—';$('emaState').textContent='—';$('atr').textContent='—';return}
+ const closes=candles.map(c=>c.close),e20=ema(closes,20),e50=ema(closes,50),rsi=calcRSI(closes),trs=candles.slice(1).map((c,i)=>Math.max(c.tinggi-c.rendah,Math.abs(c.tinggi-candles[i].close),Math.abs(c.rendah-candles[i].close))),atr=trs.length>=14?trs.slice(-14).reduce((a,b)=>a+b,0)/14:null,last=closes.at(-1),prior=closes[Math.max(0,closes.length-6)],momentum=prior?(last-prior)/prior*100:0,rangeHigh=Math.max(...candles.slice(-20).map(c=>c.tinggi)),rangeLow=Math.min(...candles.slice(-20).map(c=>c.rendah)),rangePos=rangeHigh===rangeLow?50:(last-rangeLow)/(rangeHigh-rangeLow)*100;
+ const structure=e20&&e50?(last>e20&&e20>e50?'Tren naik selaras':last<e20&&e20<e50?'Tren turun selaras':'Campuran / mendatar'):'Riwayat terlalu pendek';
+ const momentumText=rsi===null?'not available':rsi>=60?'positif':rsi<=40?'negatif':'netral';
  const volPct=atr&&last?atr/last*100:null;
- $('structure').textContent=structure;$('rsi').textContent=rsi===null?'—':rsi.toFixed(1)+' · '+(rsi>=70?'high':rsi<=30?'low':momentumText);
- $('emaState').textContent=e20&&e50?(last>e20?'Price > EMA20':'Price < EMA20')+' · '+(e20>e50?'20 > 50':'20 < 50'):'Need 50 candles';
+ $('structure').textContent=structure;$('rsi').textContent=rsi===null?'—':rsi.toFixed(1)+' · '+(rsi>=70?'tinggi':rsi<=30?'rendah':momentumText);
+ $('emaState').textContent=e20&&e50?(last>e20?'Harga > EMA20':'Harga < EMA20')+' · '+(e20>e50?'EMA20 > EMA50':'EMA20 < EMA50'):'Perlu 50 candle';
  $('atr').textContent=volPct===null?'—':volPct.toFixed(2)+'%';
- $('qualityAsset').textContent=$('asset').value;$('qualityCount').textContent=String(candles.length);$('qualityVolume').textContent=candles.some(c=>c.volume>0)?'Available':'Not provided';$('qualityTf').textContent=tfNames[$('tf').value];
- const volText=volPct===null?'ATR unavailable':volPct<0.5?'relatively low':volPct<1.5?'moderate':'elevated';
- const rsiText=rsi===null?'RSI cannot be calculated':rsi>70?'RSI is in a high zone':rsi<30?'RSI is in a low zone':'RSI is in a middle zone';
- const emaText=e20&&e50?(last>e20&&e20>e50?'Price and moving averages show upward alignment.':last<e20&&e20<e50?'Price and moving averages show downward alignment.':'Moving averages are mixed, so trend structure is not aligned.'):'There are not enough candles to compare EMA 20 and EMA 50.';
- const rangeText=rangePos>80?'Price is near the upper part of its recent 20-candle range.':rangePos<20?'Price is near the lower part of its recent 20-candle range.':'Price is within the middle part of its recent 20-candle range.';
- setBrief('Data reading:',emaText+' '+rsiText+'; '+rangeText+' Momentum over the last five candle steps is '+(momentum>=0?'+':'')+momentum.toFixed(2)+'%. Recent volatility is '+volText+'. These are historical observations, not a prediction.');
- $('engineNote').textContent='Calculated from '+candles.length+' '+tfNames[$('tf').value]+' OHLC candles. RSI, EMA, and ATR are descriptive indicators; thresholds are educational and can behave differently across instruments and timeframes.';
+ $('qualityAsset').textContent=$('asset').value;$('qualityCount').textContent=String(candles.length);$('qualityVolume').textContent=candles.some(c=>c.volume>0)?'Tersedia':'Tidak tersedia';$('qualityTf').textContent=tfNames[$('tf').value];
+ const volText=volPct===null?'ATR tidak tersedia':volPct<0.5?'relatively rendah':volPct<1.5?'sedang':'meningkat';
+ const rsiText=rsi===null?'RSI belum dapat dihitung':rsi>70?'RSI is in a tinggi zone':rsi<30?'RSI is in a rendah zone':'RSI berada di zona tengah';
+ const emaText=e20&&e50?(last>e20&&e20>e50?'Harga dan rata-rata bergerak menunjukkan susunan tren naik.':last<e20&&e20<e50?'Harga dan rata-rata bergerak menunjukkan susunan tren turun.':'Rata-rata bergerak belum selaras, sehingga struktur tren masih campuran.'):'Jumlah candle belum cukup untuk membandingkan EMA 20 dan EMA 50.';
+ const rangeText=rangePos>80?'Harga berada dekat bagian atas rentang 20 candle terakhir.':rangePos<20?'Price is near the rendaher part of its recent 20-candle range.':'Harga berada di bagian tengah rentang 20 candle terakhir.';
+ setBrief('Pembacaan data:',emaText+' '+rsiText+'; '+rangeText+' Momentum over the last five candle steps is '+(momentum>=0?'+':'')+momentum.toFixed(2)+'%. Recent volatility is '+volText+'. Ini adalah pengamatan data historis, bukan prediksi.');
+ $('engineNote').textContent='Dihitung dari '+candles.length+' '+tfNames[$('tf').value]+' candle OHLC. RSI, EMA, dan ATR merupakan indikator deskriptif; ambangnya bersifat edukatif dan dapat berperilaku berbeda pada setiap instrumen dan kerangka waktu.';
 }
 
 function draw(){
@@ -51,25 +51,25 @@ function draw(){
  const w=Math.max(280,rect.width),h=Math.max(220,rect.height);
  canvas.width=Math.round(w*dpr);canvas.height=Math.round(h*dpr);canvas.style.width=w+'px';canvas.style.height=h+'px';
  const ctx=canvas.getContext('2d');ctx.setTransform(dpr,0,0,dpr,0,0);ctx.clearRect(0,0,w,h);
- const vals=candles.length?candles.flatMap(c=>[c.low,c.high]):values;
- if(!vals.length){ctx.fillStyle='#91a0b5';ctx.font='14px system-ui';ctx.fillText('Chart data unavailable',16,28);return}
+ const vals=candles.length?candles.flatMap(c=>[c.rendah,c.tinggi]):values;
+ if(!vals.length){ctx.fillStyle='#91a0b5';ctx.font='14px system-ui';ctx.fillText('Data grafik tidak tersedia',16,28);return}
  const pad={l:12,r:16,t:18,b:30},min=Math.min(...vals),max=Math.max(...vals),range=(max-min)||Math.max(1,Math.abs(max)*.001);
  const x=i=>pad.l+i*(w-pad.l-pad.r)/Math.max(1,vals.length===candles.length?candles.length-1:values.length-1),y=v=>pad.t+(max-v)*(h-pad.t-pad.b)/range;
  ctx.strokeStyle='#263448';ctx.lineWidth=1;ctx.fillStyle='#91a0b5';ctx.font='11px system-ui';
  for(let i=0;i<5;i++){const yy=pad.t+i*(h-pad.t-pad.b)/4;ctx.beginPath();ctx.moveTo(pad.l,yy);ctx.lineTo(w-pad.r,yy);ctx.stroke();const val=max-i*range/4;ctx.fillText(val.toLocaleString('en-US',{maximumFractionDigits:2}),pad.l+4,Math.max(12,yy-5))}
  if(candles.length){
   const step=(w-pad.l-pad.r)/candles.length,cw=Math.max(2,Math.min(10,step*.62));
-  candles.forEach((c,i)=>{const xx=pad.l+i*step+step/2,up=c.close>=c.open,col=up?'#38c990':'#ff7185';ctx.strokeStyle=col;ctx.fillStyle=col;ctx.lineWidth=1.3;ctx.beginPath();ctx.moveTo(xx,y(c.high));ctx.lineTo(xx,y(c.low));ctx.stroke();const top=y(Math.max(c.open,c.close)),bottom=y(Math.min(c.open,c.close));ctx.fillRect(xx-cw/2,top,cw,Math.max(1,bottom-top));});
+  candles.forEach((c,i)=>{const xx=pad.l+i*step+step/2,up=c.close>=c.open,col=up?'#38c990':'#ff7185';ctx.strokeStyle=col;ctx.fillStyle=col;ctx.lineWidth=1.3;ctx.beginPath();ctx.moveTo(xx,y(c.tinggi));ctx.lineTo(xx,y(c.rendah));ctx.stroke();const top=y(Math.max(c.open,c.close)),bottom=y(Math.min(c.open,c.close));ctx.fillRect(xx-cw/2,top,cw,Math.max(1,bottom-top));});
  }else{
   ctx.beginPath();values.forEach((v,i)=>{if(i===0)ctx.moveTo(x(i),y(v));else ctx.lineTo(x(i),y(v))});ctx.strokeStyle='#57d6d0';ctx.lineWidth=2.2;ctx.stroke();
  }
  ctx.fillStyle='#91a0b5';ctx.fillText(labels[0]||'',pad.l,h-8);ctx.textAlign='right';ctx.fillText(labels.at(-1)||'',w-pad.r,h-8);ctx.textAlign='left';
 }
 window.addEventListener('resize',()=>{if(values.length)draw()});
-function demo(){let a=$('asset').value,base=a==='XAU/USD'?2350:a==='EUR/USD'?1.08:a==='AAPL'?220:68000,p=base;candles=Array.from({length:48},(_,i)=>{const open=p,close=p+(Math.random()-.48)*base*.0018,high=Math.max(open,close)+Math.random()*base*.0007,low=Math.min(open,close)-Math.random()*base*.0007;p=close;return {open,high,low,close}});values=candles.map(c=>c.close);labels=values.map((_,i)=>String(i+1));activeSource='Demo simulation';$('tfLabel').textContent=tfNames[$('tf').value];$('price').textContent=values.at(-1).toLocaleString('en-US',{maximumFractionDigits:4});$('delta').textContent='Demo only';$('delta').style.color='#f2c879';$('dataSource').textContent='Simulation';$('dayChange').textContent='—';$('source').textContent='DEMO DATA';$('dataNote').textContent=a==='XAU/USD'?'XAU/USD is currently a simulated educational chart. Live gold-market candles are not connected yet.':'Candlestick chart is simulated for interface demonstration only. It does not represent current market prices.';draw();analyzeMarketData();setBrief('Demo context:','This chart is simulated. It does not represent current market conditions.')}
+function demo(){let a=$('asset').value,base=a==='XAU/USD'?2350:a==='EUR/USD'?1.08:a==='AAPL'?220:68000,p=base;candles=Array.from({length:48},(_,i)=>{const open=p,close=p+(Math.random()-.48)*base*.0018,tinggi=Math.max(open,close)+Math.random()*base*.0007,rendah=Math.min(open,close)-Math.random()*base*.0007;p=close;return {open,tinggi,rendah,close}});values=candles.map(c=>c.close);labels=values.map((_,i)=>String(i+1));activeSource='Demo simulation';$('tfLabel').textContent=tfNames[$('tf').value];$('price').textContent=values.at(-1).toLocaleString('en-US',{maximumFractionDigits:4});$('delta').textContent='Hanya simulasi';$('delta').style.color='#f2c879';$('dataSource').textContent='Simulation';$('dayChange').textContent='—';$('source').textContent='DATA SIMULASI';$('dataNote').textContent=a==='XAU/USD'?'XAU/USD saat ini menggunakan grafik simulasi untuk edukasi. Data candle emas langsung belum terhubung.':'Grafik candle ini hanya simulasi untuk demonstrasi antarmuka. Grafik tidak menunjukkan harga pasar saat ini.';draw();analyzeMarketData();setBrief('Konteks simulasi:','Grafik ini merupakan simulasi dan tidak menggambarkan kondisi pasar saat ini.')}
 async function loadLive(){
  const tf=$('tf').value,krakenInterval={'1m':1,'5m':5,'15m':15,'1h':60,'4h':240,'1d':1440}[tf],binanceInterval={'1m':'1m','5m':'5m','15m':'15m','1h':'1h','4h':'4h','1d':'1d'}[tf];
- $('source').textContent='Connecting to live candle providers…';$('refresh').disabled=true;
+ $('source').textContent='Menghubungkan ke penyedia data candle…';$('refresh').disabled=true;
  let loaded=false,lastError='No provider returned data';
  try{
   // Provider 1: Kraken public OHLC + ticker endpoints
@@ -82,7 +82,7 @@ async function loadLive(){
    const od=await oRes.json(),td=await tRes.json();
    if(od.error?.length||td.error?.length)throw Error('Kraken API error');
    const pairKey=Object.keys(od.result).find(k=>k!=='last'),rows=od.result[pairKey],ticker=td.result[Object.keys(td.result)[0]];
-   candles=rows.map(k=>({time:Number(k[0]),open:Number(k[1]),high:Number(k[2]),low:Number(k[3]),close:Number(k[4]),volume:Number(k[6])}));
+   candles=rows.map(k=>({time:Number(k[0]),open:Number(k[1]),tinggi:Number(k[2]),rendah:Number(k[3]),close:Number(k[4]),volume:Number(k[6])}));
    if(!candles.length)throw Error('Kraken returned no candles');
    const price=Number(ticker.c[0]),open=Number(ticker.o),change=open?(price-open)/open*100:0;
    finishLive(price,change,'Kraken public API',tf,'Kraken OHLC candles');
@@ -97,7 +97,7 @@ async function loadLive(){
     ]);
     if(!kRes.ok||!tRes.ok)throw Error('Binance mirror HTTP error');
     const raw=await kRes.json(),ticker=await tRes.json();
-    candles=raw.map(k=>({time:Math.floor(Number(k[0])/1000),open:Number(k[1]),high:Number(k[2]),low:Number(k[3]),close:Number(k[4]),volume:Number(k[5])}));
+    candles=raw.map(k=>({time:Math.floor(Number(k[0])/1000),open:Number(k[1]),tinggi:Number(k[2]),rendah:Number(k[3]),close:Number(k[4]),volume:Number(k[5])}));
     if(!candles.length)throw Error('Binance returned no candles');
     const price=Number(ticker.lastPrice),change=Number(ticker.priceChangePercent);
     finishLive(price,change,'Binance public data mirror',tf,'Binance OHLC candles');
@@ -106,7 +106,7 @@ async function loadLive(){
   }
   if(!loaded)throw Error(lastError);
  }catch(e){
-  candles=[];demo();$('source').textContent='DEMO FALLBACK · LIVE CANDLES UNAVAILABLE';$('dataSource').textContent='Simulation only';$('dataNote').textContent='Live providers could not be reached from this browser. Displayed candles are simulated and are not actual market data.';$('updated').textContent='Demo chart loaded';setBrief('Live data unavailable:','The live data providers could not be reached. The candlestick chart shown is simulated.');
+  candles=[];demo();$('source').textContent='MODE SIMULASI · DATA CANDLE LANGSUNG TIDAK TERSEDIA';$('dataSource').textContent='Hanya simulasi';$('dataNote').textContent='Live providers could not be reached from this browser. Displayed candles are simulated and are not actual market data.';$('updated').textContent='Grafik simulasi dimuat';setBrief('Data langsung tidak tersedia:','Penyedia data langsung tidak dapat diakses. Grafik candle yang ditampilkan merupakan simulasi.');
  }finally{$('refresh').disabled=false}
 }
 function finishLive(price,change,provider,tf,description){
@@ -114,16 +114,16 @@ function finishLive(price,change,provider,tf,description){
  $('price').textContent=price.toLocaleString('en-US',{style:'currency',currency:'USD',maximumFractionDigits:2});
  $('delta').textContent=(change>=0?'+':'')+change.toFixed(2)+'% (24h)';$('delta').style.color=change>=0?'#38c990':'#ff7185';
  $('dataSource').textContent=provider;$('dayChange').textContent=(change>=0?'+':'')+change.toFixed(2)+'%';
- $('source').textContent='LIVE · BTC/USD · OHLC';$('dataNote').textContent=description+' for BTC/USD from '+provider+'. Selected interval: '+tfNames[tf]+'. Other assets remain demo-only.';
- activeSource='Live BTC/USD OHLC';$('tfLabel').textContent=tfNames[tf];draw();analyzeMarketData();$('updated').textContent='Updated '+new Date().toLocaleTimeString();
- setBrief('BTC market snapshot:','The chart displays '+candles.length+' '+tfNames[tf]+' candles. The 24-hour change is '+(change>=0?'+':'')+change.toFixed(2)+'%. Candles show historical open, high, low, and close values; they do not predict future movement.');
+ $('source').textContent='LIVE · BTC/USD · OHLC';$('dataNote').textContent=description+' for BTC/USD from '+provider+'. Interval terpilih: '+tfNames[tf]+'. Instrumen lain masih berupa simulasi.';
+ activeSource='Data OHLC BTC/USD';$('tfLabel').textContent=tfNames[tf];draw();analyzeMarketData();$('updated').textContent='Diperbarui '+new Date().toLocaleTimeString();
+ setBrief('Ringkasan pasar BTC:','Grafik menampilkan '+candles.length+' '+tfNames[tf]+' candle. Perubahan 24 jam adalah '+(change>=0?'+':'')+change.toFixed(2)+'%. Candles show historical open, tinggi, rendah, and close values; they do not predict future movement.');
 }
 async function loadMarketData(){
  const asset=$('asset').value,tf=$('tf').value;
  const symbol=asset==='XAU/USD'?'xau':'bitcoin';
  const intervalMap={'1m':'1m','5m':'5m','15m':'15m','1h':'1h','4h':'1h','1d':'1d'};
  const rangeMap={'1m':'1d','5m':'1d','15m':'1d','1h':'5d','4h':'1mo','1d':'1y'};
- $('source').textContent='Connecting to XAUS market data…';$('refresh').disabled=true;
+ $('source').textContent='Menghubungkan ke data pasar XAUS…';$('refresh').disabled=true;
  try{
   const url='https://xaus.com/api/v1/chart?symbol='+symbol+'&range='+rangeMap[tf]+'&interval='+intervalMap[tf];
   const response=await fetch(url,{headers:{'Accept':'application/json'}});
@@ -133,13 +133,13 @@ async function loadMarketData(){
   if(!rows.length)throw Error('Provider returned no OHLC rows');
   let parsed=rows.map(p=>({
    time:Number(p.t)>1e12?Math.floor(Number(p.t)/1000):Number(p.t),
-   open:Number(p.o),high:Number(p.h),low:Number(p.l),close:Number(p.c),volume:Number(p.v||0)
-  })).filter(p=>Number.isFinite(p.time)&&Number.isFinite(p.open)&&Number.isFinite(p.high)&&Number.isFinite(p.low)&&Number.isFinite(p.close));
+   open:Number(p.o),tinggi:Number(p.h),rendah:Number(p.l),close:Number(p.c),volume:Number(p.v||0)
+  })).filter(p=>Number.isFinite(p.time)&&Number.isFinite(p.open)&&Number.isFinite(p.tinggi)&&Number.isFinite(p.rendah)&&Number.isFinite(p.close));
   if(tf==='4h'){
    const grouped=[];
    for(let i=0;i<parsed.length;i+=4){
     const block=parsed.slice(i,i+4);if(!block.length)continue;
-    grouped.push({time:block[0].time,open:block[0].open,high:Math.max(...block.map(x=>x.high)),low:Math.min(...block.map(x=>x.low)),close:block[block.length-1].close,volume:block.reduce((s,x)=>s+x.volume,0)});
+    grouped.push({time:block[0].time,open:block[0].open,tinggi:Math.max(...block.map(x=>x.tinggi)),rendah:Math.min(...block.map(x=>x.rendah)),close:block[block.length-1].close,volume:block.reduce((s,x)=>s+x.volume,0)});
    }
    parsed=grouped;
   }
@@ -151,18 +151,18 @@ async function loadMarketData(){
   $('price').textContent=price.toLocaleString('en-US',{style:'currency',currency:'USD',maximumFractionDigits:asset==='BTC/USD'?2:2});
   $('delta').textContent=(change>=0?'+':'')+change.toFixed(2)+'% (visible range)';$('delta').style.color=change>=0?'#38c990':'#ff7185';
   $('dataSource').textContent='XAUS OHLC API';$('dayChange').textContent=(change>=0?'+':'')+change.toFixed(2)+'%';
-  $('source').textContent='REFERENCE DATA · '+asset+' · OHLC';
-  $('dataNote').textContent='Historical OHLC data via XAUS chart endpoint (Yahoo Finance proxy). Selected interval: '+tfNames[tf]+(tf==='4h'?' (aggregated from 1-hour candles)':'')+'. Data may be delayed and is for education only, not a tradable quote.';
-  activeSource='Reference OHLC '+asset;draw();analyzeMarketData();$('updated').textContent='Updated '+new Date().toLocaleTimeString();
+  $('source').textContent='DATA REFERENSI · '+asset+' · OHLC';
+  $('dataNote').textContent='Data OHLC historis melalui endpoint grafik XAUS (perantara Yahoo Finance). Interval terpilih: '+tfNames[tf]+(tf==='4h'?' (digabung dari candle 1 jam)':'')+'. Data mungkin tertunda dan hanya untuk edukasi, bukan kuotasi untuk transaksi.';
+  activeSource='Reference OHLC '+asset;draw();analyzeMarketData();$('updated').textContent='Diperbarui '+new Date().toLocaleTimeString();
   $('tfLabel').textContent=tfNames[tf];
-  setBrief(asset+' chart context:','The displayed series contains '+candles.length+' historical OHLC candles. Change across the visible range is '+(change>=0?'+':'')+change.toFixed(2)+'%. This is a description of past data, not a forecast.');
+  setBrief(asset+' chart context:','The displayed series contains '+candles.length+' candle OHLC historis. Perubahan pada rentang yang terlihat adalah '+(change>=0?'+':'')+change.toFixed(2)+'%. Ini merupakan deskripsi data masa lalu, bukan perkiraan masa depan.');
  }catch(e){
   candles=[];demo();
-  $('source').textContent='DEMO FALLBACK · LIVE DATA UNAVAILABLE';
-  $('dataSource').textContent='Simulation only';
+  $('source').textContent='MODE SIMULASI · DATA LANGSUNG TIDAK TERSEDIA';
+  $('dataSource').textContent='Hanya simulasi';
   $('dataNote').textContent='The public market-data endpoint could not be reached or returned invalid observations. The chart is simulated and is not a real '+asset+' price series.';
-  $('updated').textContent='Demo chart loaded';
-  setBrief('Market data unavailable:','A simulated chart is shown. It is not actual '+asset+' market data.');
+  $('updated').textContent='Grafik simulasi dimuat';
+  setBrief('Data pasar tidak tersedia:','Grafik simulasi sedang ditampilkan. Ini bukan data aktual '+asset+' market data.');
  }finally{$('refresh').disabled=false}
 }
 async function refresh(){await loadMarketData()}
