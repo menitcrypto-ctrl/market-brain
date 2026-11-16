@@ -27,7 +27,7 @@
 <p class="note">Catatan: bagian ini bersifat edukatif dan belum mengambil data makro secara langsung. Korelasi bukan sebab-akibat; jangan menganggap satu indikator sebagai prediksi atau instruksi transaksi.</p></aside>
 </div>
 <section class="panel wide"><h2>Berita & Riset Global</h2><p class="note">Ini adalah tautan ke sumber berita, bukan umpan berita langsung. Buka situs penerbit untuk membaca laporan terbaru dan rilis resmi.</p><div class="list newslinks"><div class="item"><span>Reuters — Dunia & Pasar</span><a href="https://www.reuters.com/markets/" target="_blank" rel="noopener">Buka sumber ↗</a></div><div class="item"><span>Federal Reserve — Siaran Pers</span><a href="https://www.federalreserve.gov/newsevents/pressreleases.htm" target="_blank" rel="noopener">Buka sumber ↗</a></div><div class="item"><span>Biro Statistik Tenaga Kerja AS — Rilis Berita</span><a href="https://www.bls.gov/news.release/" target="_blank" rel="noopener">Buka sumber ↗</a></div><div class="item"><span>Departemen Keuangan AS — Siaran Pers</span><a href="https://home.treasury.gov/news/press-releases" target="_blank" rel="noopener">Buka sumber ↗</a></div></div></section>
-<footer>Market Brain · v1.4 · Khusus edukasi · Bukan nasihat investasi, sinyal transaksi, atau layanan eksekusi broker.</footer>
+<footer>Market Brain · v1.5 · Khusus edukasi · Bukan nasihat investasi, sinyal transaksi, atau layanan eksekusi broker.</footer>
 </main>
 <script>
 const $=id=>document.getElementById(id);let values=[],labels=[],candles=[],activeSource='Demo simulation';
@@ -125,19 +125,28 @@ function finishLive(price,change,provider,tf,description){
  activeSource='Data OHLC BTC/USD';$('tfLabel').textContent=tfNames[tf];draw();analyzeMarketData();$('updated').textContent='Diperbarui '+new Date().toLocaleTimeString();
  setBrief('Ringkasan pasar BTC:','Grafik menampilkan '+candles.length+' '+tfNames[tf]+' candle. Perubahan 24 jam adalah '+(change>=0?'+':'')+change.toFixed(2)+'%. Candles show historical open, tinggi, rendah, and close values; they do not predict future movement.');
 }
+async function fetchJsonSafe(url,timeoutMs=12000){
+ const controller=new AbortController(),timer=setTimeout(()=>controller.abort(),timeoutMs);
+ try{
+  const response=await fetch(url,{headers:{'Accept':'application/json'},cache:'no-store',signal:controller.signal});
+  if(!response.ok)throw Error('HTTP '+response.status);
+  return await response.json();
+ }finally{clearTimeout(timer)}
+}
 async function loadMarketData(){
- const asset=$('asset').value,tf=$('tf').value;
- const symbol=asset==='XAU/USD'?'xau':'bitcoin';
+ const tf=$('tf').value;
  const intervalMap={'1m':'1m','5m':'5m','15m':'15m','1h':'1h','4h':'1h','1d':'1d'};
  const rangeMap={'1m':'1d','5m':'1d','15m':'1d','1h':'5d','4h':'1mo','1d':'1y'};
- $('source').textContent='Menghubungkan ke data pasar XAUS…';$('refresh').disabled=true;
+ $('source').textContent='MENGAMBIL DATA SPOT XAU/USD…';$('refresh').disabled=true;
  try{
-  const url='https://xaus.com/api/v1/chart?symbol='+symbol+'&range='+rangeMap[tf]+'&interval='+intervalMap[tf];
-  const response=await fetch(url,{headers:{'Accept':'application/json'}});
-  if(!response.ok)throw Error('XAUS chart endpoint HTTP '+response.status);
-  const data=await response.json();
-  let rows=Array.isArray(data.points)?data.points:(Array.isArray(data.candles)?data.candles:[]);
-  if(!rows.length)throw Error('Provider returned no OHLC rows');
+  const chartUrl='https://xaus.com/api/v1/chart?symbol=xau&range='+rangeMap[tf]+'&interval='+intervalMap[tf];
+  const [chartData,spot]=await Promise.all([
+   fetchJsonSafe(chartUrl),
+   fetchJsonSafe('https://xaus.com/api/v1/spot?compact=1')
+  ]);
+  const spotPrice=Number(spot.spot_usd_oz);
+  if(!Number.isFinite(spotPrice)||spotPrice<=0)throw Error('Harga spot XAU tidak valid');
+  let rows=Array.isArray(chartData.points)?chartData.points:(Array.isArray(chartData.candles)?chartData.candles:[]);
   let parsed=rows.map(p=>({
    time:Number(p.t)>1e12?Math.floor(Number(p.t)/1000):Number(p.t),
    open:Number(p.o),tinggi:Number(p.h),rendah:Number(p.l),close:Number(p.c),volume:Number(p.v||0)
@@ -146,45 +155,59 @@ async function loadMarketData(){
    const grouped=[];
    for(let i=0;i<parsed.length;i+=4){
     const block=parsed.slice(i,i+4);if(!block.length)continue;
-    grouped.push({time:block[0].time,open:block[0].open,tinggi:Math.max(...block.map(x=>x.tinggi)),rendah:Math.min(...block.map(x=>x.rendah)),close:block[block.length-1].close,volume:block.reduce((s,x)=>s+x.volume,0)});
+    grouped.push({time:block[0].time,open:block[0].open,tinggi:Math.max(...block.map(x=>x.tinggi)),rendah:Math.min(...block.map(x=>x.rendah)),close:block[block.length-1].close,volume:block.reduce((sum,x)=>sum+x.volume,0)});
    }
    parsed=grouped;
   }
-  if(parsed.length<2)throw Error('Not enough valid OHLC observations');
-  candles=parsed;values=candles.map(x=>x.close);
+  if(parsed.length<2)throw Error('Riwayat candle XAU belum cukup');
+  const priceAsOf=spot.price_as_of||spot.data_state?.as_of||spot.updated_at||null;
+  const priceTime=priceAsOf?Math.floor(new Date(priceAsOf).getTime()/1000):Math.floor(Date.now()/1000);
+  const ageSeconds=Number(spot.data_state?.age_seconds);
+  const stale=spot.stale===true||spot.data_state?.status==='stale'||(Number.isFinite(ageSeconds)&&ageSeconds>120);
+  const bucket=Math.floor(priceTime/(btcTfMs[tf]||60000))*((btcTfMs[tf]||60000)/1000);
+  const last=parsed.at(-1);
+  if(last&&last.time===bucket){
+   last.close=spotPrice;last.tinggi=Math.max(last.tinggi,spotPrice);last.rendah=Math.min(last.rendah,spotPrice);
+  }else if(last&&bucket>last.time){
+   parsed.push({time:bucket,open:last.close,tinggi:Math.max(last.close,spotPrice),rendah:Math.min(last.close,spotPrice),close:spotPrice,volume:0});
+  }
+  candles=parsed.slice(-180);values=candles.map(x=>x.close);
   labels=candles.map(x=>new Date(x.time*1000).toLocaleString([],{month:'short',day:'numeric',hour:'2-digit',minute:'2-digit'}));
-  const last=candles[candles.length-1],first=candles[0],change=first.open?((last.close-first.open)/first.open)*100:0;
-  const price=last.close;
-  $('price').textContent=price.toLocaleString('en-US',{style:'currency',currency:'USD',maximumFractionDigits:asset==='BTC/USD'?2:2});
+  const first=candles[0],lastCandle=candles.at(-1),change=first.open?((spotPrice-first.open)/first.open)*100:0;
+  $('price').textContent=spotPrice.toLocaleString('en-US',{style:'currency',currency:'USD',maximumFractionDigits:2});
   $('delta').textContent=(change>=0?'+':'')+change.toFixed(2)+'% (visible range)';$('delta').style.color=change>=0?'#38c990':'#ff7185';
-  $('dataSource').textContent='XAUS OHLC API';$('dayChange').textContent=(change>=0?'+':'')+change.toFixed(2)+'%';
-  $('source').textContent='DATA REFERENSI · '+asset+' · OHLC';
-  $('dataNote').textContent='Data OHLC historis melalui endpoint grafik XAUS (perantara Yahoo Finance). Interval terpilih: '+tfNames[tf]+(tf==='4h'?' (digabung dari candle 1 jam)':'')+'. Data mungkin tertunda dan hanya untuk edukasi, bukan kuotasi untuk transaksi.';
-  activeSource='Reference OHLC '+asset;draw();analyzeMarketData();$('updated').textContent='Diperbarui '+new Date().toLocaleTimeString();
+  $('dataSource').textContent='XAUS Spot + OHLC';$('dayChange').textContent=(change>=0?'+':'')+change.toFixed(2)+'%';
+  $('source').textContent=(stale?'DATA XAU TERTUNDA':'DATA SPOT XAU')+' · '+tfNames[tf];
+  $('dataNote').textContent='Harga XAU/USD spot dari XAUS (cache sumber sekitar 60 detik), dipadukan dengan riwayat candle OHLC. '+(stale?'Harga terakhir ditandai tertunda. ':'')+'Data indikatif, bukan kuotasi broker atau harga eksekusi.';
+  activeSource='XAUS XAU/USD spot';
+  draw();analyzeMarketData();
+  $('updated').textContent='Harga sumber: '+(priceAsOf?new Date(priceAsOf).toLocaleTimeString():'waktu tidak tersedia');
   $('tfLabel').textContent=tfNames[tf];
-  setBrief(asset+' chart context:','The displayed series contains '+candles.length+' candle OHLC historis. Perubahan pada rentang yang terlihat adalah '+(change>=0?'+':'')+change.toFixed(2)+'%. Ini merupakan deskripsi data masa lalu, bukan perkiraan masa depan.');
+  setBrief('Konteks XAU/USD:','Harga spot terakhir '+(stale?'berstatus tertunda. ':'dari sumber XAUS. ')+'Grafik memakai riwayat OHLC dengan pembaruan snapshot spot sesuai waktu sumber. Ini bukan tick streaming per detik.');
  }catch(e){
-  // Jangan membuat candle acak saat koneksi gagal. Pertahankan data terakhir yang valid.
+  $('source').textContent='KONEKSI XAU TERGANGGU · DATA TERAKHIR DIPERTAHANKAN';
+  $('dataNote').textContent='Pembaruan XAU gagal. Harga/candle terakhir yang valid dipertahankan; tidak ada data simulasi yang ditampilkan.';
+  $('updated').textContent='Gagal memperbarui · coba otomatis lagi';
   if(!candles.length){values=[];labels=[];draw();$('price').textContent='Data tidak tersedia';$('delta').textContent='—';$('dataSource').textContent='Menunggu koneksi';$('dayChange').textContent='—';}
-  $('source').textContent='KONEKSI DATA TERGANGGU · MENCOBA LAGI OTOMATIS';
-  $('dataNote').textContent='Pembaruan data gagal atau penyedia belum merespons. Data terakhir yang valid dipertahankan; tidak ada harga simulasi yang ditampilkan sebagai harga pasar.';
-  $('updated').textContent='Percobaan berikutnya otomatis';
-  setBrief('Data belum diperbarui:','Koneksi ke penyedia data belum berhasil. Grafik tidak akan diganti dengan candle acak.');
+  setBrief('Data XAU belum diperbarui:','Penyedia belum merespons. Data terakhir yang valid tetap ditampilkan jika tersedia.');
  }finally{$('refresh').disabled=false}
 }
 
-let btcSocket=null,btcReconnectTimer=null,btcBaseCandles=[],btcBaseTf=null,btcLastTradePrice=null,btc24hChange=0;
+let btcSocket=null,btcReconnectTimer=null,btcWatchdogTimer=null,btcBaseCandles=[],btcBaseTf=null,btcLastTradePrice=null,btc24hChange=0,btcReconnectAttempts=0,btcLastMessageAt=0,btcEndpointIndex=0;
 const btcTfMs={'1m':60000,'5m':300000,'15m':900000,'1h':3600000,'4h':14400000,'1d':86400000};
+const btcSocketUrls=[
+ 'wss://stream.binance.com:443/ws/btcusdt@trade',
+ 'wss://data-stream.binance.vision/ws/btcusdt@trade',
+ 'wss://stream.binance.com:9443/ws/btcusdt@trade'
+];
 function stopBtcStream(){
  if(btcReconnectTimer){clearTimeout(btcReconnectTimer);btcReconnectTimer=null}
- if(btcSocket){btcSocket.onclose=null;btcSocket.close();btcSocket=null}
-}
-function aggregateBtcCandles(tf){
- return btcBaseTf===tf?btcBaseCandles.slice(-180):[];
+ if(btcWatchdogTimer){clearInterval(btcWatchdogTimer);btcWatchdogTimer=null}
+ if(btcSocket){btcSocket.onclose=null;btcSocket.onerror=null;try{btcSocket.close()}catch(_){}btcSocket=null}
 }
 function renderBtcLive(){
  if(!btcBaseCandles.length)return;
- candles=aggregateBtcCandles($('tf').value);
+ candles=btcBaseTf===$('tf').value?btcBaseCandles.slice(-180):[];
  values=candles.map(c=>c.close);
  labels=candles.map(c=>new Date(c.time*1000).toLocaleString([],{month:'short',day:'numeric',hour:'2-digit',minute:'2-digit'}));
  const price=btcLastTradePrice||btcBaseCandles.at(-1).close;
@@ -192,63 +215,97 @@ function renderBtcLive(){
  $('delta').textContent=(btc24hChange>=0?'+':'')+btc24hChange.toFixed(2)+'% (24h)';
  $('delta').style.color=btc24hChange>=0?'#38c990':'#ff7185';
  $('dataSource').textContent='Binance WebSocket';$('dayChange').textContent=(btc24hChange>=0?'+':'')+btc24hChange.toFixed(2)+'%';
- $('source').textContent='LIVE STREAM · BTC/USDT · '+tfNames[$('tf').value];
- $('dataNote').textContent='Harga BTC/USDT dari transaksi Binance melalui WebSocket. Candle timeframe terpilih diperbarui saat transaksi masuk; riwayat candle dimuat sesuai interval. Nilai USDT digunakan sebagai acuan USD, bukan kuotasi broker.';
- $('tfLabel').textContent=tfNames[$('tf').value];$('updated').textContent='Tick terakhir '+new Date().toLocaleTimeString();
+ $('source').textContent=(btcSocket&&btcSocket.readyState===WebSocket.OPEN?'LIVE STREAM':'DATA BTC TERAKHIR')+' · BTC/USDT · '+tfNames[$('tf').value];
+ $('dataNote').textContent='BTC/USDT spot melalui streaming transaksi Binance. Harga berubah saat transaksi masuk; candle aktif mengikuti timeframe terpilih. USDT dipakai sebagai acuan USD, bukan harga broker.';
+ $('tfLabel').textContent=tfNames[$('tf').value];$('updated').textContent='Tick terakhir '+new Date(btcLastMessageAt||Date.now()).toLocaleTimeString();
  activeSource='Binance WebSocket BTC/USDT';
  draw();analyzeMarketData();
- setBrief('Streaming BTC aktif:','Harga dan candle timeframe '+tfNames[$('tf').value]+' diperbarui saat transaksi baru diterima. Ini adalah data pasar spot BTC/USDT, bukan harga eksekusi broker.');
+ setBrief('Status data BTC:','Harga streaming transaksi BTC/USDT. Jika koneksi terputus, aplikasi mencoba alamat stream cadangan dan mempertahankan data terakhir yang valid.');
+}
+function scheduleBtcReconnect(){
+ if($('asset').value!=='BTC/USD'||btcReconnectTimer)return;
+ const delay=Math.min(30000,1500*Math.pow(2,Math.min(btcReconnectAttempts,5)));
+ btcReconnectAttempts++;
+ $('source').textContent='STREAM BTC TERPUTUS · COBA LAGI '+Math.ceil(delay/1000)+' DETIK';
+ btcReconnectTimer=setTimeout(()=>{btcReconnectTimer=null;connectBtcSocket()},delay);
 }
 function connectBtcSocket(){
  if($('asset').value!=='BTC/USD'||(btcSocket&&[WebSocket.OPEN,WebSocket.CONNECTING].includes(btcSocket.readyState)))return;
- stopBtcStream();
+ if(btcReconnectTimer){clearTimeout(btcReconnectTimer);btcReconnectTimer=null}
+ const url=btcSocketUrls[btcEndpointIndex%btcSocketUrls.length];
  $('source').textContent='MENGHUBUNGKAN STREAM BTC…';
- try{
-  btcSocket=new WebSocket('wss://stream.binance.com:9443/ws/btcusdt@trade');
-  btcSocket.onopen=()=>{$('source').textContent='LIVE STREAM · BTC/USDT';};
-  btcSocket.onmessage=event=>{
-   if($('asset').value!=='BTC/USD')return;
-   try{
-    const trade=JSON.parse(event.data),price=Number(trade.p),time=Number(trade.T),qty=Number(trade.q);
-    if(!Number.isFinite(price)||!Number.isFinite(time))return;
-    const span=btcTfMs[$('tf').value]||60000,bucket=Math.floor(time/span)*span/1000,tail=btcBaseCandles.at(-1);
-    btcLastTradePrice=price;
-    if(!tail||tail.time<bucket)btcBaseCandles.push({time:bucket,open:price,tinggi:price,rendah:price,close:price,volume:qty||0});
-    else if(tail.time===bucket){tail.close=price;tail.tinggi=Math.max(tail.tinggi,price);tail.rendah=Math.min(tail.rendah,price);tail.volume+=(qty||0)}
-    if(btcBaseCandles.length>1500)btcBaseCandles=btcBaseCandles.slice(-1200);
-    renderBtcLive();
-   }catch(_){}
-  };
-  btcSocket.onerror=()=>{$('source').textContent='STREAM TERGANGGU · MENYAMBUNG ULANG';};
-  btcSocket.onclose=()=>{
-   btcSocket=null;
-   if($('asset').value==='BTC/USD'){
-    $('source').textContent='STREAM TERPUTUS · MENCOBA MENYAMBUNG ULANG';
-    btcReconnectTimer=setTimeout(connectBtcSocket,3000);
+ let socket;
+ try{socket=new WebSocket(url);btcSocket=socket}catch(_){btcEndpointIndex++;scheduleBtcReconnect();return}
+ let connectTimer=setTimeout(()=>{
+  if(socket.readyState===WebSocket.CONNECTING){btcEndpointIndex++;try{socket.close()}catch(_){}}
+ },10000);
+ socket.onopen=()=>{
+  clearTimeout(connectTimer);btcReconnectAttempts=0;btcLastMessageAt=Date.now();
+  $('source').textContent='STREAM BTC TERHUBUNG · MENUNGGU TICK';
+  if(btcWatchdogTimer)clearInterval(btcWatchdogTimer);
+  btcWatchdogTimer=setInterval(()=>{
+   if($('asset').value==='BTC/USD'&&btcSocket===socket&&Date.now()-btcLastMessageAt>45000){
+    $('source').textContent='STREAM BTC TIDAK ADA PEMBARUAN · MENYAMBUNG ULANG';
+    try{socket.close()}catch(_){}
    }
-  };
- }catch(_){$('source').textContent='STREAM TIDAK DAPAT DIBUKA';}
+  },10000);
+ };
+ socket.onmessage=event=>{
+  if($('asset').value!=='BTC/USD'||btcSocket!==socket)return;
+  try{
+   const trade=JSON.parse(event.data),price=Number(trade.p),time=Number(trade.T),qty=Number(trade.q);
+   if(!Number.isFinite(price)||!Number.isFinite(time))return;
+   btcLastMessageAt=Date.now();btcLastTradePrice=price;
+   const span=btcTfMs[$('tf').value]||60000,bucket=Math.floor(time/span)*span/1000,tail=btcBaseCandles.at(-1);
+   if(btcBaseTf!==$('tf').value){return}
+   if(!tail||tail.time<bucket)btcBaseCandles.push({time:bucket,open:price,tinggi:price,rendah:price,close:price,volume:qty||0});
+   else if(tail.time===bucket){tail.close=price;tail.tinggi=Math.max(tail.tinggi,price);tail.rendah=Math.min(tail.rendah,price);tail.volume+=(qty||0)}
+   if(btcBaseCandles.length>1500)btcBaseCandles=btcBaseCandles.slice(-1200);
+   renderBtcLive();
+  }catch(_){}
+ };
+ socket.onerror=()=>{
+  if(btcSocket===socket){$('source').textContent='KONEKSI BTC GAGAL · MENCOBA JALUR CADANGAN';btcEndpointIndex++}
+  try{socket.close()}catch(_){}
+ };
+ socket.onclose=()=>{
+  clearTimeout(connectTimer);
+  if(btcWatchdogTimer){clearInterval(btcWatchdogTimer);btcWatchdogTimer=null}
+  if(btcSocket===socket)btcSocket=null;
+  if($('asset').value==='BTC/USD')scheduleBtcReconnect();
+ };
 }
 async function startBtcLive(){
  if(!btcBaseCandles.length||btcBaseTf!==$('tf').value){
   $('source').textContent='MEMUAT RIWAYAT BTC…';
   try{
-   const [kRes,tRes]=await Promise.all([
-    fetch('https://data-api.binance.vision/api/v3/klines?symbol=BTCUSDT&interval='+$('tf').value+'&limit=500'),
-    fetch('https://data-api.binance.vision/api/v3/ticker/24hr?symbol=BTCUSDT')
-   ]);
-   if(!kRes.ok||!tRes.ok)throw Error('Binance history unavailable');
-   const raw=await kRes.json(),ticker=await tRes.json();
-   btcBaseCandles=raw.map(k=>({time:Math.floor(Number(k[0])/1000),open:Number(k[1]),tinggi:Number(k[2]),rendah:Number(k[3]),close:Number(k[4]),volume:Number(k[5])})).filter(c=>Number.isFinite(c.close));
-   btcBaseTf=$('tf').value;
-   if(!btcBaseCandles.length)throw Error('No BTC candles');
-   btcLastTradePrice=Number(ticker.lastPrice);btc24hChange=Number(ticker.priceChangePercent)||0;
+   let raw=null,ticker=null,lastError=null;
+   const restUrls=[
+    'https://data-api.binance.vision/api/v3/',
+    'https://api.binance.com/api/v3/',
+    'https://api1.binance.com/api/v3/'
+   ];
+   for(const base of restUrls){
+    try{
+     const results=await Promise.all([
+      fetchJsonSafe(base+'klines?symbol=BTCUSDT&interval='+$('tf').value+'&limit=500'),
+      fetchJsonSafe(base+'ticker/24hr?symbol=BTCUSDT').catch(()=>null)
+     ]);
+     raw=results[0];ticker=results[1];break;
+    }catch(e){lastError=e}
+   }
+   if(!raw)throw(lastError||Error('Binance history unavailable'));
+   const loaded=raw.map(k=>({time:Math.floor(Number(k[0])/1000),open:Number(k[1]),tinggi:Number(k[2]),rendah:Number(k[3]),close:Number(k[4]),volume:Number(k[5])})).filter(c=>Number.isFinite(c.close)&&Number.isFinite(c.time));
+   if(!loaded.length)throw Error('No BTC candles');
+   btcBaseCandles=loaded;btcBaseTf=$('tf').value;
+   if(ticker){btcLastTradePrice=Number(ticker.lastPrice)||loaded.at(-1).close;btc24hChange=Number(ticker.priceChangePercent)||0}
+   else btcLastTradePrice=loaded.at(-1).close;
   }catch(e){
    $('source').textContent='DATA BTC BELUM TERSEDIA · COBA LAGI';
-   $('dataNote').textContent='Riwayat BTC dari penyedia belum dapat dimuat. Tidak ada candle simulasi yang ditampilkan.';
+   $('dataNote').textContent='Riwayat BTC gagal dimuat dari semua endpoint cadangan. Tidak ada candle simulasi yang ditampilkan.';
    $('updated').textContent='Menunggu koneksi';
-   if(!candles.length){$('price').textContent='Data tidak tersedia';values=[];labels=[];draw()}
-   return;
+   if(!btcBaseCandles.length){candles=[];values=[];labels=[];draw();$('price').textContent='Data tidak tersedia'}
+   scheduleBtcReconnect();return;
   }
  }
  renderBtcLive();connectBtcSocket();
@@ -263,7 +320,7 @@ async function refresh(){
   else{stopBtcStream();await loadMarketData()}
  }finally{refreshInProgress=false}
 }
-const AUTO_REFRESH_MS=15000; // Pemeriksaan ulang untuk XAU; BTC menggunakan WebSocket.
+const AUTO_REFRESH_MS=60000; // XAUS menyegarkan spot sekitar 60 detik; BTC memakai WebSocket.
 let autoRefreshTimer=null;
 function startAutoRefresh(){
  if(autoRefreshTimer!==null)clearInterval(autoRefreshTimer);
