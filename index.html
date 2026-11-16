@@ -48,29 +48,55 @@ function draw(){
 window.addEventListener('resize',()=>{if(values.length)draw()});
 function demo(){let a=$('asset').value,base=a==='XAU/USD'?2350:a==='EUR/USD'?1.08:a==='AAPL'?220:68000,p=base;candles=Array.from({length:48},(_,i)=>{const open=p,close=p+(Math.random()-.48)*base*.0018,high=Math.max(open,close)+Math.random()*base*.0007,low=Math.min(open,close)-Math.random()*base*.0007;p=close;return {open,high,low,close}});values=candles.map(c=>c.close);labels=values.map((_,i)=>String(i+1));activeSource='Demo simulation';$('price').textContent=values.at(-1).toLocaleString('en-US',{maximumFractionDigits:4});$('delta').textContent='Demo only';$('delta').style.color='#f2c879';$('dataSource').textContent='Simulation';$('dayChange').textContent='—';$('source').textContent='DEMO DATA';$('dataNote').textContent='Candlestick chart is simulated for interface demonstration only. It does not represent current market prices.';draw();setBrief('Demo context:','This chart is simulated. It does not represent current market conditions.')}
 async function loadLive(){
- const tf=$('tf').value,granularity={'1m':60,'5m':300,'15m':900,'1h':3600,'4h':14400,'1d':86400}[tf];
- $('source').textContent='Loading Coinbase candles…';$('refresh').disabled=true;
+ const tf=$('tf').value,krakenInterval={'1m':1,'5m':5,'15m':15,'1h':60,'4h':240,'1d':1440}[tf],binanceInterval={'1m':'1m','5m':'5m','15m':'15m','1h':'1h','4h':'4h','1d':'1d'}[tf];
+ $('source').textContent='Connecting to live candle providers…';$('refresh').disabled=true;
+ let loaded=false,lastError='No provider returned data';
  try{
-  const [candleRes,tickerRes,statsRes]=await Promise.all([
-   fetch('https://api.exchange.coinbase.com/products/BTC-USD/candles?granularity='+granularity,{headers:{'Accept':'application/json'}}),
-   fetch('https://api.exchange.coinbase.com/products/BTC-USD/ticker',{headers:{'Accept':'application/json'}}),
-   fetch('https://api.exchange.coinbase.com/products/BTC-USD/stats',{headers:{'Accept':'application/json'}})
-  ]);
-  if(!candleRes.ok||!tickerRes.ok||!statsRes.ok)throw Error('Coinbase public API unavailable');
-  const raw=await candleRes.json(),ticker=await tickerRes.json(),stats=await statsRes.json();
-  candles=raw.slice().reverse().map(k=>({time:k[0],low:Number(k[1]),high:Number(k[2]),open:Number(k[3]),close:Number(k[4]),volume:Number(k[5])}));
-  if(!candles.length)throw Error('No candles returned');
-  values=candles.map(c=>c.close);labels=candles.map(c=>new Date(c.time*1000).toLocaleString([],{month:'short',day:'numeric',hour:'2-digit',minute:'2-digit'}));
-  const price=Number(ticker.price),open=Number(stats.open),change=open?(price-open)/open*100:0;
-  $('price').textContent=price.toLocaleString('en-US',{style:'currency',currency:'USD',maximumFractionDigits:2});
-  $('delta').textContent=(change>=0?'+':'')+change.toFixed(2)+'% (24h)';$('delta').style.color=change>=0?'#38c990':'#ff7185';
-  $('dataSource').textContent='Coinbase Exchange API';$('dayChange').textContent=(change>=0?'+':'')+change.toFixed(2)+'%';
-  $('source').textContent='LIVE · BTC/USD · OHLC';$('dataNote').textContent='Live BTC-USD OHLC candles from Coinbase Exchange. Selected interval: '+tfNames[tf]+'. Candle history is limited by the public provider response; other assets remain demo-only.';
-  activeSource='Live BTC/USD OHLC';draw();$('updated').textContent='Updated '+new Date().toLocaleTimeString();
-  setBrief('BTC market snapshot:','The chart displays '+candles.length+' '+tfNames[tf]+' candles. The 24-hour change is '+(change>=0?'+':'')+change.toFixed(2)+'%. Candles describe historical open, high, low, and close values; they do not predict future movement.');
+  // Provider 1: Kraken public OHLC + ticker endpoints
+  try{
+   const [oRes,tRes]=await Promise.all([
+    fetch('https://api.kraken.com/0/public/OHLC?pair=XBTUSD&interval='+krakenInterval),
+    fetch('https://api.kraken.com/0/public/Ticker?pair=XBTUSD')
+   ]);
+   if(!oRes.ok||!tRes.ok)throw Error('Kraken HTTP error');
+   const od=await oRes.json(),td=await tRes.json();
+   if(od.error?.length||td.error?.length)throw Error('Kraken API error');
+   const pairKey=Object.keys(od.result).find(k=>k!=='last'),rows=od.result[pairKey],ticker=td.result[Object.keys(td.result)[0]];
+   candles=rows.map(k=>({time:Number(k[0]),open:Number(k[1]),high:Number(k[2]),low:Number(k[3]),close:Number(k[4]),volume:Number(k[6])}));
+   if(!candles.length)throw Error('Kraken returned no candles');
+   const price=Number(ticker.c[0]),open=Number(ticker.o),change=open?(price-open)/open*100:0;
+   finishLive(price,change,'Kraken public API',tf,'Kraken OHLC candles');
+   loaded=true;
+  }catch(e){lastError=String(e)}
+  // Provider 2: Binance public data mirror
+  if(!loaded){
+   try{
+    const [kRes,tRes]=await Promise.all([
+     fetch('https://data-api.binance.vision/api/v3/klines?symbol=BTCUSDT&interval='+binanceInterval+'&limit=48'),
+     fetch('https://data-api.binance.vision/api/v3/ticker/24hr?symbol=BTCUSDT')
+    ]);
+    if(!kRes.ok||!tRes.ok)throw Error('Binance mirror HTTP error');
+    const raw=await kRes.json(),ticker=await tRes.json();
+    candles=raw.map(k=>({time:Math.floor(Number(k[0])/1000),open:Number(k[1]),high:Number(k[2]),low:Number(k[3]),close:Number(k[4]),volume:Number(k[5])}));
+    if(!candles.length)throw Error('Binance returned no candles');
+    const price=Number(ticker.lastPrice),change=Number(ticker.priceChangePercent);
+    finishLive(price,change,'Binance public data mirror',tf,'Binance OHLC candles');
+    loaded=true;
+   }catch(e){lastError=String(e)}
+  }
+  if(!loaded)throw Error(lastError);
  }catch(e){
-  candles=[];demo();$('source').textContent='DEMO FALLBACK · LIVE CANDLES UNAVAILABLE';$('dataSource').textContent='Simulation only';$('dataNote').textContent='Coinbase live candle data could not be reached. The displayed candles are simulated, not real market data.';$('updated').textContent='Demo chart loaded';setBrief('Live data unavailable:','A demo candlestick chart is shown. It is not actual market data.');
+  candles=[];demo();$('source').textContent='DEMO FALLBACK · LIVE CANDLES UNAVAILABLE';$('dataSource').textContent='Simulation only';$('dataNote').textContent='Live providers could not be reached from this browser. Displayed candles are simulated and are not actual market data.';$('updated').textContent='Demo chart loaded';setBrief('Live data unavailable:','The live data providers could not be reached. The candlestick chart shown is simulated.');
  }finally{$('refresh').disabled=false}
+}
+function finishLive(price,change,provider,tf,description){
+ values=candles.map(c=>c.close);labels=candles.map(c=>new Date(c.time*1000).toLocaleString([],{month:'short',day:'numeric',hour:'2-digit',minute:'2-digit'}));
+ $('price').textContent=price.toLocaleString('en-US',{style:'currency',currency:'USD',maximumFractionDigits:2});
+ $('delta').textContent=(change>=0?'+':'')+change.toFixed(2)+'% (24h)';$('delta').style.color=change>=0?'#38c990':'#ff7185';
+ $('dataSource').textContent=provider;$('dayChange').textContent=(change>=0?'+':'')+change.toFixed(2)+'%';
+ $('source').textContent='LIVE · BTC/USD · OHLC';$('dataNote').textContent=description+' for BTC/USD from '+provider+'. Selected interval: '+tfNames[tf]+'. Other assets remain demo-only.';
+ activeSource='Live BTC/USD OHLC';draw();$('updated').textContent='Updated '+new Date().toLocaleTimeString();
+ setBrief('BTC market snapshot:','The chart displays '+candles.length+' '+tfNames[tf]+' candles. The 24-hour change is '+(change>=0?'+':'')+change.toFixed(2)+'%. Candles show historical open, high, low, and close values; they do not predict future movement.');
 }
 async function refresh(){if($('asset').value==='BTC/USD')await loadLive();else demo()}
 $('refresh').onclick=refresh;$('asset').onchange=refresh;$('tf').onchange=()=>{$('tfLabel').textContent=tfNames[$('tf').value];refresh()};$('explain').onclick=()=>{if(activeSource.startsWith('Live')&&values.length){const first=values[0],last=values.at(-1),pct=(last-first)/first*100,high=Math.max(...values),low=Math.min(...values);setBrief('Chart explainer:','Across the visible candles, BTC moved '+(pct>=0?'up ':'down ')+Math.abs(pct).toFixed(2)+'%. The displayed range is $'+low.toLocaleString('en-US')+' to $'+high.toLocaleString('en-US')+'. This describes past observations only; it does not identify causes or predict future prices.')}else setBrief('Demo explainer:','The selected chart is simulated and should not be used to understand actual market conditions.')};
