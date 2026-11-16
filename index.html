@@ -27,7 +27,7 @@
 <p class="note">Catatan: bagian ini bersifat edukatif dan belum mengambil data makro secara langsung. Korelasi bukan sebab-akibat; jangan menganggap satu indikator sebagai prediksi atau instruksi transaksi.</p></aside>
 </div>
 <section class="panel wide"><h2>Berita & Riset Global</h2><p class="note">Ini adalah tautan ke sumber berita, bukan umpan berita langsung. Buka situs penerbit untuk membaca laporan terbaru dan rilis resmi.</p><div class="list newslinks"><div class="item"><span>Reuters — Dunia & Pasar</span><a href="https://www.reuters.com/markets/" target="_blank" rel="noopener">Buka sumber ↗</a></div><div class="item"><span>Federal Reserve — Siaran Pers</span><a href="https://www.federalreserve.gov/newsevents/pressreleases.htm" target="_blank" rel="noopener">Buka sumber ↗</a></div><div class="item"><span>Biro Statistik Tenaga Kerja AS — Rilis Berita</span><a href="https://www.bls.gov/news.release/" target="_blank" rel="noopener">Buka sumber ↗</a></div><div class="item"><span>Departemen Keuangan AS — Siaran Pers</span><a href="https://home.treasury.gov/news/press-releases" target="_blank" rel="noopener">Buka sumber ↗</a></div></div></section>
-<footer>Market Brain · v1.2 · Khusus edukasi · Bukan nasihat investasi, sinyal transaksi, atau layanan eksekusi broker.</footer>
+<footer>Market Brain · v1.3 · Khusus edukasi · Bukan nasihat investasi, sinyal transaksi, atau layanan eksekusi broker.</footer>
 </main>
 <script>
 const $=id=>document.getElementById(id);let values=[],labels=[],candles=[],activeSource='Demo simulation';
@@ -164,15 +164,35 @@ async function loadMarketData(){
   $('tfLabel').textContent=tfNames[tf];
   setBrief(asset+' chart context:','The displayed series contains '+candles.length+' candle OHLC historis. Perubahan pada rentang yang terlihat adalah '+(change>=0?'+':'')+change.toFixed(2)+'%. Ini merupakan deskripsi data masa lalu, bukan perkiraan masa depan.');
  }catch(e){
-  candles=[];demo();
-  $('source').textContent='MODE SIMULASI · DATA LANGSUNG TIDAK TERSEDIA';
-  $('dataSource').textContent='Hanya simulasi';
-  $('dataNote').textContent='The public market-data endpoint could not be reached or returned invalid observations. The chart is simulated and is not a real '+asset+' price series.';
-  $('updated').textContent='Grafik simulasi dimuat';
-  setBrief('Data pasar tidak tersedia:','Grafik simulasi sedang ditampilkan. Ini bukan data aktual '+asset+' market data.');
+  // Jangan membuat candle acak saat koneksi gagal. Pertahankan data terakhir yang valid.
+  if(!candles.length){values=[];labels=[];draw();$('price').textContent='Data tidak tersedia';$('delta').textContent='—';$('dataSource').textContent='Menunggu koneksi';$('dayChange').textContent='—';}
+  $('source').textContent='KONEKSI DATA TERGANGGU · MENCOBA LAGI OTOMATIS';
+  $('dataNote').textContent='Pembaruan data gagal atau penyedia belum merespons. Data terakhir yang valid dipertahankan; tidak ada harga simulasi yang ditampilkan sebagai harga pasar.';
+  $('updated').textContent='Percobaan berikutnya otomatis';
+  setBrief('Data belum diperbarui:','Koneksi ke penyedia data belum berhasil. Grafik tidak akan diganti dengan candle acak.');
  }finally{$('refresh').disabled=false}
 }
-async function refresh(){await loadMarketData()}
-$('refresh').onclick=refresh;$('asset').onchange=refresh;$('tf').onchange=()=>{$('tfLabel').textContent=tfNames[$('tf').value];refresh()};$('explain').onclick=()=>analyzeMarketData();
-$('tfLabel').textContent=tfNames[$('tf').value];refresh();
+let refreshInProgress=false;
+async function refresh(){
+ if(refreshInProgress)return;
+ refreshInProgress=true;
+ try{await loadMarketData()}finally{refreshInProgress=false}
+}
+const AUTO_REFRESH_MS=15000;
+let autoRefreshTimer=null;
+function startAutoRefresh(){
+ if(autoRefreshTimer!==null)clearInterval(autoRefreshTimer);
+ autoRefreshTimer=setInterval(()=>{
+  if(document.visibilityState==='visible')refresh();
+ },AUTO_REFRESH_MS);
+}
+document.addEventListener('visibilitychange',()=>{
+ if(document.visibilityState==='visible')refresh();
+});
+$('refresh').onclick=refresh;
+$('asset').onchange=refresh;
+$('tf').onchange=()=>{$('tfLabel').textContent=tfNames[$('tf').value];refresh()};
+$('explain').onclick=()=>analyzeMarketData();
+$('tfLabel').textContent=tfNames[$('tf').value];
+refresh().then(startAutoRefresh);
 </script></body></html>
