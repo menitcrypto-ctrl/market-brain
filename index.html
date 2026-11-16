@@ -98,45 +98,54 @@ function finishLive(price,change,provider,tf,description){
  activeSource='Live BTC/USD OHLC';draw();$('updated').textContent='Updated '+new Date().toLocaleTimeString();
  setBrief('BTC market snapshot:','The chart displays '+candles.length+' '+tfNames[tf]+' candles. The 24-hour change is '+(change>=0?'+':'')+change.toFixed(2)+'%. Candles show historical open, high, low, and close values; they do not predict future movement.');
 }
-async function loadGold(){
- $('source').textContent='Connecting to XAUS gold data…';$('refresh').disabled=true;
+async function loadMarketData(){
+ const asset=$('asset').value,tf=$('tf').value;
+ const symbol=asset==='XAU/USD'?'xau':'bitcoin';
+ const intervalMap={'1m':'1m','5m':'5m','15m':'15m','1h':'1h','4h':'1h','1d':'1d'};
+ const rangeMap={'1m':'1d','5m':'1d','15m':'1d','1h':'5d','4h':'1mo','1d':'1y'};
+ $('source').textContent='Connecting to XAUS market data…';$('refresh').disabled=true;
  try{
-  const spotRes=await fetch('https://xaus.com/api/v1/spot?compact=1&fresh='+Date.now());
-  if(!spotRes.ok)throw Error('Gold spot endpoint HTTP '+spotRes.status);
-  const spot=await spotRes.json(),price=Number(spot.spot_usd_oz);
-  if(!Number.isFinite(price)||price<=0)throw Error('Invalid XAU spot price');
-  let series=[],seriesLabel='',provider='XAUS public API',mode='intraday';
-  const tf=$('tf').value;
-  if(tf==='1d'){
-   const histRes=await fetch('https://xaus.com/api/v1/history?fresh='+Date.now());
-   if(!histRes.ok)throw Error('Gold daily history unavailable');
-   const hist=await histRes.json();
-   series=(hist.points||[]).slice(-90).map(p=>({t:Date.parse(p.d+'T00:00:00Z')/1000,p:Number(p.c)})).filter(p=>Number.isFinite(p.t)&&Number.isFinite(p.p));
-   seriesLabel='daily closes';mode='daily';
-  }else{
-   const hours={'1m':1,'5m':6,'15m':12,'1h':24,'4h':48}[tf]||24;
-   const intradayRes=await fetch('https://xaus.com/api/v1/intraday?symbol=xau&hours='+hours+'&fresh='+Date.now());
-   if(!intradayRes.ok)throw Error('Gold intraday endpoint HTTP '+intradayRes.status);
-   const intraday=await intradayRes.json();
-   series=(intraday.points||[]).map(p=>({t:Number(p.t),p:Number(p.p)})).filter(p=>Number.isFinite(p.t)&&Number.isFinite(p.p));
-   seriesLabel='recorded spot samples';mode='intraday';
+  const url='https://xaus.com/api/v1/chart?symbol='+symbol+'&range='+rangeMap[tf]+'&interval='+intervalMap[tf];
+  const response=await fetch(url,{headers:{'Accept':'application/json'}});
+  if(!response.ok)throw Error('XAUS chart endpoint HTTP '+response.status);
+  const data=await response.json();
+  let rows=Array.isArray(data.points)?data.points:(Array.isArray(data.candles)?data.candles:[]);
+  if(!rows.length)throw Error('Provider returned no OHLC rows');
+  let parsed=rows.map(p=>({
+   time:Number(p.t)>1e12?Math.floor(Number(p.t)/1000):Number(p.t),
+   open:Number(p.o),high:Number(p.h),low:Number(p.l),close:Number(p.c),volume:Number(p.v||0)
+  })).filter(p=>Number.isFinite(p.time)&&Number.isFinite(p.open)&&Number.isFinite(p.high)&&Number.isFinite(p.low)&&Number.isFinite(p.close));
+  if(tf==='4h'){
+   const grouped=[];
+   for(let i=0;i<parsed.length;i+=4){
+    const block=parsed.slice(i,i+4);if(!block.length)continue;
+    grouped.push({time:block[0].time,open:block[0].open,high:Math.max(...block.map(x=>x.high)),low:Math.min(...block.map(x=>x.low)),close:block[block.length-1].close,volume:block.reduce((s,x)=>s+x.volume,0)});
+   }
+   parsed=grouped;
   }
-  if(series.length<2)throw Error('Not enough real XAU observations');
-  candles=[];values=series.map(p=>p.p);labels=series.map(p=>new Date(p.t*1000).toLocaleString([],{month:'short',day:'numeric',hour:'2-digit',minute:'2-digit'}));
-  const first=series[0].p,last=series[series.length-1].p,change=(last-first)/first*100;
-  $('price').textContent=price.toLocaleString('en-US',{style:'currency',currency:'USD',maximumFractionDigits:2});
-  $('delta').textContent=(change>=0?'+':'')+change.toFixed(2)+'% (visible period)';$('delta').style.color=change>=0?'#38c990':'#ff7185';
-  $('dataSource').textContent=provider;$('dayChange').textContent=(change>=0?'+':'')+change.toFixed(2)+'%';
-  const state=spot.data_state?.status||'unknown',asOf=spot.price_as_of||spot.updated_at||spot.data_state?.as_of;
-  $('source').textContent='LIVE · XAU/USD · '+state.toUpperCase();
-  $('dataNote').textContent='XAU/USD indicative spot price from XAUS, '+(state==='stale'?'last known real quote (stale)':state==='fresh'?'fresh reference quote':'provider freshness not confirmed')+'. Chart shows '+seriesLabel+'. '+(mode==='intraday'?'The source samples spot prices approximately every 2 minutes; it is a line series, not exchange OHLC candles. Selected timeframe controls the displayed history window, not exact M1 candle construction.':'Daily closing-price history; daily open/high/low candles are not supplied by this endpoint.')+' Not a tradable quote.';
-  activeSource='Live XAU/USD reference data';draw();$('updated').textContent=asOf?'As of '+new Date(asOf).toLocaleString():'Updated '+new Date().toLocaleTimeString();
-  setBrief('XAU/USD data note:','The current indicative spot reference is '+price.toLocaleString('en-US',{style:'currency',currency:'USD',maximumFractionDigits:2})+' per troy ounce. The chart contains '+series.length+' '+seriesLabel+'. These observations describe past/reference data and do not predict future prices.');
+  if(parsed.length<2)throw Error('Not enough valid OHLC observations');
+  candles=parsed;values=candles.map(x=>x.close);
+  labels=candles.map(x=>new Date(x.time*1000).toLocaleString([],{month:'short',day:'numeric',hour:'2-digit',minute:'2-digit'}));
+  const last=candles[candles.length-1],first=candles[0],change=first.open?((last.close-first.open)/first.open)*100:0;
+  const price=last.close;
+  $('price').textContent=price.toLocaleString('en-US',{style:'currency',currency:'USD',maximumFractionDigits:asset==='BTC/USD'?2:2});
+  $('delta').textContent=(change>=0?'+':'')+change.toFixed(2)+'% (visible range)';$('delta').style.color=change>=0?'#38c990':'#ff7185';
+  $('dataSource').textContent='XAUS OHLC API';$('dayChange').textContent=(change>=0?'+':'')+change.toFixed(2)+'%';
+  $('source').textContent='REFERENCE DATA · '+asset+' · OHLC';
+  $('dataNote').textContent='Historical OHLC data via XAUS chart endpoint (Yahoo Finance proxy). Selected interval: '+tfNames[tf]+(tf==='4h'?' (aggregated from 1-hour candles)':'')+'. Data may be delayed and is for education only, not a tradable quote.';
+  activeSource='Reference OHLC '+asset;draw();$('updated').textContent='Updated '+new Date().toLocaleTimeString();
+  $('tfLabel').textContent=tfNames[tf];
+  setBrief(asset+' chart context:','The displayed series contains '+candles.length+' historical OHLC candles. Change across the visible range is '+(change>=0?'+':'')+change.toFixed(2)+'%. This is a description of past data, not a forecast.');
  }catch(e){
-  candles=[];demo();$('source').textContent='DEMO FALLBACK · XAU LIVE DATA UNAVAILABLE';$('dataSource').textContent='Simulation only';$('dataNote').textContent='XAUS gold data could not be reached or did not return enough observations. The chart is simulated, not a real XAU/USD price series.';$('updated').textContent='Demo chart loaded';setBrief('Live gold data unavailable:','A simulated chart is shown. It is not actual XAU/USD market data.');
+  candles=[];demo();
+  $('source').textContent='DEMO FALLBACK · LIVE DATA UNAVAILABLE';
+  $('dataSource').textContent='Simulation only';
+  $('dataNote').textContent='The public market-data endpoint could not be reached or returned invalid observations. The chart is simulated and is not a real '+asset+' price series.';
+  $('updated').textContent='Demo chart loaded';
+  setBrief('Market data unavailable:','A simulated chart is shown. It is not actual '+asset+' market data.');
  }finally{$('refresh').disabled=false}
 }
-async function refresh(){if($('asset').value==='BTC/USD')await loadLive();else await loadGold()}
+async function refresh(){await loadMarketData()}
 $('refresh').onclick=refresh;$('asset').onchange=refresh;$('tf').onchange=()=>{$('tfLabel').textContent=tfNames[$('tf').value];refresh()};$('explain').onclick=()=>{if(activeSource.startsWith('Live')&&values.length){const first=values[0],last=values.at(-1),pct=(last-first)/first*100,high=Math.max(...values),low=Math.min(...values);setBrief('Chart explainer:','Across the visible candles, BTC moved '+(pct>=0?'up ':'down ')+Math.abs(pct).toFixed(2)+'%. The displayed range is $'+low.toLocaleString('en-US')+' to $'+high.toLocaleString('en-US')+'. This describes past observations only; it does not identify causes or predict future prices.')}else setBrief('Demo explainer:','The selected chart is simulated and should not be used to understand actual market conditions.')};
 $('tfLabel').textContent=tfNames[$('tf').value];refresh();
 </script></body></html>
