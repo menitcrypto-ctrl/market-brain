@@ -43,7 +43,41 @@ function draw(){
 }
 window.addEventListener('resize',()=>{if(values.length)draw()});
 function demo(){let a=$('asset').value,base=a==='XAU/USD'?2350:a==='EUR/USD'?1.08:a==='AAPL'?220:68000,p=base;values=Array.from({length:48},()=>{p+=(Math.random()-.48)*base*.0018;return +p.toFixed(2)});labels=values.map((_,i)=>String(i+1));activeSource='Demo simulation';$('price').textContent=values.at(-1).toLocaleString('en-US',{maximumFractionDigits:4});$('delta').textContent='Demo only';$('delta').style.color='#f2c879';$('dataSource').textContent='Simulation';$('dayChange').textContent='—';$('source').textContent='DEMO DATA';$('dataNote').textContent='No live feed is connected for this instrument. Values are randomly generated for interface demonstration only.';draw();setBrief('Demo context:','This chart is simulated. It does not represent current market prices or actual market conditions.')}
-async function loadLive(){const interval=$('tf').value;const symbol='BTCUSDT';$('source').textContent='Fetching public BTC market data…';$('refresh').disabled=true;try{const [kRes,tRes]=await Promise.all([fetch('https://api.binance.com/api/v3/klines?symbol='+symbol+'&interval='+interval+'&limit=48'),fetch('https://api.binance.com/api/v3/ticker/24hr?symbol='+symbol)]);if(!kRes.ok||!tRes.ok)throw Error('Public market API unavailable');const klines=await kRes.json(),ticker=await tRes.json();values=klines.map(k=>Number(k[4]));labels=klines.map(k=>new Date(k[0]).toLocaleTimeString([],{hour:'2-digit',minute:'2-digit',month:interval==='1d'?'short':undefined,day:interval==='1d'?'numeric':undefined}));const price=Number(ticker.lastPrice),change=Number(ticker.priceChangePercent);$('price').textContent=price.toLocaleString('en-US',{style:'currency',currency:'USD',maximumFractionDigits:2});$('delta').textContent=(change>=0?'+':'')+change.toFixed(2)+'% (24h)';$('delta').style.color=change>=0?'#38c990':'#ff7185';$('dataSource').textContent='Binance public API';$('dayChange').textContent=(change>=0?'+':'')+change.toFixed(2)+'%';$('source').textContent='LIVE · BTC/USDT';$('dataNote').textContent='Public BTC/USDT spot data from Binance, shown as an approximate USD reference. Other instruments use demo data. Data may be delayed or unavailable.';activeSource='Live BTC/USDT public data';draw();$('updated').textContent='Updated '+new Date().toLocaleTimeString();setBrief('BTC market snapshot:','The latest displayed 24-hour change is '+(change>=0?'+':'')+change.toFixed(2)+'%. A percentage change describes the selected period; it does not explain the cause. Compare volume, price range, macroeconomic releases, and reliable reporting before forming an interpretation.')}catch(e){$('source').textContent='Live feed unavailable';$('dataSource').textContent='Unavailable';$('dataNote').textContent='Could not retrieve public BTC data right now. Try Refresh data later. No synthetic values are being presented as live.';$('price').textContent='—';$('delta').textContent='No data';setBrief('Data unavailable:','The public market-data service could not be reached. Check your connection and try again.')}finally{$('refresh').disabled=false}}
+async function loadLive(){
+ const tf=$('tf').value,days=tf==='1d'?'30':tf==='4h'?'7':'1';
+ $('source').textContent='Connecting to public BTC data…';$('refresh').disabled=true;
+ try{
+  let points=[],price=0,change=0,provider='';
+  try{
+   const [chartRes,priceRes]=await Promise.all([
+    fetch('https://api.coingecko.com/api/v3/coins/bitcoin/market_chart?vs_currency=usd&days='+days),
+    fetch('https://api.coingecko.com/api/v3/simple/price?ids=bitcoin&vs_currencies=usd&include_24hr_change=true')
+   ]);
+   if(!chartRes.ok||!priceRes.ok)throw Error('CoinGecko unavailable');
+   const chartData=await chartRes.json(),priceData=await priceRes.json();
+   points=chartData.prices||[];price=Number(priceData.bitcoin.usd);change=Number(priceData.bitcoin.usd_24h_change);provider='CoinGecko public API';
+  }catch(primaryError){
+   const [kRes,tRes]=await Promise.all([
+    fetch('https://api.binance.com/api/v3/klines?symbol=BTCUSDT&interval='+tf+'&limit=48'),
+    fetch('https://api.binance.com/api/v3/ticker/24hr?symbol=BTCUSDT')
+   ]);
+   if(!kRes.ok||!tRes.ok)throw Error('Both public data providers unavailable');
+   const klines=await kRes.json(),ticker=await tRes.json();
+   points=klines.map(k=>[k[0],Number(k[4])]);price=Number(ticker.lastPrice);change=Number(ticker.priceChangePercent);provider='Binance public API';
+  }
+  if(!points.length||!Number.isFinite(price))throw Error('No valid market points');
+  const step=Math.max(1,Math.ceil(points.length/60));const sampled=points.filter((_,i)=>i%step===0);
+  values=sampled.map(p=>Number(p[1]));labels=sampled.map(p=>new Date(p[0]).toLocaleString([],{month:'short',day:'numeric',hour:'2-digit',minute:'2-digit'}));
+  $('price').textContent=price.toLocaleString('en-US',{style:'currency',currency:'USD',maximumFractionDigits:2});
+  $('delta').textContent=(change>=0?'+':'')+change.toFixed(2)+'% (24h)';$('delta').style.color=change>=0?'#38c990':'#ff7185';
+  $('dataSource').textContent=provider;$('dayChange').textContent=(change>=0?'+':'')+change.toFixed(2)+'%';
+  $('source').textContent='LIVE · BTC/USD';$('dataNote').textContent='BTC/USD public market data via '+provider+'. Historical chart resolution is supplied by the provider and may not match the selected short timeframe exactly. Other assets remain demo-only.';
+  activeSource='Live BTC/USD public data';draw();$('updated').textContent='Updated '+new Date().toLocaleTimeString();
+  setBrief('BTC market snapshot:','The displayed 24-hour change is '+(change>=0?'+':'')+change.toFixed(2)+'%. This describes a recent market observation, not its cause or what may happen next. Compare independent reporting and macroeconomic releases for broader context.');
+ }catch(e){
+  values=[];labels=[];draw();$('source').textContent='Live feed unavailable';$('dataSource').textContent='Unavailable';$('dataNote').textContent='Both public market-data sources could not be reached. Try Refresh data later. No simulated values are shown as live.';$('price').textContent='—';$('delta').textContent='No data';$('dayChange').textContent='—';$('updated').textContent='Not updated';setBrief('Data unavailable:','The public market-data services could not be reached from this browser. Check the internet connection and try again.');
+ }finally{$('refresh').disabled=false}
+}
 async function refresh(){if($('asset').value==='BTC/USD')await loadLive();else demo()}
 $('refresh').onclick=refresh;$('asset').onchange=refresh;$('tf').onchange=()=>{$('tfLabel').textContent=tfNames[$('tf').value];refresh()};$('explain').onclick=()=>{if(activeSource.startsWith('Live')&&values.length){const first=values[0],last=values.at(-1),pct=(last-first)/first*100,high=Math.max(...values),low=Math.min(...values);setBrief('Chart explainer:','Across the visible candles, BTC moved '+(pct>=0?'up ':'down ')+Math.abs(pct).toFixed(2)+'%. The displayed range is $'+low.toLocaleString('en-US')+' to $'+high.toLocaleString('en-US')+'. This describes past observations only; it does not identify causes or predict future prices.')}else setBrief('Demo explainer:','The selected chart is simulated and should not be used to understand actual market conditions.')};
 $('tfLabel').textContent=tfNames[$('tf').value];refresh();
