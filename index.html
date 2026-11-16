@@ -17,15 +17,35 @@
 <div><span class="price" id="price">Loading…</span><span class="change" id="delta">—</span></div><div class="toolbar" style="margin:9px 0 0"><span class="pill" id="source">Connecting to public data…</span><span class="pill" id="updated">Not updated</span></div><div class="chartbox"><canvas id="chart"></canvas></div>
 <div class="stats"><div class="stat"><small>DATA SOURCE</small><strong id="dataSource">Loading</strong></div><div class="stat"><small>24H CHANGE</small><strong id="dayChange">—</strong></div><div class="stat"><small>TIMEFRAME</small><strong id="tfLabel">M1</strong></div></div>
 <p class="note" id="dataNote">BTC/USD uses public BTC/USDT market data as an approximate USD reference. Other instruments remain clearly marked as demo data.</p></section>
-<aside class="panel"><h2>Market Context</h2><p class="status"><span class="dot"></span> Educational overview</p><div class="insight" id="brief">Loading market context…</div><button id="explain" style="margin-top:15px">Explain this chart</button><p class="note">This explanation is generated in your browser from the displayed data. It is not an AI forecast or trading signal.</p><h2 style="margin-top:25px">Cross-market watch</h2><div class="list"><div class="item"><span>US Dollar Index</span><span class="muted">Not connected</span></div><div class="item"><span>US Treasury yields</span><span class="muted">Not connected</span></div><div class="item"><span>Equity indices</span><span class="muted">Not connected</span></div><div class="item"><span>Economic calendar</span><span class="muted">Not connected</span></div></div></aside>
+<aside class="panel"><h2>Market Brain Engine</h2><p class="status"><span class="dot"></span> Data-driven educational analysis</p><div class="insight" id="brief">Waiting for market data…</div><div class="stats" style="grid-template-columns:1fr 1fr;margin-top:14px"><div class="stat"><small>MARKET STRUCTURE</small><strong id="structure">—</strong></div><div class="stat"><small>MOMENTUM (RSI 14)</small><strong id="rsi">—</strong></div><div class="stat"><small>EMA 20 / EMA 50</small><strong id="emaState">—</strong></div><div class="stat"><small>VOLATILITY (ATR%)</small><strong id="atr">—</strong></div></div><button id="explain" style="margin-top:15px">Analyze current data</button><p class="note" id="engineNote">The engine calculates indicators directly from the loaded OHLC candles. It explains observed conditions; it does not forecast prices or produce trading instructions.</p><h2 style="margin-top:25px">Data quality</h2><div class="list"><div class="item"><span>Selected instrument</span><strong id="qualityAsset">—</strong></div><div class="item"><span>Candles analyzed</span><strong id="qualityCount">—</strong></div><div class="item"><span>Volume field</span><strong id="qualityVolume">—</strong></div><div class="item"><span>Analysis timeframe</span><strong id="qualityTf">—</strong></div></div><h2 style="margin-top:25px">Cross-market context</h2><div class="note">DXY, Treasury yields, inflation releases, and economic-calendar events are not connected yet. The engine will not invent macro explanations without those data sources.</div></aside>
 </div>
 <section class="panel wide"><h2>Global News & Research</h2><p class="note">These are source links, not a live news feed. Open the publishers to read current reporting and original releases.</p><div class="list newslinks"><div class="item"><span>Reuters — World & Markets</span><a href="https://www.reuters.com/markets/" target="_blank" rel="noopener">Open source ↗</a></div><div class="item"><span>Federal Reserve — Press releases</span><a href="https://www.federalreserve.gov/newsevents/pressreleases.htm" target="_blank" rel="noopener">Open source ↗</a></div><div class="item"><span>US Bureau of Labor Statistics — News releases</span><a href="https://www.bls.gov/news.release/" target="_blank" rel="noopener">Open source ↗</a></div><div class="item"><span>US Treasury — Press releases</span><a href="https://home.treasury.gov/news/press-releases" target="_blank" rel="noopener">Open source ↗</a></div></div></section>
-<footer>Market Brain · v0.9 · Educational use only · No investment advice, trade signals, or broker execution.</footer>
+<footer>Market Brain · v1.0 · Educational use only · No investment advice, trade signals, or broker execution.</footer>
 </main>
 <script>
 const $=id=>document.getElementById(id);let values=[],labels=[],candles=[],activeSource='Demo simulation';
 const tfNames={'1m':'M1','5m':'M5','15m':'M15','1h':'H1','4h':'H4','1d':'D1'};
 function setBrief(title,detail){$('brief').innerHTML='<b>'+title+'</b> '+detail}
+function ema(data,period){if(data.length<period)return null;const k=2/(period+1);let v=data.slice(0,period).reduce((a,b)=>a+b,0)/period;for(let i=period;i<data.length;i++)v=data[i]*k+v*(1-k);return v}
+function calcRSI(data,period=14){if(data.length<=period)return null;let gains=0,losses=0;for(let i=1;i<=period;i++){const d=data[i]-data[i-1];if(d>0)gains+=d;else losses-=d}let ag=gains/period,al=losses/period;for(let i=period+1;i<data.length;i++){const d=data[i]-data[i-1];ag=(ag*(period-1)+Math.max(0,d))/period;al=(al*(period-1)+Math.max(0,-d))/period}return al===0?100:100-(100/(1+ag/al))}
+function analyzeMarketData(){
+ if(candles.length<20){$('structure').textContent='Insufficient data';$('rsi').textContent='—';$('emaState').textContent='—';$('atr').textContent='—';return}
+ const closes=candles.map(c=>c.close),e20=ema(closes,20),e50=ema(closes,50),rsi=calcRSI(closes),trs=candles.slice(1).map((c,i)=>Math.max(c.high-c.low,Math.abs(c.high-candles[i].close),Math.abs(c.low-candles[i].close))),atr=trs.length>=14?trs.slice(-14).reduce((a,b)=>a+b,0)/14:null,last=closes.at(-1),prior=closes[Math.max(0,closes.length-6)],momentum=prior?(last-prior)/prior*100:0,rangeHigh=Math.max(...candles.slice(-20).map(c=>c.high)),rangeLow=Math.min(...candles.slice(-20).map(c=>c.low)),rangePos=rangeHigh===rangeLow?50:(last-rangeLow)/(rangeHigh-rangeLow)*100;
+ const structure=e20&&e50?(last>e20&&e20>e50?'Bullish alignment':last<e20&&e20<e50?'Bearish alignment':'Mixed / sideways'):'Short history';
+ const momentumText=rsi===null?'not available':rsi>=60?'positive':rsi<=40?'negative':'neutral';
+ const volPct=atr&&last?atr/last*100:null;
+ $('structure').textContent=structure;$('rsi').textContent=rsi===null?'—':rsi.toFixed(1)+' · '+(rsi>=70?'high':rsi<=30?'low':momentumText);
+ $('emaState').textContent=e20&&e50?(last>e20?'Price > EMA20':'Price < EMA20')+' · '+(e20>e50?'20 > 50':'20 < 50'):'Need 50 candles';
+ $('atr').textContent=volPct===null?'—':volPct.toFixed(2)+'%';
+ $('qualityAsset').textContent=$('asset').value;$('qualityCount').textContent=String(candles.length);$('qualityVolume').textContent=candles.some(c=>c.volume>0)?'Available':'Not provided';$('qualityTf').textContent=tfNames[$('tf').value];
+ const volText=volPct===null?'ATR unavailable':volPct<0.5?'relatively low':volPct<1.5?'moderate':'elevated';
+ const rsiText=rsi===null?'RSI cannot be calculated':rsi>70?'RSI is in a high zone':rsi<30?'RSI is in a low zone':'RSI is in a middle zone';
+ const emaText=e20&&e50?(last>e20&&e20>e50?'Price and moving averages show upward alignment.':last<e20&&e20<e50?'Price and moving averages show downward alignment.':'Moving averages are mixed, so trend structure is not aligned.'):'There are not enough candles to compare EMA 20 and EMA 50.';
+ const rangeText=rangePos>80?'Price is near the upper part of its recent 20-candle range.':rangePos<20?'Price is near the lower part of its recent 20-candle range.':'Price is within the middle part of its recent 20-candle range.';
+ setBrief('Data reading:',emaText+' '+rsiText+'; '+rangeText+' Momentum over the last five candle steps is '+(momentum>=0?'+':'')+momentum.toFixed(2)+'%. Recent volatility is '+volText+'. These are historical observations, not a prediction.');
+ $('engineNote').textContent='Calculated from '+candles.length+' '+tfNames[$('tf').value]+' OHLC candles. RSI, EMA, and ATR are descriptive indicators; thresholds are educational and can behave differently across instruments and timeframes.';
+}
+
 function draw(){
  const canvas=$('chart'),box=canvas.parentElement,rect=box.getBoundingClientRect(),dpr=Math.max(1,window.devicePixelRatio||1);
  const w=Math.max(280,rect.width),h=Math.max(220,rect.height);
@@ -46,7 +66,7 @@ function draw(){
  ctx.fillStyle='#91a0b5';ctx.fillText(labels[0]||'',pad.l,h-8);ctx.textAlign='right';ctx.fillText(labels.at(-1)||'',w-pad.r,h-8);ctx.textAlign='left';
 }
 window.addEventListener('resize',()=>{if(values.length)draw()});
-function demo(){let a=$('asset').value,base=a==='XAU/USD'?2350:a==='EUR/USD'?1.08:a==='AAPL'?220:68000,p=base;candles=Array.from({length:48},(_,i)=>{const open=p,close=p+(Math.random()-.48)*base*.0018,high=Math.max(open,close)+Math.random()*base*.0007,low=Math.min(open,close)-Math.random()*base*.0007;p=close;return {open,high,low,close}});values=candles.map(c=>c.close);labels=values.map((_,i)=>String(i+1));activeSource='Demo simulation';$('price').textContent=values.at(-1).toLocaleString('en-US',{maximumFractionDigits:4});$('delta').textContent='Demo only';$('delta').style.color='#f2c879';$('dataSource').textContent='Simulation';$('dayChange').textContent='—';$('source').textContent='DEMO DATA';$('dataNote').textContent=a==='XAU/USD'?'XAU/USD is currently a simulated educational chart. Live gold-market candles are not connected yet.':'Candlestick chart is simulated for interface demonstration only. It does not represent current market prices.';draw();setBrief('Demo context:','This chart is simulated. It does not represent current market conditions.')}
+function demo(){let a=$('asset').value,base=a==='XAU/USD'?2350:a==='EUR/USD'?1.08:a==='AAPL'?220:68000,p=base;candles=Array.from({length:48},(_,i)=>{const open=p,close=p+(Math.random()-.48)*base*.0018,high=Math.max(open,close)+Math.random()*base*.0007,low=Math.min(open,close)-Math.random()*base*.0007;p=close;return {open,high,low,close}});values=candles.map(c=>c.close);labels=values.map((_,i)=>String(i+1));activeSource='Demo simulation';$('tfLabel').textContent=tfNames[$('tf').value];$('price').textContent=values.at(-1).toLocaleString('en-US',{maximumFractionDigits:4});$('delta').textContent='Demo only';$('delta').style.color='#f2c879';$('dataSource').textContent='Simulation';$('dayChange').textContent='—';$('source').textContent='DEMO DATA';$('dataNote').textContent=a==='XAU/USD'?'XAU/USD is currently a simulated educational chart. Live gold-market candles are not connected yet.':'Candlestick chart is simulated for interface demonstration only. It does not represent current market prices.';draw();analyzeMarketData();setBrief('Demo context:','This chart is simulated. It does not represent current market conditions.')}
 async function loadLive(){
  const tf=$('tf').value,krakenInterval={'1m':1,'5m':5,'15m':15,'1h':60,'4h':240,'1d':1440}[tf],binanceInterval={'1m':'1m','5m':'5m','15m':'15m','1h':'1h','4h':'4h','1d':'1d'}[tf];
  $('source').textContent='Connecting to live candle providers…';$('refresh').disabled=true;
@@ -95,7 +115,7 @@ function finishLive(price,change,provider,tf,description){
  $('delta').textContent=(change>=0?'+':'')+change.toFixed(2)+'% (24h)';$('delta').style.color=change>=0?'#38c990':'#ff7185';
  $('dataSource').textContent=provider;$('dayChange').textContent=(change>=0?'+':'')+change.toFixed(2)+'%';
  $('source').textContent='LIVE · BTC/USD · OHLC';$('dataNote').textContent=description+' for BTC/USD from '+provider+'. Selected interval: '+tfNames[tf]+'. Other assets remain demo-only.';
- activeSource='Live BTC/USD OHLC';draw();$('updated').textContent='Updated '+new Date().toLocaleTimeString();
+ activeSource='Live BTC/USD OHLC';$('tfLabel').textContent=tfNames[tf];draw();analyzeMarketData();$('updated').textContent='Updated '+new Date().toLocaleTimeString();
  setBrief('BTC market snapshot:','The chart displays '+candles.length+' '+tfNames[tf]+' candles. The 24-hour change is '+(change>=0?'+':'')+change.toFixed(2)+'%. Candles show historical open, high, low, and close values; they do not predict future movement.');
 }
 async function loadMarketData(){
@@ -133,7 +153,7 @@ async function loadMarketData(){
   $('dataSource').textContent='XAUS OHLC API';$('dayChange').textContent=(change>=0?'+':'')+change.toFixed(2)+'%';
   $('source').textContent='REFERENCE DATA · '+asset+' · OHLC';
   $('dataNote').textContent='Historical OHLC data via XAUS chart endpoint (Yahoo Finance proxy). Selected interval: '+tfNames[tf]+(tf==='4h'?' (aggregated from 1-hour candles)':'')+'. Data may be delayed and is for education only, not a tradable quote.';
-  activeSource='Reference OHLC '+asset;draw();$('updated').textContent='Updated '+new Date().toLocaleTimeString();
+  activeSource='Reference OHLC '+asset;draw();analyzeMarketData();$('updated').textContent='Updated '+new Date().toLocaleTimeString();
   $('tfLabel').textContent=tfNames[tf];
   setBrief(asset+' chart context:','The displayed series contains '+candles.length+' historical OHLC candles. Change across the visible range is '+(change>=0?'+':'')+change.toFixed(2)+'%. This is a description of past data, not a forecast.');
  }catch(e){
@@ -146,6 +166,6 @@ async function loadMarketData(){
  }finally{$('refresh').disabled=false}
 }
 async function refresh(){await loadMarketData()}
-$('refresh').onclick=refresh;$('asset').onchange=refresh;$('tf').onchange=()=>{$('tfLabel').textContent=tfNames[$('tf').value];refresh()};$('explain').onclick=()=>{if(activeSource.startsWith('Live')&&values.length){const first=values[0],last=values.at(-1),pct=(last-first)/first*100,high=Math.max(...values),low=Math.min(...values);setBrief('Chart explainer:','Across the visible candles, BTC moved '+(pct>=0?'up ':'down ')+Math.abs(pct).toFixed(2)+'%. The displayed range is $'+low.toLocaleString('en-US')+' to $'+high.toLocaleString('en-US')+'. This describes past observations only; it does not identify causes or predict future prices.')}else setBrief('Demo explainer:','The selected chart is simulated and should not be used to understand actual market conditions.')};
+$('refresh').onclick=refresh;$('asset').onchange=refresh;$('tf').onchange=()=>{$('tfLabel').textContent=tfNames[$('tf').value];refresh()};$('explain').onclick=()=>analyzeMarketData();
 $('tfLabel').textContent=tfNames[$('tf').value];refresh();
 </script></body></html>
