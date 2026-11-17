@@ -6,7 +6,7 @@
 
 <style>
 :root{color-scheme:dark;--bg:#090d16;--panel:#111b2a;--line:#29384b;--muted:#91a0b5;--text:#eef3fb;--cyan:#57d6d0;--green:#38c990;--red:#ff7185}
-*{box-sizing:border-box}body{margin:0;background:radial-gradient(900px 450px at 70% -10%,#17304a 0%,transparent 65%),var(--bg);color:var(--text);font:15px Inter,system-ui,Arial,sans-serif}.wrap{max-width:1180px;margin:auto;padding:26px 20px 48px}.top{display:flex;justify-content:space-between;align-items:center;gap:16px;margin-bottom:30px}.brand{display:flex;align-items:center;gap:12px;font-size:20px;font-weight:800;letter-spacing:.5px}.logo{width:40px;height:40px;border-radius:12px;background:linear-gradient(135deg,#4be0cf,#4285f4);display:grid;place-items:center;color:#06111a;font-weight:900}.tag{color:var(--muted);font-size:11px;border:1px solid var(--line);padding:8px 11px;border-radius:20px}h1{font-size:clamp(27px,4vw,39px);margin:0 0 8px}.sub{color:var(--muted);margin:0 0 25px;line-height:1.6}.grid{display:grid;grid-template-columns:1.65fr 1fr;gap:16px}.panel{background:linear-gradient(160deg,#131e2e,#0f1724);border:1px solid var(--line);border-radius:16px;padding:19px;min-width:0;box-shadow:0 12px 36px #0002}.panel h2{font-size:15px;margin:0 0 16px;color:#cbd7e8}.toolbar{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-bottom:16px}select,button{background:#1a2637;color:var(--text);border:1px solid #34445a;border-radius:9px;padding:10px 12px;font:inherit}button{cursor:pointer}.price{font-size:28px;font-weight:780}.change{font-size:13px;margin-left:9px}.chartbox{height:310px;position:relative}.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:14px}.mtf-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(145px,1fr));gap:9px;margin-top:10px}.mtf-card{min-width:0}.mtf-card small{font-size:10px}.mtf-card strong{display:block;overflow-wrap:anywhere}.mtf-card .mtf-meta{font-size:11px;color:var(--muted);line-height:1.6;margin-top:6px}.stat{background:#0b1320;border:1px solid var(--line);padding:12px;border-radius:11px}.stat small{display:block;color:var(--muted);margin-bottom:7px}.stat strong{font-size:15px}.note{font-size:12px;color:var(--muted);line-height:1.6;margin-top:12px}.status{display:inline-flex;align-items:center;gap:7px;color:#f2c879;font-size:12px}.dot{width:7px;height:7px;border-radius:50%;background:#e6b85c}.insight{font-size:14px;line-height:1.8;color:#d1dbea}.insight b{color:#fff}.list{display:grid;gap:9px}.item{display:flex;justify-content:space-between;gap:12px;padding:11px 0;border-bottom:1px solid var(--line)}.item:last-child{border:0}.muted{color:var(--muted)}.pill{font-size:11px;border:1px solid var(--line);border-radius:20px;padding:5px 8px;color:var(--muted)}.wide{margin-top:16px}.newslinks a{color:var(--cyan);text-decoration:none}.newslinks a:hover{text-decoration:underline}footer{color:var(--muted);font-size:12px;text-align:center;margin-top:25px}
+*{box-sizing:border-box}body{margin:0;background:radial-gradient(900px 450px at 70% -10%,#17304a 0%,transparent 65%),var(--bg);color:var(--text);font:15px Inter,system-ui,Arial,sans-serif}.wrap{max-width:1180px;margin:auto;padding:26px 20px 48px}.top{display:flex;justify-content:space-between;align-items:center;gap:16px;margin-bottom:30px}.brand{display:flex;align-items:center;gap:12px;font-size:20px;font-weight:800;letter-spacing:.5px}.logo{width:40px;height:40px;border-radius:12px;background:linear-gradient(135deg,#4be0cf,#4285f4);display:grid;place-items:center;color:#06111a;font-weight:900}.tag{color:var(--muted);font-size:11px;border:1px solid var(--line);padding:8px 11px;border-radius:20px}h1{font-size:clamp(27px,4vw,39px);margin:0 0 8px}.sub{color:var(--muted);margin:0 0 25px;line-height:1.6}.grid{display:grid;grid-template-columns:1.65fr 1fr;gap:16px}.panel{background:linear-gradient(160deg,#131e2e,#0f1724);border:1px solid var(--line);border-radius:16px;padding:19px;min-width:0;box-shadow:0 12px 36px #0002}.panel h2{font-size:15px;margin:0 0 16px;color:#cbd7e8}.toolbar{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-bottom:16px}select,button{background:#1a2637;color:var(--text);border:1px solid #34445a;border-radius:9px;padding:10px 12px;font:inherit}button{cursor:pointer}.price{font-size:28px;font-weight:780}.change{font-size:13px;margin-left:9px}.chartbox{height:310px;position:relative}#chart{position:absolute;inset:0}#drawLayer{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;z-index:4}.chartbox.drawing-active #drawLayer{pointer-events:auto;touch-action:none;cursor:crosshair}.chart-tools{margin:10px 0 7px}.chart-tools select,.chart-tools button{padding:8px 10px;font-size:12px}.chart-tools label{font-size:12px;color:var(--muted)}.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:14px}.mtf-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(145px,1fr));gap:9px;margin-top:10px}.mtf-card{min-width:0}.mtf-card small{font-size:10px}.mtf-card strong{display:block;overflow-wrap:anywhere}.mtf-card .mtf-meta{font-size:11px;color:var(--muted);line-height:1.6;margin-top:6px}.stat{background:#0b1320;border:1px solid var(--line);padding:12px;border-radius:11px}.stat small{display:block;color:var(--muted);margin-bottom:7px}.stat strong{font-size:15px}.note{font-size:12px;color:var(--muted);line-height:1.6;margin-top:12px}.status{display:inline-flex;align-items:center;gap:7px;color:#f2c879;font-size:12px}.dot{width:7px;height:7px;border-radius:50%;background:#e6b85c}.insight{font-size:14px;line-height:1.8;color:#d1dbea}.insight b{color:#fff}.list{display:grid;gap:9px}.item{display:flex;justify-content:space-between;gap:12px;padding:11px 0;border-bottom:1px solid var(--line)}.item:last-child{border:0}.muted{color:var(--muted)}.pill{font-size:11px;border:1px solid var(--line);border-radius:20px;padding:5px 8px;color:var(--muted)}.wide{margin-top:16px}.newslinks a{color:var(--cyan);text-decoration:none}.newslinks a:hover{text-decoration:underline}footer{color:var(--muted);font-size:12px;text-align:center;margin-top:25px}
 @media(max-width:800px){.grid{grid-template-columns:1fr}.wrap{padding:20px 14px 36px}.chartbox{height:270px}}@media(max-width:430px){.stats{grid-template-columns:1fr 1fr}.tag{display:none}}
 </style></head>
 <body><main class="wrap">
@@ -14,7 +14,13 @@
 <h1>AI Market Intelligence</h1><p class="sub">Pantau data pasar, ikuti perkembangan ekonomi global, dan pelajari pergerakan pasar keuangan.</p>
 <div class="grid">
 <section class="panel"><div class="toolbar"><select id="asset"><option value="XAU/USD">XAU / USD</option><option value="BTC/USD">BTC / USD</option></select><select id="tf"><option value="1m">M1</option><option value="5m">M5</option><option value="15m">M15</option><option value="30m">M30</option><option value="1h">H1</option><option value="4h">H4</option><option value="1d">D1</option></select><button id="refresh">Perbarui data</button></div>
-<div><span class="price" id="price">Memuat…</span><span class="change" id="delta">—</span></div><div class="toolbar" style="margin:9px 0 0"><span class="pill" id="source">Menghubungkan ke data publik…</span><span class="pill" id="updated">Belum diperbarui</span></div><div class="chartbox"><canvas id="chart"></canvas></div><div class="stats" style="grid-template-columns:1fr 1fr;margin-top:10px"><div class="stat"><small>SUPPORT TERDEKAT</small><strong id="supportLevel">—</strong></div><div class="stat"><small>RESISTANCE TERDEKAT</small><strong id="resistanceLevel">—</strong></div></div>
+<div><span class="price" id="price">Memuat…</span><span class="change" id="delta">—</span></div><div class="toolbar" style="margin:9px 0 0"><span class="pill" id="source">Menghubungkan ke data publik…</span><span class="pill" id="updated">Belum diperbarui</span></div><div class="toolbar chart-tools">
+ <label for="drawingTool" class="note" style="margin:0">Alat gambar</label>
+ <select id="drawingTool" aria-label="Pilih alat gambar"><option value="cursor">Kursor / geser</option><option value="trendline">Trendline</option><option value="hline">Garis horizontal</option><option value="fib">Fibonacci retracement</option></select>
+ <button id="undoDrawing" type="button">Undo</button><button id="clearDrawings" type="button">Hapus garis</button><button id="fitChart" type="button">Reset zoom</button>
+</div>
+<div class="chartbox" id="chartWrap"><div id="chart"></div><canvas id="drawLayer"></canvas></div>
+<p class="note" id="chartHint">Scroll/pinch untuk zoom · tarik chart untuk geser · pilih alat gambar untuk membuat garis atau Fibonacci.</p><div class="stats" style="grid-template-columns:1fr 1fr;margin-top:10px"><div class="stat"><small>SUPPORT TERDEKAT</small><strong id="supportLevel">—</strong></div><div class="stat"><small>RESISTANCE TERDEKAT</small><strong id="resistanceLevel">—</strong></div></div>
 <div class="stats"><div class="stat"><small>SUMBER DATA</small><strong id="dataSource">Loading</strong></div><div class="stat"><small>PERUBAHAN 24 JAM</small><strong id="dayChange">—</strong></div><div class="stat"><small>KERANGKA WAKTU</small><strong id="tfLabel">M1</strong></div></div>
 <p class="note" id="dataNote">BTC/USD menggunakan data pasar publik BTC/USDT sebagai acuan perkiraan terhadap dolar AS. Instrumen lain akan diberi label simulasi.</p></section>
 <aside class="panel"><h2>Mesin Analisis HAIMI</h2><p class="status"><span class="dot"></span> Analisis edukatif berbasis data</p><div class="insight" id="brief">Menunggu data pasar…</div><div class="stats" style="grid-template-columns:1fr 1fr;margin-top:14px"><div class="stat"><small>BIAS KONDISI</small><strong id="marketBias">—</strong></div><div class="stat"><small>STRUKTUR PASAR</small><strong id="structure">—</strong></div><div class="stat"><small>MOMENTUM (RSI 14)</small><strong id="rsi">—</strong></div><div class="stat"><small>EMA 20 / EMA 50</small><strong id="emaState">—</strong></div><div class="stat"><small>VOLATILITAS (ATR%)</small><strong id="atr">—</strong></div><div class="stat"><small>RENTANG 20 CANDLE</small><strong id="marketRange">—</strong></div></div><button id="explain" style="margin-top:15px">Analisis data saat ini</button><button id="askAI" style="margin-top:10px;background:#2563eb">Analisis Multi-Timeframe AI</button>
@@ -36,6 +42,7 @@
 <section class="panel wide"><h2>Berita & Riset Global</h2><p class="note">Ini adalah tautan ke sumber berita, bukan umpan berita langsung. Buka situs penerbit untuk membaca laporan terbaru dan rilis resmi.</p><div class="list newslinks"><div class="item"><span>Reuters — Dunia & Pasar</span><a href="https://www.reuters.com/markets/" target="_blank" rel="noopener">Buka sumber ↗</a></div><div class="item"><span>Federal Reserve — Siaran Pers</span><a href="https://www.federalreserve.gov/newsevents/pressreleases.htm" target="_blank" rel="noopener">Buka sumber ↗</a></div><div class="item"><span>Biro Statistik Tenaga Kerja AS — Rilis Berita</span><a href="https://www.bls.gov/news.release/" target="_blank" rel="noopener">Buka sumber ↗</a></div><div class="item"><span>Departemen Keuangan AS — Siaran Pers</span><a href="https://home.treasury.gov/news/press-releases" target="_blank" rel="noopener">Buka sumber ↗</a></div></div></section>
 <footer>HAIMI WORKER · v3.0 · Khusus edukasi · Bukan nasihat investasi, sinyal transaksi, atau layanan eksekusi broker.</footer>
 </main>
+<script src="https://unpkg.com/lightweight-charts@4.2.2/dist/lightweight-charts.standalone.production.js"></script>
 <script>
 const $=id=>document.getElementById(id);let values=[],labels=[],candles=[],activeSource='Demo simulation';
 const tfNames={'1m':'M1','5m':'M5','15m':'M15','30m':'M30','1h':'H1','4h':'H4','1d':'D1'};
@@ -169,32 +176,121 @@ function analyzeMarketData(){
  $('engineNote').textContent='Mesin analisis otomatis berbasis aturan: EMA20/50, RSI14, momentum 5 candle, breakout rentang 20 candle, bentuk candle, dan ATR. '+candles.length+' candle dianalisis. Skor menunjukkan keselarasan indikator, bukan probabilitas keberhasilan.';
 }
 
+let chartApi=null,candleSeries=null,ema20Series=null,ema50Series=null,drawings=[],drawingTool='cursor',pendingDrawing=null,chartPriceLines=[],lastChartKey='';
+function ensureChart(){
+ if(chartApi)return true;
+ if(!window.LightweightCharts){$('chart').innerHTML='<div style="padding:18px;color:#91a0b5">Mesin chart belum termuat. Periksa koneksi lalu muat ulang halaman.</div>';return false}
+ const box=$('chartWrap');
+ chartApi=LightweightCharts.createChart($('chart'),{
+  width:Math.max(300,box.clientWidth),height:Math.max(220,box.clientHeight),
+  layout:{background:{type:'solid',color:'#0b1320'},textColor:'#91a0b5',fontFamily:'Inter,system-ui,sans-serif'},
+  grid:{vertLines:{color:'#1b293a'},horzLines:{color:'#1b293a'}},
+  rightPriceScale:{borderColor:'#29384b',scaleMargins:{top:.08,bottom:.12}},
+  timeScale:{borderColor:'#29384b',timeVisible:true,secondsVisible:false,rightOffset:8,barSpacing:8,minBarSpacing:2},
+  crosshair:{mode:LightweightCharts.CrosshairMode.Magnet,vertLine:{color:'#71839a',width:1,style:LightweightCharts.LineStyle.Dashed},horzLine:{color:'#71839a',width:1,style:LightweightCharts.LineStyle.Dashed}},
+  handleScroll:{mouseWheel:true,pressedMouseMove:true,horzTouchDrag:true,vertTouchDrag:true},
+  handleScale:{axisPressedMouseMove:true,mouseWheel:true,pinch:true}
+ });
+ candleSeries=chartApi.addCandlestickSeries({upColor:'#28b98b',downColor:'#f06478',borderUpColor:'#28b98b',borderDownColor:'#f06478',wickUpColor:'#28b98b',wickDownColor:'#f06478',priceLineVisible:true,lastValueVisible:true});
+ ema20Series=chartApi.addLineSeries({color:'#f4c66a',lineWidth:1,priceLineVisible:false,lastValueVisible:false,crosshairMarkerVisible:false});
+ ema50Series=chartApi.addLineSeries({color:'#68a8ff',lineWidth:1,priceLineVisible:false,lastValueVisible:false,crosshairMarkerVisible:false});
+ chartApi.timeScale().subscribeVisibleLogicalRangeChange(()=>drawOverlay());
+ chartApi.subscribeCrosshairMove(()=>drawOverlay());
+ if(window.ResizeObserver){new ResizeObserver(entries=>{const r=entries[0]?.contentRect;if(r&&chartApi)chartApi.applyOptions({width:Math.max(300,r.width),height:Math.max(220,r.height)});drawOverlay()}).observe(box)}
+ return true;
+}
+function normalizedChartCandles(){
+ const tfSeconds={'1m':60,'5m':300,'15m':900,'30m':1800,'1h':3600,'4h':14400,'1d':86400},step=tfSeconds[$('tf').value]||60,now=Math.floor(Date.now()/1000),seen=new Set();
+ return candles.map((c,i)=>({time:Number.isFinite(Number(c.time))&&Number(c.time)>0?Math.floor(Number(c.time)):now-(candles.length-1-i)*step,open:Number(c.open),high:Number(c.tinggi??c.high),low:Number(c.rendah??c.low),close:Number(c.close)}))
+  .filter(x=>Number.isFinite(x.time)&&Number.isFinite(x.open)&&Number.isFinite(x.high)&&Number.isFinite(x.low)&&Number.isFinite(x.close))
+  .sort((a,b)=>a.time-b.time).filter(x=>{if(seen.has(x.time))return false;seen.add(x.time);return true});
+}
+function emaChartData(rows,period){
+ if(rows.length<period)return [];
+ const k=2/(period+1);let value=rows.slice(0,period).reduce((s,x)=>s+x.close,0)/period;
+ const out=[{time:rows[period-1].time,value}];
+ for(let i=period;i<rows.length;i++){value=rows[i].close*k+value*(1-k);out.push({time:rows[i].time,value})}
+ return out;
+}
+function updateChartPriceLines(){
+ if(!candleSeries)return;
+ chartPriceLines.forEach(line=>{try{candleSeries.removePriceLine(line)}catch(_){}});
+ chartPriceLines=[];
+ if(candles.length<5)return;
+ const levels=findKeyLevels(candles);
+ if(Number.isFinite(levels.support))chartPriceLines.push(candleSeries.createPriceLine({price:levels.support,color:'#28b98b',lineWidth:1,lineStyle:LightweightCharts.LineStyle.Dashed,axisLabelVisible:true,title:'SUPPORT'}));
+ if(Number.isFinite(levels.resistance))chartPriceLines.push(candleSeries.createPriceLine({price:levels.resistance,color:'#f06478',lineWidth:1,lineStyle:LightweightCharts.LineStyle.Dashed,axisLabelVisible:true,title:'RESISTANCE'}));
+}
 function draw(){
- const canvas=$('chart'),box=canvas.parentElement,rect=box.getBoundingClientRect(),dpr=Math.max(1,window.devicePixelRatio||1);
- const w=Math.max(280,rect.width),h=Math.max(220,rect.height);
+ if(!ensureChart())return;
+ const rows=normalizedChartCandles();
+ if(!rows.length){$('chart').innerHTML='<div style="padding:18px;color:#91a0b5">Data candle belum tersedia.</div>';return}
+ candleSeries.setData(rows);
+ ema20Series.setData(emaChartData(rows,20));
+ ema50Series.setData(emaChartData(rows,50));
+ updateChartPriceLines();
+ const key=$('asset').value+'|'+$('tf').value;
+ if(lastChartKey!==key){chartApi.timeScale().fitContent();lastChartKey=key}
+ drawOverlay();
+}
+function canvasPoint(point){
+ if(!chartApi||!candleSeries||!point)return null;
+ const x=chartApi.timeScale().timeToCoordinate(point.time),y=candleSeries.priceToCoordinate(point.price);
+ return x===null||y===null?null:{x,y};
+}
+function drawOverlay(){
+ const canvas=$('drawLayer'),box=$('chartWrap');if(!canvas||!box)return;
+ const rect=box.getBoundingClientRect(),dpr=Math.max(1,window.devicePixelRatio||1),w=Math.max(1,rect.width),h=Math.max(1,rect.height);
  canvas.width=Math.round(w*dpr);canvas.height=Math.round(h*dpr);canvas.style.width=w+'px';canvas.style.height=h+'px';
  const ctx=canvas.getContext('2d');ctx.setTransform(dpr,0,0,dpr,0,0);ctx.clearRect(0,0,w,h);
- const vals=candles.length?candles.flatMap(c=>[c.rendah,c.tinggi]):values;
- if(!vals.length){ctx.fillStyle='#91a0b5';ctx.font='14px system-ui';ctx.fillText('Data grafik tidak tersedia',16,28);return}
- const pad={l:12,r:16,t:18,b:30},min=Math.min(...vals),max=Math.max(...vals),range=(max-min)||Math.max(1,Math.abs(max)*.001);
- const x=i=>pad.l+i*(w-pad.l-pad.r)/Math.max(1,vals.length===candles.length?candles.length-1:values.length-1),y=v=>pad.t+(max-v)*(h-pad.t-pad.b)/range;
- ctx.strokeStyle='#263448';ctx.lineWidth=1;ctx.fillStyle='#91a0b5';ctx.font='11px system-ui';
- for(let i=0;i<5;i++){const yy=pad.t+i*(h-pad.t-pad.b)/4;ctx.beginPath();ctx.moveTo(pad.l,yy);ctx.lineTo(w-pad.r,yy);ctx.stroke();const val=max-i*range/4;ctx.fillText(val.toLocaleString('en-US',{maximumFractionDigits:2}),pad.l+4,Math.max(12,yy-5))}
- if(candles.length){
-  const levels=findKeyLevels(candles),current=candles.at(-1)?.close;
-  const drawLevel=(level,color,label)=>{
-   if(!Number.isFinite(level)||level<min||level>max)return;
-   const yy=y(level);ctx.save();ctx.strokeStyle=color;ctx.setLineDash([6,4]);ctx.lineWidth=1.2;ctx.beginPath();ctx.moveTo(pad.l,yy);ctx.lineTo(w-pad.r,yy);ctx.stroke();ctx.setLineDash([]);ctx.fillStyle=color;ctx.font='10px system-ui';ctx.textAlign='right';ctx.fillText(label+' '+level.toLocaleString('en-US',{maximumFractionDigits:2}),w-pad.r-3,Math.max(11,yy-4));ctx.restore();
-  };
-  drawLevel(levels.support,'#38c990','S');drawLevel(levels.resistance,'#ff7185','R');
-  const step=(w-pad.l-pad.r)/candles.length,cw=Math.max(2,Math.min(10,step*.62));
-  candles.forEach((c,i)=>{const xx=pad.l+i*step+step/2,up=c.close>=c.open,col=up?'#38c990':'#ff7185';ctx.strokeStyle=col;ctx.fillStyle=col;ctx.lineWidth=1.3;ctx.beginPath();ctx.moveTo(xx,y(c.tinggi));ctx.lineTo(xx,y(c.rendah));ctx.stroke();const top=y(Math.max(c.open,c.close)),bottom=y(Math.min(c.open,c.close));ctx.fillRect(xx-cw/2,top,cw,Math.max(1,bottom-top));});
- }else{
-  ctx.beginPath();values.forEach((v,i)=>{if(i===0)ctx.moveTo(x(i),y(v));else ctx.lineTo(x(i),y(v))});ctx.strokeStyle='#57d6d0';ctx.lineWidth=2.2;ctx.stroke();
- }
- ctx.fillStyle='#91a0b5';ctx.fillText(labels[0]||'',pad.l,h-8);ctx.textAlign='right';ctx.fillText(labels.at(-1)||'',w-pad.r,h-8);ctx.textAlign='left';
+ if(!chartApi||!candleSeries)return;
+ const items=pendingDrawing?[...drawings,pendingDrawing]:drawings;
+ items.forEach(item=>{
+  ctx.save();ctx.lineWidth=1.5;ctx.strokeStyle='#f4c66a';ctx.fillStyle='#f4c66a';ctx.font='11px system-ui';ctx.setLineDash([]);
+  if(item.type==='hline'){
+   const y=candleSeries.priceToCoordinate(item.p1.price);if(y!==null){ctx.setLineDash([6,4]);ctx.beginPath();ctx.moveTo(0,y);ctx.lineTo(w-64,y);ctx.stroke();ctx.fillText(item.p1.price.toFixed(2),w-62,Math.max(12,y-5))}
+  }else{
+   const a=canvasPoint(item.p1),b=canvasPoint(item.p2);
+   if(a&&b){
+    if(item.type==='trendline'){ctx.beginPath();ctx.moveTo(a.x,a.y);ctx.lineTo(b.x,b.y);ctx.stroke();ctx.beginPath();ctx.arc(a.x,a.y,3,0,Math.PI*2);ctx.arc(b.x,b.y,3,0,Math.PI*2);ctx.fill()}
+    if(item.type==='fib'){
+     const ratios=[0,.236,.382,.5,.618,.786,1];
+     ratios.forEach(ratio=>{const price=item.p2.price-(item.p2.price-item.p1.price)*ratio,y=candleSeries.priceToCoordinate(price);if(y===null)return;ctx.strokeStyle=ratio===0||ratio===1?'#f4c66a':'#8296b1';ctx.setLineDash(ratio===0||ratio===1?[]:[4,4]);ctx.beginPath();ctx.moveTo(Math.min(a.x,b.x),y);ctx.lineTo(w-64,y);ctx.stroke();ctx.fillStyle='#d5deea';ctx.fillText((ratio*100).toFixed(1)+'% · '+price.toFixed(2),Math.min(w-155,Math.max(a.x,b.x)+5),Math.max(12,y-4))});
+    }
+   }
+  }
+  ctx.restore();
+ });
 }
-window.addEventListener('resize',()=>{if(values.length)draw()});
+function setDrawingTool(tool){
+ drawingTool=tool;$('chartWrap').classList.toggle('drawing-active',tool!=='cursor');
+ $('chartHint').textContent=tool==='cursor'?'Scroll/pinch untuk zoom · tarik chart untuk geser.':tool==='trendline'?'Sentuh/tap dua titik pada chart untuk membuat trendline.':tool==='hline'?'Sentuh/tap chart pada harga yang ingin diberi garis horizontal.':'Sentuh/tap titik awal dan akhir untuk membuat Fibonacci Retracement.';
+ if(chartApi)chartApi.applyOptions({handleScroll:tool==='cursor'?{mouseWheel:true,pressedMouseMove:true,horzTouchDrag:true,vertTouchDrag:true}:false,handleScale:tool==='cursor'?{axisPressedMouseMove:true,mouseWheel:true,pinch:true}:false});
+}
+function pointFromPointer(event){
+ const rect=$('chartWrap').getBoundingClientRect(),x=event.clientX-rect.left,y=event.clientY-rect.top;
+ const price=candleSeries?.coordinateToPrice(y),time=chartApi?.timeScale().coordinateToTime(x);
+ if(!Number.isFinite(price)||time===null||time===undefined)return null;
+ return {time,price};
+}
+$('drawLayer').addEventListener('pointerdown',event=>{
+ if(drawingTool==='cursor')return;
+ event.preventDefault();const point=pointFromPointer(event);if(!point)return;
+ $('drawLayer').setPointerCapture(event.pointerId);
+ if(drawingTool==='hline'){drawings.push({type:'hline',p1:point});drawOverlay();return}
+ if(!pendingDrawing){pendingDrawing={type:drawingTool,p1:point,p2:point};drawOverlay()}
+ else{drawings.push({type:drawingTool,p1:pendingDrawing.p1,p2:point});pendingDrawing=null;drawOverlay()}
+});
+$('drawLayer').addEventListener('pointermove',event=>{
+ if(!pendingDrawing)return;const point=pointFromPointer(event);if(!point)return;pendingDrawing={...pendingDrawing,p2:point};drawOverlay();
+});
+$('drawLayer').addEventListener('pointercancel',()=>{pendingDrawing=null;drawOverlay()});
+$('drawingTool').addEventListener('change',event=>{pendingDrawing=null;setDrawingTool(event.target.value);drawOverlay()});
+$('undoDrawing').onclick=()=>{if(pendingDrawing)pendingDrawing=null;else drawings.pop();drawOverlay()};
+$('clearDrawings').onclick=()=>{drawings=[];pendingDrawing=null;drawOverlay()};
+$('fitChart').onclick=()=>{if(chartApi)chartApi.timeScale().fitContent()};
+window.addEventListener('resize',()=>{if(chartApi){const box=$('chartWrap');chartApi.applyOptions({width:Math.max(300,box.clientWidth),height:Math.max(220,box.clientHeight)});drawOverlay()}});
+
 function demo(){let a=$('asset').value,base=a==='XAU/USD'?2350:a==='EUR/USD'?1.08:a==='AAPL'?220:68000,p=base;candles=Array.from({length:48},(_,i)=>{const open=p,close=p+(Math.random()-.48)*base*.0018,tinggi=Math.max(open,close)+Math.random()*base*.0007,rendah=Math.min(open,close)-Math.random()*base*.0007;p=close;return {open,tinggi,rendah,close}});values=candles.map(c=>c.close);labels=values.map((_,i)=>String(i+1));activeSource='Demo simulation';$('tfLabel').textContent=tfNames[$('tf').value];$('price').textContent=values.at(-1).toLocaleString('en-US',{maximumFractionDigits:4});$('delta').textContent='Hanya simulasi';$('delta').style.color='#f2c879';$('dataSource').textContent='Simulation';$('dayChange').textContent='—';$('source').textContent='DATA SIMULASI';$('dataNote').textContent=a==='XAU/USD'?'XAU/USD saat ini menggunakan grafik simulasi untuk edukasi. Data candle emas langsung belum terhubung.':'Grafik candle ini hanya simulasi untuk demonstrasi antarmuka. Grafik tidak menunjukkan harga pasar saat ini.';draw();analyzeMarketData();setBrief('Konteks simulasi:','Grafik ini merupakan simulasi dan tidak menggambarkan kondisi pasar saat ini.')}
 async function loadLive(){
  const tf=$('tf').value,krakenInterval={'1m':1,'5m':5,'15m':15,'1h':60,'4h':240,'1d':1440}[tf],binanceInterval={'1m':'1m','5m':'5m','15m':'15m','1h':'1h','4h':'4h','1d':'1d'}[tf];
