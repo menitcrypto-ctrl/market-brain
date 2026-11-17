@@ -20,7 +20,7 @@
  <button id="undoDrawing" type="button">Undo</button><button id="clearDrawings" type="button">Hapus garis</button><button id="fitChart" type="button">Reset zoom</button>
 </div>
 <div class="chartbox" id="chartWrap"><div id="chart"></div><canvas id="drawLayer"></canvas></div>
-<p class="note" id="chartHint">Scroll/pinch untuk zoom · tarik chart untuk geser · pilih alat gambar untuk membuat garis atau Fibonacci.</p><div class="stats" style="grid-template-columns:1fr 1fr;margin-top:10px"><div class="stat"><small>SUPPORT TERDEKAT</small><strong id="supportLevel">—</strong></div><div class="stat"><small>RESISTANCE TERDEKAT</small><strong id="resistanceLevel">—</strong></div></div>
+<p class="note" id="chartHint">Scroll/pinch untuk zoom · tarik chart untuk geser · pilih alat gambar untuk membuat garis atau Fibonacci. Chart engine: <a href="https://www.tradingview.com/" target="_blank" rel="noopener" style="color:#91a0b5">TradingView Lightweight Charts</a>.</p><div class="stats" style="grid-template-columns:1fr 1fr;margin-top:10px"><div class="stat"><small>SUPPORT TERDEKAT</small><strong id="supportLevel">—</strong></div><div class="stat"><small>RESISTANCE TERDEKAT</small><strong id="resistanceLevel">—</strong></div></div>
 <div class="stats"><div class="stat"><small>SUMBER DATA</small><strong id="dataSource">Loading</strong></div><div class="stat"><small>PERUBAHAN 24 JAM</small><strong id="dayChange">—</strong></div><div class="stat"><small>KERANGKA WAKTU</small><strong id="tfLabel">M1</strong></div></div>
 <p class="note" id="dataNote">BTC/USD menggunakan data pasar publik BTC/USDT sebagai acuan perkiraan terhadap dolar AS. Instrumen lain akan diberi label simulasi.</p></section>
 <aside class="panel"><h2>Mesin Analisis HAIMI</h2><p class="status"><span class="dot"></span> Analisis edukatif berbasis data</p><div class="insight" id="brief">Menunggu data pasar…</div><div class="stats" style="grid-template-columns:1fr 1fr;margin-top:14px"><div class="stat"><small>BIAS KONDISI</small><strong id="marketBias">—</strong></div><div class="stat"><small>STRUKTUR PASAR</small><strong id="structure">—</strong></div><div class="stat"><small>MOMENTUM (RSI 14)</small><strong id="rsi">—</strong></div><div class="stat"><small>EMA 20 / EMA 50</small><strong id="emaState">—</strong></div><div class="stat"><small>VOLATILITAS (ATR%)</small><strong id="atr">—</strong></div><div class="stat"><small>RENTANG 20 CANDLE</small><strong id="marketRange">—</strong></div></div><button id="explain" style="margin-top:15px">Analisis data saat ini</button><button id="askAI" style="margin-top:10px;background:#2563eb">Analisis Multi-Timeframe AI</button>
@@ -224,7 +224,7 @@ function updateChartPriceLines(){
 function draw(){
  if(!ensureChart())return;
  const rows=normalizedChartCandles();
- if(!rows.length){$('chartHint').textContent='Data candle belum tersedia. Chart akan tampil setelah data valid dimuat.';return}
+ if(!rows.length){candleSeries.setData([]);ema20Series.setData([]);ema50Series.setData([]);updateChartPriceLines();$('chartHint').textContent='Data candle belum tersedia. Chart akan tampil setelah data valid dimuat.';drawOverlay();return}
  candleSeries.setData(rows);
  ema20Series.setData(emaChartData(rows,20));
  ema50Series.setData(emaChartData(rows,50));
@@ -550,8 +550,8 @@ document.addEventListener('visibilitychange',()=>{
  if(document.visibilityState==='visible')refresh();
 });
 $('refresh').onclick=refresh;
-$('asset').onchange=refresh;
-$('tf').onchange=()=>{$('tfLabel').textContent=tfNames[$('tf').value];refresh()};
+$('asset').onchange=()=>{drawings=[];pendingDrawing=null;drawOverlay();refresh()};
+$('tf').onchange=()=>{$('tfLabel').textContent=tfNames[$('tf').value];drawings=[];pendingDrawing=null;drawOverlay();refresh()};
 $('explain').onclick=()=>analyzeMarketData();
 function analyzeCandlePatterns(data){
  if(!Array.isArray(data)||data.length<2)return {patterns:[],lastCandle:null,context:'Data candle belum cukup untuk membaca pola.'};
