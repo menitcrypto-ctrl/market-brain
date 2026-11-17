@@ -7,7 +7,7 @@
 <style>
 :root{color-scheme:dark;--bg:#090d16;--panel:#111b2a;--line:#29384b;--muted:#91a0b5;--text:#eef3fb;--cyan:#57d6d0;--green:#38c990;--red:#ff7185}
 *{box-sizing:border-box}body{margin:0;background:radial-gradient(900px 450px at 70% -10%,#17304a 0%,transparent 65%),var(--bg);color:var(--text);font:15px Inter,system-ui,Arial,sans-serif}.wrap{max-width:1180px;margin:auto;padding:26px 20px 48px}.top{display:flex;justify-content:space-between;align-items:center;gap:16px;margin-bottom:30px}.brand{display:flex;align-items:center;gap:12px;font-size:20px;font-weight:800;letter-spacing:.5px}.logo{width:40px;height:40px;border-radius:12px;background:linear-gradient(135deg,#4be0cf,#4285f4);display:grid;place-items:center;color:#06111a;font-weight:900}.tag{color:var(--muted);font-size:11px;border:1px solid var(--line);padding:8px 11px;border-radius:20px}h1{font-size:clamp(27px,4vw,39px);margin:0 0 8px}.sub{color:var(--muted);margin:0 0 25px;line-height:1.6}.grid{display:grid;grid-template-columns:1.65fr 1fr;gap:16px}.panel{background:linear-gradient(160deg,#131e2e,#0f1724);border:1px solid var(--line);border-radius:16px;padding:19px;min-width:0;box-shadow:0 12px 36px #0002}.panel h2{font-size:15px;margin:0 0 16px;color:#cbd7e8}.toolbar{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-bottom:16px}select,button{background:#1a2637;color:var(--text);border:1px solid #34445a;border-radius:9px;padding:10px 12px;font:inherit}button{cursor:pointer}.price{font-size:28px;font-weight:780}.change{font-size:13px;margin-left:9px}.chartbox{height:310px;position:relative}#chart{position:absolute;inset:0}#drawLayer{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;z-index:4}.chartbox.drawing-active #drawLayer{pointer-events:auto;touch-action:none;cursor:crosshair}.chart-tools{margin:10px 0 7px}.indicator-heading{display:flex;justify-content:space-between;gap:10px;align-items:center;margin-top:15px;color:#cbd7e8;font-size:12px}.indicator-heading span{color:var(--muted);font-size:11px}.stoch-chart{height:118px;margin-top:4px}.indicator-stats{grid-template-columns:repeat(3,1fr);margin-top:8px}.kalimasada-box{margin-top:9px}.kalimasada-box strong{display:block;font-size:14px;margin-bottom:6px}.kalimasada-box .mtf-meta{font-size:12px;line-height:1.6;color:var(--muted)}.chart-tools select,.chart-tools button{padding:8px 10px;font-size:12px}.chart-tools label{font-size:12px;color:var(--muted)}.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:14px}.mtf-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(145px,1fr));gap:9px;margin-top:10px}.mtf-card{min-width:0}.mtf-card small{font-size:10px}.mtf-card strong{display:block;overflow-wrap:anywhere}.mtf-card .mtf-meta{font-size:11px;color:var(--muted);line-height:1.6;margin-top:6px}.stat{background:#0b1320;border:1px solid var(--line);padding:12px;border-radius:11px}.stat small{display:block;color:var(--muted);margin-bottom:7px}.stat strong{font-size:15px}.note{font-size:12px;color:var(--muted);line-height:1.6;margin-top:12px}.status{display:inline-flex;align-items:center;gap:7px;color:#f2c879;font-size:12px}.dot{width:7px;height:7px;border-radius:50%;background:#e6b85c}.insight{font-size:14px;line-height:1.8;color:#d1dbea}.insight b{color:#fff}.list{display:grid;gap:9px}.item{display:flex;justify-content:space-between;gap:12px;padding:11px 0;border-bottom:1px solid var(--line)}.item:last-child{border:0}.muted{color:var(--muted)}.pill{font-size:11px;border:1px solid var(--line);border-radius:20px;padding:5px 8px;color:var(--muted)}.wide{margin-top:16px}.newslinks a{color:var(--cyan);text-decoration:none}.newslinks a:hover{text-decoration:underline}footer{color:var(--muted);font-size:12px;text-align:center;margin-top:25px}
-.monitor-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;margin-top:12px}.replay-chart{height:250px;margin-top:12px}.replay-controls{display:flex;flex-wrap:wrap;gap:9px;align-items:center;margin-top:12px}.replay-controls input[type=range]{flex:1;min-width:150px;accent-color:var(--cyan)}.replay-readout{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:9px;margin-top:10px}.explain-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin-top:12px}.explain-card{background:#0b1320;border:1px solid var(--line);padding:13px;border-radius:11px}.explain-card strong{display:block;margin-bottom:6px}.explain-card p{font-size:12px;line-height:1.6;color:var(--muted);margin:0}@media(max-width:600px){.monitor-grid,.replay-readout{grid-template-columns:repeat(2,minmax(0,1fr))}.explain-grid{grid-template-columns:1fr}.replay-chart{height:220px}}@media(max-width:800px){.grid{grid-template-columns:1fr}.wrap{padding:20px 14px 36px}.chartbox{height:270px}}@media(max-width:430px){.stats{grid-template-columns:1fr 1fr}.tag{display:none}}
+.monitor-grid{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:10px;margin-top:12px}.replay-chart{height:250px;margin-top:12px}.replay-controls{display:flex;flex-wrap:wrap;gap:9px;align-items:center;margin-top:12px}.replay-controls input[type=range]{flex:1;min-width:150px;accent-color:var(--cyan)}.replay-readout{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:9px;margin-top:10px}.explain-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin-top:12px}.explain-card{background:#0b1320;border:1px solid var(--line);padding:13px;border-radius:11px}.explain-card strong{display:block;margin-bottom:6px}.explain-card p{font-size:12px;line-height:1.6;color:var(--muted);margin:0}@media(max-width:600px){.monitor-grid,.replay-readout{grid-template-columns:repeat(2,minmax(0,1fr))}.explain-grid{grid-template-columns:1fr}.replay-chart{height:220px}}@media(max-width:800px){.grid{grid-template-columns:1fr}.wrap{padding:20px 14px 36px}.chartbox{height:270px}}@media(max-width:430px){.stats{grid-template-columns:1fr 1fr}.tag{display:none}}
 </style></head>
 <body><main class="wrap">
 <header class="top"><div class="brand"><div class="logo">H</div>HAIMI WORKER</div><span class="tag">EDUKASI · MODE SIMULASI</span></header>
@@ -59,6 +59,7 @@
   <div class="stat"><small>UPDATE TERAKHIR</small><strong id="monitorUpdated">—</strong></div>
   <div class="stat"><small>JUMLAH CANDLE</small><strong id="monitorCandles">—</strong></div>
   <div class="stat"><small>KELENGKAPAN OHLC</small><strong id="monitorIntegrity">—</strong></div>
+  <div class="stat"><small>UMUR DATA SUMBER</small><strong id="monitorAge">—</strong></div>
  </div>
  <p class="note" id="monitorMessage">Menunggu data pertama.</p>
 </section>
@@ -509,6 +510,8 @@ async function loadMarketData(){
   }
   if(parsed.length<2)throw Error('Riwayat candle XAU belum cukup');
   const priceAsOf=spot.price_as_of||spot.data_state?.as_of||spot.updated_at||null;
+  const parsedAsOf=priceAsOf?new Date(priceAsOf).getTime():NaN;
+  xauSourceAsOfMs=Number.isFinite(parsedAsOf)?parsedAsOf:null;
   const priceTime=priceAsOf?Math.floor(new Date(priceAsOf).getTime()/1000):Math.floor(Date.now()/1000);
   const ageSeconds=Number(spot.data_state?.age_seconds);
   const stale=spot.stale===true||spot.data_state?.status==='stale'||(Number.isFinite(ageSeconds)&&ageSeconds>120);
@@ -668,7 +671,7 @@ async function refresh(){
   else{stopBtcStream();await loadMarketData()}
  }finally{refreshInProgress=false}
 }
-const AUTO_REFRESH_MS=60000; // XAUS menyegarkan spot sekitar 60 detik; BTC memakai WebSocket.
+const AUTO_REFRESH_MS=60000; // XAUS menyediakan snapshot dengan cache sumber sekitar 60 detik; BTC memakai WebSocket.
 let autoRefreshTimer=null;
 function startAutoRefresh(){
  if(autoRefreshTimer!==null)clearInterval(autoRefreshTimer);
@@ -772,6 +775,7 @@ async function requestAIAnalysis(){
 $('askAI').onclick=requestAIAnalysis;
 
 let replayTimer=null,replayChartInstance=null,replayCandleSeries=null,replayIndex=0,replaySourceKey='';
+let xauSourceAsOfMs=null;
 let monitorLastGoodAt=0;
 function formatReplayNumber(v){return Number.isFinite(v)?v.toLocaleString('en-US',{maximumFractionDigits:4}):'—'}
 function initReplayChart(){
@@ -815,10 +819,12 @@ function updateDataMonitor(){
  const replayKey=$('asset').value+'|'+$('tf').value+'|'+candles.length+'|'+(candles.at(-1)?.time||'');
  if(replayKey!==replaySourceKey){const firstLoad=!replaySourceKey;replaySourceKey=replayKey;if(!replayTimer){replayIndex=firstLoad?Math.max(0,candles.length-1):Math.min(replayIndex,Math.max(0,candles.length-1));updateReplayReadout()}}
  const src=$('source').textContent||'Belum ada sumber';
- const live=src.includes('LIVE STREAM')||src.includes('DATA SPOT XAU');
+ const btcLive=src.includes('LIVE STREAM');
+ const xauSnapshot=src.includes('DATA SPOT XAU');
  const failed=/GAGAL|TERPUTUS|TERGANGGU|BELUM TERSEDIA|TIDAK ADA PEMBARUAN/i.test(src);
- $('monitorConnection').textContent=failed?'Gangguan / mencoba ulang':live?'Terhubung':'Snapshot / menunggu';
- $('monitorConnection').style.color=failed?'#ff7185':live?'#38c990':'#f2c879';
+ $('monitorConnection').textContent=failed?'Gangguan / mencoba ulang':btcLive?'Stream tick BTC':xauSnapshot?'Snapshot XAU':'Snapshot / menunggu';
+ $('monitorConnection').style.color=failed?'#ff7185':btcLive?'#38c990':xauSnapshot?'#f2c879':'#f2c879';
+ if($('asset').value==='XAU/USD'&&xauSourceAsOfMs){const age=Math.max(0,Math.floor((Date.now()-xauSourceAsOfMs)/1000));$('monitorAge').textContent=age+' detik';$('monitorAge').style.color=age>120?'#ff7185':age>60?'#f2c879':'#38c990'}else if($('asset').value==='BTC/USD'&&btcLastMessageAt){$('monitorAge').textContent=Math.max(0,Math.floor((Date.now()-btcLastMessageAt)/1000))+' detik sejak tick';$('monitorAge').style.color=Date.now()-btcLastMessageAt>45000?'#ff7185':'#38c990'}else{$('monitorAge').textContent='—'}
  $('monitorUpdated').textContent=$('updated').textContent||'—';
  $('monitorCandles').textContent=candles.length?candles.length+' candle':'—';
  const valid=candles.filter(c=>[c.open,c.tinggi,c.rendah,c.close].every(Number.isFinite)&&c.tinggi>=Math.max(c.open,c.close)&&c.rendah<=Math.min(c.open,c.close));
@@ -829,7 +835,7 @@ function updateDataMonitor(){
 }
 const monitorObserver=new MutationObserver(updateDataMonitor);
 ['source','updated','price'].forEach(id=>monitorObserver.observe($(id),{childList:true,subtree:true,characterData:true}));
-setInterval(updateDataMonitor,3000);
+setInterval(updateDataMonitor,1000);
 const originalDrawForReplay=draw;
 function exportLearningReport(){
  const lines=[
