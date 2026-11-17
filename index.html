@@ -662,14 +662,20 @@ async function startBtcLive(){
  renderBtcLive();connectBtcSocket();
 }
 
-let refreshInProgress=false;
+let refreshInProgress=false,refreshQueued=false;
 async function refresh(){
- if(refreshInProgress)return;
+ if(refreshInProgress){refreshQueued=true;return}
  refreshInProgress=true;
  try{
-  if($('asset').value==='BTC/USD'){await startBtcLive()}
-  else{stopBtcStream();await loadMarketData()}
- }finally{refreshInProgress=false}
+  do{
+   refreshQueued=false;
+   const selectedAsset=$('asset').value;
+   if(selectedAsset==='BTC/USD'){await startBtcLive()}
+   else{stopBtcStream();await loadMarketData()}
+   // If the user changed instrument while a request was in flight, fetch the newly selected instrument too.
+   if(selectedAsset!==$('asset').value)refreshQueued=true;
+  }while(refreshQueued);
+ }finally{refreshInProgress=false;if(refreshQueued)refresh()}
 }
 const AUTO_REFRESH_MS=60000; // XAUS menyediakan snapshot dengan cache sumber sekitar 60 detik; BTC memakai WebSocket.
 let autoRefreshTimer=null;
@@ -683,8 +689,8 @@ document.addEventListener('visibilitychange',()=>{
  if(document.visibilityState==='visible')refresh();
 });
 $('refresh').onclick=refresh;
-$('asset').onchange=()=>{drawings=[];pendingDrawing=null;drawOverlay();refresh()};
-$('tf').onchange=()=>{$('tfLabel').textContent=tfNames[$('tf').value];drawings=[];pendingDrawing=null;drawOverlay();refresh()};
+$('asset').onchange=()=>{stopReplay();drawings=[];pendingDrawing=null;candles=[];values=[];labels=[];draw();drawOverlay();refresh()};
+$('tf').onchange=()=>{$('tfLabel').textContent=tfNames[$('tf').value];stopReplay();drawings=[];pendingDrawing=null;candles=[];values=[];labels=[];draw();drawOverlay();refresh()};
 $('explain').onclick=()=>analyzeMarketData();
 function analyzeCandlePatterns(data){
  if(!Array.isArray(data)||data.length<2)return {patterns:[],lastCandle:null,context:'Data candle belum cukup untuk membaca pola.'};
@@ -817,7 +823,7 @@ $('replayPause').onclick=stopReplay;
 $('replayReset').onclick=()=>{stopReplay();replayIndex=0;updateReplayReadout()};
 function updateDataMonitor(){
  const replayKey=$('asset').value+'|'+$('tf').value+'|'+candles.length+'|'+(candles.at(-1)?.time||'');
- if(replayKey!==replaySourceKey){const firstLoad=!replaySourceKey;replaySourceKey=replayKey;if(!replayTimer){replayIndex=firstLoad?Math.max(0,candles.length-1):Math.min(replayIndex,Math.max(0,candles.length-1));updateReplayReadout()}}
+ if(replayKey!==replaySourceKey){replaySourceKey=replayKey;if(!replayTimer){replayIndex=Math.max(0,candles.length-1);updateReplayReadout()}}
  const src=$('source').textContent||'Belum ada sumber';
  const btcLive=src.includes('LIVE STREAM');
  const xauSnapshot=src.includes('DATA SPOT XAU');
