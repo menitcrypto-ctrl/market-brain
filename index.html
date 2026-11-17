@@ -228,8 +228,8 @@ async function fetchJsonSafe(url,timeoutMs=12000){
 }
 async function loadMarketData(){
  const tf=$('tf').value;
- const intervalMap={'1m':'1m','5m':'5m','15m':'15m','1h':'1h','4h':'1h','1d':'1d'};
- const rangeMap={'1m':'1d','5m':'1d','15m':'1d','1h':'5d','4h':'1mo','1d':'1y'};
+ const intervalMap={'1m':'1m','5m':'5m','15m':'15m','30m':'15m','1h':'1h','4h':'1h','1d':'1d'};
+ const rangeMap={'1m':'1d','5m':'1d','15m':'1d','30m':'1d','1h':'5d','4h':'1mo','1d':'1y'};
  $('source').textContent='MENGAMBIL DATA SPOT XAU/USD…';$('refresh').disabled=true;
  try{
   const chartUrl='https://xaus.com/api/v1/chart?symbol=xau&range='+rangeMap[tf]+'&interval='+intervalMap[tf];
@@ -244,10 +244,10 @@ async function loadMarketData(){
    time:Number(p.t)>1e12?Math.floor(Number(p.t)/1000):Number(p.t),
    open:Number(p.o),tinggi:Number(p.h),rendah:Number(p.l),close:Number(p.c),volume:Number(p.v||0)
   })).filter(p=>Number.isFinite(p.time)&&Number.isFinite(p.open)&&Number.isFinite(p.tinggi)&&Number.isFinite(p.rendah)&&Number.isFinite(p.close));
-  if(tf==='4h'){
-   const grouped=[];
-   for(let i=0;i<parsed.length;i+=4){
-    const block=parsed.slice(i,i+4);if(!block.length)continue;
+  if(tf==='4h'||tf==='30m'){
+   const factor=tf==='4h'?4:2,grouped=[];
+   for(let i=0;i<parsed.length;i+=factor){
+    const block=parsed.slice(i,i+factor);if(!block.length)continue;
     grouped.push({time:block[0].time,open:block[0].open,tinggi:Math.max(...block.map(x=>x.tinggi)),rendah:Math.min(...block.map(x=>x.rendah)),close:block[block.length-1].close,volume:block.reduce((sum,x)=>sum+x.volume,0)});
    }
    parsed=grouped;
@@ -287,7 +287,7 @@ async function loadMarketData(){
 }
 
 let btcSocket=null,btcReconnectTimer=null,btcWatchdogTimer=null,btcBaseCandles=[],btcBaseTf=null,btcLastTradePrice=null,btc24hChange=0,btcReconnectAttempts=0,btcLastMessageAt=0,btcEndpointIndex=0;
-const btcTfMs={'1m':60000,'5m':300000,'15m':900000,'1h':3600000,'4h':14400000,'1d':86400000};
+const btcTfMs={'1m':60000,'5m':300000,'15m':900000,'30m':1800000,'1h':3600000,'4h':14400000,'1d':86400000};
 const btcSocketUrls=[
  'wss://stream.binance.com:443/ws/btcusdt@trade',
  'wss://data-stream.binance.vision/ws/btcusdt@trade',
