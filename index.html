@@ -7,7 +7,7 @@
 <style>
 :root{color-scheme:dark;--bg:#090d16;--panel:#111b2a;--line:#29384b;--muted:#91a0b5;--text:#eef3fb;--cyan:#57d6d0;--green:#38c990;--red:#ff7185}
 *{box-sizing:border-box}body{margin:0;background:radial-gradient(900px 450px at 70% -10%,#17304a 0%,transparent 65%),var(--bg);color:var(--text);font:15px Inter,system-ui,Arial,sans-serif}.wrap{max-width:1180px;margin:auto;padding:26px 20px 48px}.top{display:flex;justify-content:space-between;align-items:center;gap:16px;margin-bottom:30px}.brand{display:flex;align-items:center;gap:12px;font-size:20px;font-weight:800;letter-spacing:.5px}.logo{width:40px;height:40px;border-radius:12px;background:linear-gradient(135deg,#4be0cf,#4285f4);display:grid;place-items:center;color:#06111a;font-weight:900}.tag{color:var(--muted);font-size:11px;border:1px solid var(--line);padding:8px 11px;border-radius:20px}h1{font-size:clamp(27px,4vw,39px);margin:0 0 8px}.sub{color:var(--muted);margin:0 0 25px;line-height:1.6}.grid{display:grid;grid-template-columns:1.65fr 1fr;gap:16px}.panel{background:linear-gradient(160deg,#131e2e,#0f1724);border:1px solid var(--line);border-radius:16px;padding:19px;min-width:0;box-shadow:0 12px 36px #0002}.panel h2{font-size:15px;margin:0 0 16px;color:#cbd7e8}.toolbar{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-bottom:16px}select,button{background:#1a2637;color:var(--text);border:1px solid #34445a;border-radius:9px;padding:10px 12px;font:inherit}button{cursor:pointer}.price{font-size:28px;font-weight:780}.change{font-size:13px;margin-left:9px}.chartbox{height:310px;position:relative}#chart{position:absolute;inset:0}#drawLayer{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;z-index:4}.chartbox.drawing-active #drawLayer{pointer-events:auto;touch-action:none;cursor:crosshair}.chart-tools{margin:10px 0 7px}.indicator-heading{display:flex;justify-content:space-between;gap:10px;align-items:center;margin-top:15px;color:#cbd7e8;font-size:12px}.indicator-heading span{color:var(--muted);font-size:11px}.stoch-chart{height:118px;margin-top:4px}.indicator-stats{grid-template-columns:repeat(3,1fr);margin-top:8px}.kalimasada-box{margin-top:9px}.kalimasada-box strong{display:block;font-size:14px;margin-bottom:6px}.kalimasada-box .mtf-meta{font-size:12px;line-height:1.6;color:var(--muted)}.chart-tools select,.chart-tools button{padding:8px 10px;font-size:12px}.chart-tools label{font-size:12px;color:var(--muted)}.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:14px}.mtf-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(145px,1fr));gap:9px;margin-top:10px}.mtf-card{min-width:0}.mtf-card small{font-size:10px}.mtf-card strong{display:block;overflow-wrap:anywhere}.mtf-card .mtf-meta{font-size:11px;color:var(--muted);line-height:1.6;margin-top:6px}.stat{background:#0b1320;border:1px solid var(--line);padding:12px;border-radius:11px}.stat small{display:block;color:var(--muted);margin-bottom:7px}.stat strong{font-size:15px}.note{font-size:12px;color:var(--muted);line-height:1.6;margin-top:12px}.status{display:inline-flex;align-items:center;gap:7px;color:#f2c879;font-size:12px}.dot{width:7px;height:7px;border-radius:50%;background:#e6b85c}.insight{font-size:14px;line-height:1.8;color:#d1dbea}.insight b{color:#fff}.list{display:grid;gap:9px}.item{display:flex;justify-content:space-between;gap:12px;padding:11px 0;border-bottom:1px solid var(--line)}.item:last-child{border:0}.muted{color:var(--muted)}.pill{font-size:11px;border:1px solid var(--line);border-radius:20px;padding:5px 8px;color:var(--muted)}.wide{margin-top:16px}.newslinks a{color:var(--cyan);text-decoration:none}.newslinks a:hover{text-decoration:underline}footer{color:var(--muted);font-size:12px;text-align:center;margin-top:25px}
-@media(max-width:800px){.grid{grid-template-columns:1fr}.wrap{padding:20px 14px 36px}.chartbox{height:270px}}@media(max-width:430px){.stats{grid-template-columns:1fr 1fr}.tag{display:none}}
+.monitor-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;margin-top:12px}.replay-chart{height:250px;margin-top:12px}.replay-controls{display:flex;flex-wrap:wrap;gap:9px;align-items:center;margin-top:12px}.replay-controls input[type=range]{flex:1;min-width:150px;accent-color:var(--cyan)}.replay-readout{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:9px;margin-top:10px}.explain-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin-top:12px}.explain-card{background:#0b1320;border:1px solid var(--line);padding:13px;border-radius:11px}.explain-card strong{display:block;margin-bottom:6px}.explain-card p{font-size:12px;line-height:1.6;color:var(--muted);margin:0}@media(max-width:600px){.monitor-grid,.replay-readout{grid-template-columns:repeat(2,minmax(0,1fr))}.explain-grid{grid-template-columns:1fr}.replay-chart{height:220px}}@media(max-width:800px){.grid{grid-template-columns:1fr}.wrap{padding:20px 14px 36px}.chartbox{height:270px}}@media(max-width:430px){.stats{grid-template-columns:1fr 1fr}.tag{display:none}}
 </style></head>
 <body><main class="wrap">
 <header class="top"><div class="brand"><div class="logo">H</div>HAIMI WORKER</div><span class="tag">EDUKASI · MODE SIMULASI</span></header>
@@ -51,6 +51,45 @@
 </div>
 <p class="note">Catatan: bagian ini bersifat edukatif dan belum mengambil data makro secara langsung. Korelasi bukan sebab-akibat; jangan menganggap satu indikator sebagai prediksi atau instruksi transaksi.</p></aside>
 </div>
+<section class="panel wide" id="dataMonitorPanel">
+ <h2>Live Data Monitor</h2>
+ <p class="note">Panel ini memantau kesehatan feed dan kelengkapan data yang sedang ditampilkan. Status LIVE hanya menunjukkan koneksi sumber data, bukan jaminan bebas keterlambatan.</p>
+ <div class="monitor-grid">
+  <div class="stat"><small>KONEKSI SUMBER</small><strong id="monitorConnection">Memeriksa…</strong></div>
+  <div class="stat"><small>UPDATE TERAKHIR</small><strong id="monitorUpdated">—</strong></div>
+  <div class="stat"><small>JUMLAH CANDLE</small><strong id="monitorCandles">—</strong></div>
+  <div class="stat"><small>KELENGKAPAN OHLC</small><strong id="monitorIntegrity">—</strong></div>
+ </div>
+ <p class="note" id="monitorMessage">Menunggu data pertama.</p>
+</section>
+<section class="panel wide" id="replayPanel">
+ <h2>Chart Replay Studio</h2>
+ <p class="note">Pelajari urutan candle historis satu per satu. Replay hanya memutar data lampau yang sudah dimuat; tidak menghasilkan prediksi atau instruksi transaksi.</p>
+ <div class="toolbar"><button id="replayPlay" type="button">Putar</button><button id="replayPause" type="button">Jeda</button><button id="replayReset" type="button">Mulai ulang</button><span class="pill" id="replayPosition">Menunggu candle</span></div>
+ <div id="replayChart" class="replay-chart"></div>
+ <div class="replay-controls"><label for="replaySlider" class="note" style="margin:0">Posisi historis</label><input id="replaySlider" type="range" min="0" max="0" value="0" step="1" disabled><span class="pill" id="replayTime">—</span></div>
+ <div class="replay-readout">
+  <div class="stat"><small>OPEN</small><strong id="replayOpen">—</strong></div>
+  <div class="stat"><small>HIGH</small><strong id="replayHigh">—</strong></div>
+  <div class="stat"><small>LOW</small><strong id="replayLow">—</strong></div>
+  <div class="stat"><small>CLOSE</small><strong id="replayClose">—</strong></div>
+ </div>
+ <p class="note" id="replayLesson">Muat data terlebih dahulu untuk memulai replay.</p>
+</section>
+<section class="panel wide" id="learningPanel">
+ <h2>AI Explanation Center · Pusat Belajar Indikator</h2>
+ <p class="note">Penjelasan ringkas tentang apa yang dihitung indikator dan batasannya. Angka di bawah mengikuti data yang sedang dimuat.</p>
+ <div class="explain-grid">
+  <div class="explain-card"><strong>EMA 13 / 20 / 50</strong><p>Exponential Moving Average memberi bobot lebih besar pada data terbaru. Periode yang berbeda membuat garis merespons perubahan harga dengan kecepatan berbeda. EMA adalah ringkasan historis, bukan kepastian arah berikutnya.</p></div>
+  <div class="explain-card"><strong>Stochastic 5,3,3</strong><p>Membandingkan posisi penutupan terhadap rentang high-low beberapa candle terakhir, lalu menghaluskan hasilnya. Nilai tinggi atau rendah tidak otomatis berarti harga akan berbalik.</p></div>
+  <div class="explain-card"><strong>RSI 14</strong><p>Mengukur perubahan momentum relatif dari kenaikan dan penurunan harga. Nilai 70/30 sering dipakai sebagai area referensi, bukan aturan yang selalu berlaku.</p></div>
+  <div class="explain-card"><strong>ATR 14</strong><p>Average True Range mengukur besar rentang pergerakan, termasuk gap terhadap penutupan sebelumnya. ATR mengukur volatilitas, bukan arah.</p></div>
+  <div class="explain-card"><strong>Support & Resistance</strong><p>Area referensi yang diturunkan dari titik swing atau rentang harga. Hasil bergantung pada periode data dan metode deteksi yang dipakai.</p></div>
+  <div class="explain-card"><strong>Struktur HH / HL / LH / LL</strong><p>Higher High, Higher Low, Lower High, dan Lower Low merangkum perubahan swing. Pivot membutuhkan candle di kanan dan kiri, sehingga pembacaan bisa berubah saat data bertambah.</p></div>
+ </div>
+ <div class="toolbar" style="margin-top:14px"><button id="exportReport" type="button">Ekspor ringkasan belajar (.txt)</button></div>
+ <p class="note" id="exportStatus">Ekspor berisi sumber, timeframe, waktu pembaruan, dan nilai indikator yang tersedia.</p>
+</section>
 <section class="panel wide"><h2>Berita & Riset Global</h2><p class="note">Ini adalah tautan ke sumber berita, bukan umpan berita langsung. Buka situs penerbit untuk membaca laporan terbaru dan rilis resmi.</p><div class="list newslinks"><div class="item"><span>Reuters — Dunia & Pasar</span><a href="https://www.reuters.com/markets/" target="_blank" rel="noopener">Buka sumber ↗</a></div><div class="item"><span>Federal Reserve — Siaran Pers</span><a href="https://www.federalreserve.gov/newsevents/pressreleases.htm" target="_blank" rel="noopener">Buka sumber ↗</a></div><div class="item"><span>Biro Statistik Tenaga Kerja AS — Rilis Berita</span><a href="https://www.bls.gov/news.release/" target="_blank" rel="noopener">Buka sumber ↗</a></div><div class="item"><span>Departemen Keuangan AS — Siaran Pers</span><a href="https://home.treasury.gov/news/press-releases" target="_blank" rel="noopener">Buka sumber ↗</a></div></div></section>
 <footer>HAIMI WORKER · v3.0 · Khusus edukasi · Bukan nasihat investasi, sinyal transaksi, atau layanan eksekusi broker.</footer>
 </main>
@@ -731,6 +770,93 @@ async function requestAIAnalysis(){
  }
 }
 $('askAI').onclick=requestAIAnalysis;
+
+let replayTimer=null,replayChartInstance=null,replayCandleSeries=null,replayIndex=0,replaySourceKey='';
+let monitorLastGoodAt=0;
+function formatReplayNumber(v){return Number.isFinite(v)?v.toLocaleString('en-US',{maximumFractionDigits:4}):'—'}
+function initReplayChart(){
+ if(replayChartInstance||!window.LightweightCharts)return;
+ replayChartInstance=LightweightCharts.createChart($('replayChart'),{width:$('replayChart').clientWidth,height:$('replayChart').clientHeight,layout:{background:{color:'#0b1320'},textColor:'#91a0b5'},grid:{vertLines:{color:'#1c293a'},horzLines:{color:'#1c293a'}},rightPriceScale:{borderColor:'#29384b'},timeScale:{borderColor:'#29384b',timeVisible:true},crosshair:{mode:1}});
+ replayCandleSeries=replayChartInstance.addCandlestickSeries({upColor:'#38c990',downColor:'#ff7185',borderUpColor:'#38c990',borderDownColor:'#ff7185',wickUpColor:'#38c990',wickDownColor:'#ff7185'});
+ const ro=new ResizeObserver(entries=>{for(const entry of entries){if(entry.contentRect.width>0)replayChartInstance.applyOptions({width:entry.contentRect.width,height:entry.contentRect.height})}});
+ ro.observe($('replayChart'));
+}
+function updateReplayReadout(){
+ const slider=$('replaySlider');
+ if(!candles.length){$('replayPosition').textContent='Belum ada data';return}
+ slider.disabled=false;slider.max=String(candles.length-1);
+ replayIndex=Math.max(0,Math.min(replayIndex,candles.length-1));
+ slider.value=String(replayIndex);
+ const c=candles[replayIndex],visible=candles.slice(0,replayIndex+1);
+ $('replayPosition').textContent=(replayIndex+1)+' / '+candles.length+' candle';
+ $('replayTime').textContent=new Date(c.time*1000).toLocaleString('id-ID');
+ $('replayOpen').textContent=formatReplayNumber(c.open);
+ $('replayHigh').textContent=formatReplayNumber(c.tinggi);
+ $('replayLow').textContent=formatReplayNumber(c.rendah);
+ $('replayClose').textContent=formatReplayNumber(c.close);
+ const range=c.tinggi-c.rendah,body=Math.abs(c.close-c.open),ratio=range?body/range:0;
+ $('replayLesson').textContent='Candle ini memiliki rentang '+formatReplayNumber(range)+' dan body sekitar '+(ratio*100).toFixed(1)+'% dari rentangnya. Amati bagaimana bentuk candle berubah dari satu periode ke periode berikutnya.';
+ initReplayChart();
+ if(replayCandleSeries)replayCandleSeries.setData(visible.map(x=>({time:x.time,open:x.open,high:x.tinggi,low:x.rendah,close:x.close})));
+ if(replayChartInstance)replayChartInstance.timeScale().fitContent();
+}
+function refreshReplay(){replayIndex=Math.max(0,candles.length-1);updateReplayReadout()}
+function stopReplay(){if(replayTimer){clearInterval(replayTimer);replayTimer=null}}
+$('replaySlider').addEventListener('input',()=>{stopReplay();replayIndex=Number($('replaySlider').value);updateReplayReadout()});
+$('replayPlay').onclick=()=>{
+ if(!candles.length)return;
+ if(replayIndex>=candles.length-1)replayIndex=0;
+ stopReplay();updateReplayReadout();
+ replayTimer=setInterval(()=>{if(replayIndex>=candles.length-1){stopReplay();return}replayIndex++;updateReplayReadout()},650);
+};
+$('replayPause').onclick=stopReplay;
+$('replayReset').onclick=()=>{stopReplay();replayIndex=0;updateReplayReadout()};
+function updateDataMonitor(){
+ const src=$('source').textContent||'Belum ada sumber',isBtc=$('asset').value==='BTC/USD';
+ const live=src.includes('LIVE STREAM')||src.includes('DATA SPOT XAU');
+ const failed=/GAGAL|TERPUTUS|TERGANGGU|BELUM TERSEDIA|TIDAK ADA PEMBARUAN/i.test(src);
+ $('monitorConnection').textContent=failed?'Gangguan / mencoba ulang':live?'Terhubung':'Snapshot / menunggu';
+ $('monitorConnection').style.color=failed?'#ff7185':live?'#38c990':'#f2c879';
+ $('monitorUpdated').textContent=$('updated').textContent||'—';
+ $('monitorCandles').textContent=candles.length?candles.length+' candle':'—';
+ const valid=candles.filter(c=>[c.open,c.tinggi,c.rendah,c.close].every(Number.isFinite)&&c.tinggi>=Math.max(c.open,c.close)&&c.rendah<=Math.min(c.open,c.close));
+ const pct=candles.length?valid.length/candles.length*100:0;
+ $('monitorIntegrity').textContent=candles.length?pct.toFixed(0)+'% OHLC valid':'—';
+ $('monitorMessage').textContent=candles.length?(valid.length===candles.length?'Seluruh candle yang dimuat lolos pemeriksaan dasar OHLC. Ini tidak memverifikasi akurasi penyedia data.':'Ada candle yang tidak lolos pemeriksaan OHLC; periksa sumber data.'):'Belum ada candle valid. Periksa koneksi sumber data.';
+ if(candles.length)monitorLastGoodAt=Date.now();
+}
+const monitorObserver=new MutationObserver(updateDataMonitor);
+['source','updated','price'].forEach(id=>monitorObserver.observe($(id),{childList:true,subtree:true,characterData:true}));
+setInterval(updateDataMonitor,3000);
+const originalDrawForReplay=draw;
+function exportLearningReport(){
+ const lines=[
+  'HAIMI WORKER — RINGKASAN BELAJAR',
+  'Instrumen: '+$('asset').value,
+  'Timeframe: '+tfNames[$('tf').value],
+  'Sumber: '+activeSource,
+  'Update: '+$('updated').textContent,
+  'Jumlah candle: '+candles.length,
+  'Harga tampilan: '+$('price').textContent,
+  'EMA 13: '+$('ema13Value').textContent,
+  'Stochastic %K: '+$('stochKValue').textContent,
+  'Stochastic %D: '+$('stochDValue').textContent,
+  'RSI 14: '+$('rsi').textContent,
+  'ATR: '+$('atr').textContent,
+  'Support terdekat (referensi historis): '+$('supportLevel').textContent,
+  'Resistance terdekat (referensi historis): '+$('resistanceLevel').textContent,
+  '',
+  'Catatan: materi edukasi berdasarkan data historis. Bukan prediksi, rekomendasi, atau instruksi transaksi.'
+ ];
+ const blob=new Blob([lines.join('\n')],{type:'text/plain;charset=utf-8'}),url=URL.createObjectURL(blob),a=document.createElement('a');
+ a.href=url;a.download='haimi-learning-'+$('asset').value.replace('/','-')+'-'+$('tf').value+'.txt';document.body.appendChild(a);a.click();a.remove();URL.revokeObjectURL(url);
+ $('exportStatus').textContent='Ringkasan belajar berhasil disiapkan untuk disimpan.';
+}
+$('exportReport').onclick=exportLearningReport;
+const originalRenderBtcLive=renderBtcLive;
+const originalLoadMarketData=loadMarketData;
+const originalStartBtcLive=startBtcLive;
+
 $('tfLabel').textContent=tfNames[$('tf').value];
-refresh().then(startAutoRefresh);
+refresh().then(()=>{startAutoRefresh();updateDataMonitor();refreshReplay()});
 </script></body></html>
