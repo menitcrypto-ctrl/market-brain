@@ -224,7 +224,7 @@ function updateChartPriceLines(){
 function draw(){
  if(!ensureChart())return;
  const rows=normalizedChartCandles();
- if(!rows.length){$('chart').innerHTML='<div style="padding:18px;color:#91a0b5">Data candle belum tersedia.</div>';return}
+ if(!rows.length){$('chartHint').textContent='Data candle belum tersedia. Chart akan tampil setelah data valid dimuat.';return}
  candleSeries.setData(rows);
  ema20Series.setData(emaChartData(rows,20));
  ema50Series.setData(emaChartData(rows,50));
@@ -553,6 +553,39 @@ $('refresh').onclick=refresh;
 $('asset').onchange=refresh;
 $('tf').onchange=()=>{$('tfLabel').textContent=tfNames[$('tf').value];refresh()};
 $('explain').onclick=()=>analyzeMarketData();
+function analyzeCandlePatterns(data){
+ if(!Array.isArray(data)||data.length<2)return {patterns:[],lastCandle:null,context:'Data candle belum cukup untuk membaca pola.'};
+ const c=data.at(-1),p=data.at(-2),range=Math.max(0,c.tinggi-c.rendah),body=Math.abs(c.close-c.open),upper=c.tinggi-Math.max(c.open,c.close),lower=Math.min(c.open,c.close)-c.rendah;
+ const patterns=[];
+ if(range>0){
+  if(body/range<=.1)patterns.push({name:'Doji',meaning:'Badan candle kecil dibanding rentang; menunjukkan keraguan relatif.'});
+  if(p.close<p.open&&c.close>c.open&&c.open<=p.close&&c.close>=p.open)patterns.push({name:'Bullish engulfing',meaning:'Badan candle naik menutupi badan candle sebelumnya.'});
+  if(p.close>p.open&&c.close<p.open&&c.open>=p.close&&c.close<=p.open)patterns.push({name:'Bearish engulfing',meaning:'Badan candle turun menutupi badan candle sebelumnya.'});
+  if(body>0&&lower>=body*2&&upper<=body*.7&&c.close>=c.open)patterns.push({name:'Hammer-like',meaning:'Ekor bawah panjang; konteks tren dan candle konfirmasi tetap diperlukan.'});
+  if(body>0&&upper>=body*2&&lower<=body*.7&&c.close<=c.open)patterns.push({name:'Shooting-star-like',meaning:'Ekor atas panjang; konteks tren dan candle konfirmasi tetap diperlukan.'});
+  if(body/range>=.8)patterns.push({name:c.close>=c.open?'Bullish marubozu-like':'Bearish marubozu-like',meaning:'Badan relatif dominan dan ekor pendek.'});
+ }
+ return {patterns:patterns.length?patterns:[{name:'Tidak ada pola utama terdeteksi',meaning:'Bentuk candle terakhir belum cocok dengan pola sederhana yang dipantau.'}],lastCandle:{open:c.open,high:c.tinggi,low:c.rendah,close:c.close,bodyPercentOfRange:range?Number((body/range*100).toFixed(1)):null,upperWick:upper,lowerWick:lower},context:'Pola candle adalah petunjuk bentuk harga, bukan sinyal mandiri; validasi dengan tren, level, volume jika tersedia, dan candle berikutnya.'};
+}
+function analyzeMarketStructure(data){
+ if(!Array.isArray(data)||data.length<8)return {status:'insufficient_data',description:'Belum cukup candle untuk mengidentifikasi swing.'};
+ const highs=[],lows=[];
+ for(let i=2;i<data.length-2;i++){
+  const c=data[i];
+  if(c.tinggi>data[i-1].tinggi&&c.tinggi>data[i-2].tinggi&&c.tinggi>=data[i+1].tinggi&&c.tinggi>=data[i+2].tinggi)highs.push({index:i,price:c.tinggi});
+  if(c.rendah<data[i-1].rendah&&c.rendah<data[i-2].rendah&&c.rendah<=data[i+1].rendah&&c.rendah<=data[i+2].rendah)lows.push({index:i,price:c.rendah});
+ }
+ const classify=(arr,up,down)=>arr.length<2?'belum terkonfirmasi':arr.at(-1).price>arr.at(-2).price?up:arr.at(-1).price<arr.at(-2).price?down:'equal';
+ const highState=classify(highs,'HH','LH'),lowState=classify(lows,'HL','LL');
+ const bullish=highState==='HH'&&lowState==='HL',bearish=highState==='LH'&&lowState==='LL',last=data.at(-1),priorHigh=highs.at(-1),priorLow=lows.at(-1);
+ let breakEvent='Belum ada break struktur terkonfirmasi pada swing terakhir.';
+ if(priorHigh&&last.close>priorHigh.price)breakEvent=bearish?'Potensi CHOCH bullish: close menembus swing high terakhir.':'BOS bullish: close menembus swing high terakhir.';
+ else if(priorLow&&last.close<priorLow.price)breakEvent=bullish?'Potensi CHOCH bearish: close menembus swing low terakhir.':'BOS bearish: close menembus swing low terakhir.';
+ let sweep='Tidak ada indikasi sweep pada candle terakhir.';
+ if(priorHigh&&last.tinggi>priorHigh.price&&last.close<priorHigh.price)sweep='Potensi bearish liquidity sweep di atas swing high; perlu konfirmasi lanjutan.';
+ else if(priorLow&&last.rendah<priorLow.price&&last.close>priorLow.price)sweep='Potensi bullish liquidity sweep di bawah swing low; perlu konfirmasi lanjutan.';
+ return {status:'ok',swingHighState:highState,swingLowState:lowState,bias:bullish?'bullish structure':bearish?'bearish structure':'mixed / transitional structure',lastSwingHigh:priorHigh?.price??null,lastSwingLow:priorLow?.price??null,breakEvent,liquiditySweep:sweep,description:'HH/HL dan LH/LL dihitung dari pivot lokal dua candle kiri dan kanan; struktur dapat berubah ketika candle baru terbentuk.'};
+}
 async function requestAIAnalysis(){
  const button=$('askAI'),output=$('aiResult');
  if(!candles.length){output.textContent='Data candle belum tersedia. Tunggu data pasar dimuat terlebih dahulu.';return}
@@ -566,6 +599,7 @@ async function requestAIAnalysis(){
  const levels=findKeyLevels(candles);
  $('supportLevel').textContent=levels.support===null?'—':levels.support.toLocaleString('en-US',{maximumFractionDigits:2});
  $('resistanceLevel').textContent=levels.resistance===null?'—':levels.resistance.toLocaleString('en-US',{maximumFractionDigits:2});
+  updateChartPriceLines();
  const analysis={
   latestPrice:last,
   candleCount:candles.length,
@@ -574,7 +608,10 @@ async function requestAIAnalysis(){
   momentum5CandlesPercent:Number(momentum.toFixed(4)),
   recent20CandleHigh:high,recent20CandleLow:low,
   atrPercent:atr&&last?Number((atr/last*100).toFixed(4)):null,
-  recentCandles:candles.slice(-5).map(c=>({open:c.open,high:c.tinggi,low:c.rendah,close:c.close}))
+  recentCandles:candles.slice(-12).map(c=>({open:c.open,high:c.tinggi,low:c.rendah,close:c.close})),
+  candleAnalysis:analyzeCandlePatterns(candles),
+  marketStructure:analyzeMarketStructure(candles),
+  analysisGuidance:'Berikan pembacaan edukatif berdasarkan data yang tersedia. Jelaskan bukti candle, struktur HH/HL/LH/LL, BOS/CHOCH, potensi liquidity sweep, EMA, RSI, ATR, support/resistance dan keselarasan timeframe. Pisahkan fakta teramati dari interpretasi, sebutkan konflik dan data yang tidak tersedia, serta kondisi yang dapat membatalkan interpretasi. Jangan memberi instruksi buy/sell, entry, leverage, atau menjanjikan hasil.'
  };
  try{
   output.textContent='Mengambil timeframe pendukung dan menghitung zona support/resistance…';
