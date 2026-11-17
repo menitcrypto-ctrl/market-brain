@@ -20,7 +20,7 @@
  <button id="undoDrawing" type="button">Undo</button><button id="clearDrawings" type="button">Hapus garis</button><button id="fitChart" type="button">Reset zoom</button>
 </div>
 <div class="chartbox" id="chartWrap"><div id="chart"></div><canvas id="drawLayer"></canvas></div>
-<p class="note" id="chartHint">Scroll/pinch untuk zoom · tarik chart untuk geser · pilih alat gambar untuk membuat garis atau Fibonacci. Chart engine: <a href="https://www.tradingview.com/" target="_blank" rel="noopener" style="color:#91a0b5">TradingView Lightweight Charts</a>.</p>
+<p class="note" id="chartHint">Scroll/pinch untuk zoom · tarik chart untuk geser · pilih alat gambar untuk membuat garis atau Fibonacci. Chart engine: <a href="https://www.tradingview.com/" target="_blank" rel="noopener" style="color:#91a0b5">TradingView Lightweight Charts</a>. <span style="color:#f4c66a">EMA13</span> · <span style="color:#a78bfa">EMA20</span> · <span style="color:#68a8ff">EMA50</span>.</p>
 <div class="indicator-heading"><strong>STOCHASTIC (5,3,3)</strong><span id="stochState">Menunggu data</span></div>
 <div id="stochChart" class="stoch-chart"></div>
 <div class="stats indicator-stats">
@@ -204,7 +204,7 @@ function ensureChart(){
   handleScale:{axisPressedMouseMove:true,mouseWheel:true,pinch:true}
  });
  candleSeries=chartApi.addCandlestickSeries({upColor:'#28b98b',downColor:'#f06478',borderUpColor:'#28b98b',borderDownColor:'#f06478',wickUpColor:'#28b98b',wickDownColor:'#f06478',priceLineVisible:true,lastValueVisible:true});
- ema20Series=chartApi.addLineSeries({color:'#f4c66a',lineWidth:1,priceLineVisible:false,lastValueVisible:false,crosshairMarkerVisible:false});
+ ema20Series=chartApi.addLineSeries({color:'#a78bfa',lineWidth:1,priceLineVisible:false,lastValueVisible:false,crosshairMarkerVisible:false});
   ema50Series=chartApi.addLineSeries({color:'#68a8ff',lineWidth:1,priceLineVisible:false,lastValueVisible:false,crosshairMarkerVisible:false});
  ema13Series=chartApi.addLineSeries({color:'#f4c66a',lineWidth:2,priceLineVisible:false,lastValueVisible:true,crosshairMarkerVisible:false});
  const stochBox=$('stochChart');
@@ -275,9 +275,9 @@ function buildKalimasadaAnalysis(){
  const nearSupport=Number.isFinite(distance)&&Number.isFinite(atr)&&atr>0&&distance<=atr*1.5;
  const bullishCandle=last.close>last.open;
  const zone=Number.isFinite(support)&&Number.isFinite(atr)&&atr>0?{low:support-atr*.15,high:support+atr*.35,support,atr}:null;
- const confirmation=Boolean(zone&&nearSupport&&aboveEma&&emaRising&&bullishCross&&k<=30&&bullishCandle);
+ const confirmation=Boolean(zone&&nearSupport&&aboveEma&&emaRising&&bullishCross&&k<=20&&bullishCandle);
  const statusText=confirmation?'Konfluensi bullish terdeteksi — tetap perlu validasi lanjutan.':zone&&nearSupport?'Harga dekat area support; konfirmasi EMA/Stochastic belum lengkap.':zone?'Zona support terpetakan, tetapi harga belum berada dekat area tersebut.':'Belum ada zona support yang layak dipetakan.';
- return {status:'ok',method:'Kalimasada-inspired · konfigurasi EMA 13 + Stochastic 5,3,3',ema13:emaNow,ema13Rising:emaRising,priceAboveEma13:aboveEma,stochastic:{k,d,previousK:pk,previousD:pd,bullishCross,bearishCross,oversold:k<=20,overbought:k>=80},support,resistance:levels.resistance,atr,nearSupport,bullishCandle,watchZone:zone,confirmation,statusText,conditions:{priceAboveEMA13:aboveEma,EMA13Rising:emaRising,stochasticBullishCross:bullishCross,stochasticBelow30:k<=30,nearSupport,bullishCandle},caveat:'Zona ini adalah area observasi berbasis support dan ATR, bukan rekomendasi transaksi. Stochastic dapat bertahan di area ekstrem; sinyal perlu diuji pada data historis.'};
+ return {status:'ok',method:'Kalimasada-inspired · konfigurasi EMA 13 + Stochastic 5,3,3',ema13:emaNow,ema13Rising:emaRising,priceAboveEma13:aboveEma,stochastic:{k,d,previousK:pk,previousD:pd,bullishCross,bearishCross,oversold:k<=20,overbought:k>=80},support,resistance:levels.resistance,atr,nearSupport,bullishCandle,watchZone:zone,confirmation,statusText,conditions:{priceAboveEMA13:aboveEma,EMA13Rising:emaRising,stochasticBullishCross:bullishCross,stochasticBelow20:k<=20,nearSupport,bullishCandle},caveat:'Konfigurasi EMA 13 + Stochastic 5,3,3 ini adalah adaptasi sesuai permintaan, bukan klaim replika metode resmi. Zona observasi berbasis support dan ATR, bukan rekomendasi transaksi. Stochastic dapat bertahan di area ekstrem; sinyal perlu diuji pada data historis.'};
 }
 function renderKalimasadaAnalysis(result){
  lastKalimasada=result;kalimasadaZone=result.status==='ok'?result.watchZone:null;
