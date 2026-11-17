@@ -8,6 +8,28 @@
 :root{color-scheme:dark;--bg:#090d16;--panel:#111b2a;--line:#29384b;--muted:#91a0b5;--text:#eef3fb;--cyan:#57d6d0;--green:#38c990;--red:#ff7185}
 *{box-sizing:border-box}body{margin:0;background:radial-gradient(900px 450px at 70% -10%,#17304a 0%,transparent 65%),var(--bg);color:var(--text);font:15px Inter,system-ui,Arial,sans-serif}.wrap{max-width:1180px;margin:auto;padding:26px 20px 48px}.top{display:flex;justify-content:space-between;align-items:center;gap:16px;margin-bottom:30px}.brand{display:flex;align-items:center;gap:12px;font-size:20px;font-weight:800;letter-spacing:.5px}.logo{width:40px;height:40px;border-radius:12px;background:linear-gradient(135deg,#4be0cf,#4285f4);display:grid;place-items:center;color:#06111a;font-weight:900}.tag{color:var(--muted);font-size:11px;border:1px solid var(--line);padding:8px 11px;border-radius:20px}h1{font-size:clamp(27px,4vw,39px);margin:0 0 8px}.sub{color:var(--muted);margin:0 0 25px;line-height:1.6}.grid{display:grid;grid-template-columns:1.65fr 1fr;gap:16px}.panel{background:linear-gradient(160deg,#131e2e,#0f1724);border:1px solid var(--line);border-radius:16px;padding:19px;min-width:0;box-shadow:0 12px 36px #0002}.panel h2{font-size:15px;margin:0 0 16px;color:#cbd7e8}.toolbar{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-bottom:16px}select,button{background:#1a2637;color:var(--text);border:1px solid #34445a;border-radius:9px;padding:10px 12px;font:inherit}button{cursor:pointer}.price{font-size:28px;font-weight:780}.change{font-size:13px;margin-left:9px}.chartbox{height:310px;position:relative}#chart{position:absolute;inset:0}#drawLayer{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;z-index:4}.chartbox.drawing-active #drawLayer{pointer-events:auto;touch-action:none;cursor:crosshair}.chart-tools{margin:10px 0 7px}.indicator-heading{display:flex;justify-content:space-between;gap:10px;align-items:center;margin-top:15px;color:#cbd7e8;font-size:12px}.indicator-heading span{color:var(--muted);font-size:11px}.stoch-chart{height:118px;margin-top:4px}.indicator-stats{grid-template-columns:repeat(3,1fr);margin-top:8px}.kalimasada-box{margin-top:9px}.kalimasada-box strong{display:block;font-size:14px;margin-bottom:6px}.kalimasada-box .mtf-meta{font-size:12px;line-height:1.6;color:var(--muted)}.chart-tools select,.chart-tools button{padding:8px 10px;font-size:12px}.chart-tools label{font-size:12px;color:var(--muted)}.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:14px}.mtf-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(145px,1fr));gap:9px;margin-top:10px}.mtf-card{min-width:0}.mtf-card small{font-size:10px}.mtf-card strong{display:block;overflow-wrap:anywhere}.mtf-card .mtf-meta{font-size:11px;color:var(--muted);line-height:1.6;margin-top:6px}.stat{background:#0b1320;border:1px solid var(--line);padding:12px;border-radius:11px}.stat small{display:block;color:var(--muted);margin-bottom:7px}.stat strong{font-size:15px}.note{font-size:12px;color:var(--muted);line-height:1.6;margin-top:12px}.status{display:inline-flex;align-items:center;gap:7px;color:#f2c879;font-size:12px}.dot{width:7px;height:7px;border-radius:50%;background:#e6b85c}.insight{font-size:14px;line-height:1.8;color:#d1dbea}.insight b{color:#fff}.list{display:grid;gap:9px}.item{display:flex;justify-content:space-between;gap:12px;padding:11px 0;border-bottom:1px solid var(--line)}.item:last-child{border:0}.muted{color:var(--muted)}.pill{font-size:11px;border:1px solid var(--line);border-radius:20px;padding:5px 8px;color:var(--muted)}.wide{margin-top:16px}.newslinks a{color:var(--cyan);text-decoration:none}.newslinks a:hover{text-decoration:underline}footer{color:var(--muted);font-size:12px;text-align:center;margin-top:25px}
 .monitor-grid{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:10px;margin-top:12px}.replay-chart{height:250px;margin-top:12px}.replay-controls{display:flex;flex-wrap:wrap;gap:9px;align-items:center;margin-top:12px}.replay-controls input[type=range]{flex:1;min-width:150px;accent-color:var(--cyan)}.replay-readout{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:9px;margin-top:10px}.explain-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin-top:12px}.explain-card{background:#0b1320;border:1px solid var(--line);padding:13px;border-radius:11px}.explain-card strong{display:block;margin-bottom:6px}.explain-card p{font-size:12px;line-height:1.6;color:var(--muted);margin:0}@media(max-width:600px){.monitor-grid,.replay-readout{grid-template-columns:repeat(2,minmax(0,1fr))}.explain-grid{grid-template-columns:1fr}.replay-chart{height:220px}}@media(max-width:800px){.grid{grid-template-columns:1fr}.wrap{padding:20px 14px 36px}.chartbox{height:270px}}@media(max-width:430px){.stats{grid-template-columns:1fr 1fr}.tag{display:none}}
+
+/* HAIMI add-on modules */
+.addon-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+.addon-form{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}
+.addon-form input,.addon-form select,.addon-form textarea{width:100%;min-width:0;background:#0b1320;color:var(--text);border:1px solid #34445a;border-radius:9px;padding:10px;font:inherit}
+.addon-form textarea{grid-column:1/-1;min-height:78px;resize:vertical}
+.addon-list{display:grid;gap:8px;margin-top:12px}
+.addon-entry{background:#0b1320;border:1px solid var(--line);border-radius:10px;padding:11px;min-width:0}
+.addon-entry strong{display:block;font-size:13px;margin-bottom:5px}
+.addon-entry p{margin:5px 0 0;color:var(--muted);font-size:12px;line-height:1.5;white-space:pre-wrap;overflow-wrap:anywhere}
+.addon-meta{font-size:11px;color:var(--muted)}
+.addon-entry button{margin-top:8px;padding:6px 9px;font-size:11px}
+.volume-bars{height:110px;display:flex;align-items:end;gap:3px;padding:10px 4px 2px;background:#0b1320;border:1px solid var(--line);border-radius:10px;overflow:hidden}
+.volume-bar{flex:1;min-width:2px;background:linear-gradient(180deg,#57d6d0,#326b86);border-radius:3px 3px 0 0;opacity:.88}
+.structure-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}
+.structure-value{font-size:18px;font-weight:750}
+.report-text{white-space:pre-wrap;overflow-wrap:anywhere;background:#0b1320;border:1px solid var(--line);border-radius:10px;padding:12px;font-size:12px;line-height:1.65;color:#dce7f5;min-height:90px}
+.dashboard-options{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+.dashboard-options label{display:flex;align-items:center;gap:8px;background:#0b1320;border:1px solid var(--line);border-radius:9px;padding:9px;font-size:12px;color:#dce7f5}
+.source-links{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}
+.source-links a{color:#8ecbff;font-size:12px}
+@media(max-width:650px){.addon-grid,.addon-form,.structure-grid,.dashboard-options{grid-template-columns:1fr}.addon-form textarea{grid-column:auto}}
 </style></head>
 <body><main class="wrap">
 <header class="top"><div class="brand"><div class="logo">H</div>HAIMI WORKER</div><span class="tag">EDUKASI · MODE SIMULASI</span></header>
@@ -92,6 +114,68 @@
  <p class="note" id="exportStatus">Ekspor berisi sumber, timeframe, waktu pembaruan, dan nilai indikator yang tersedia.</p>
 </section>
 <section class="panel wide"><h2>Berita & Riset Global</h2><p class="note">Ini adalah tautan ke sumber berita, bukan umpan berita langsung. Buka situs penerbit untuk membaca laporan terbaru dan rilis resmi.</p><div class="list newslinks"><div class="item"><span>Reuters — Dunia & Pasar</span><a href="https://www.reuters.com/markets/" target="_blank" rel="noopener">Buka sumber ↗</a></div><div class="item"><span>Federal Reserve — Siaran Pers</span><a href="https://www.federalreserve.gov/newsevents/pressreleases.htm" target="_blank" rel="noopener">Buka sumber ↗</a></div><div class="item"><span>Biro Statistik Tenaga Kerja AS — Rilis Berita</span><a href="https://www.bls.gov/news.release/" target="_blank" rel="noopener">Buka sumber ↗</a></div><div class="item"><span>Departemen Keuangan AS — Siaran Pers</span><a href="https://home.treasury.gov/news/press-releases" target="_blank" rel="noopener">Buka sumber ↗</a></div></div></section>
+
+<section class="panel wide" id="calendarPanel">
+ <h2>Economic Calendar · Kalender Ekonomi</h2>
+ <p class="note">Catat jadwal rilis ekonomi yang ingin dipelajari. Kalender ini tidak mengklaim feed otomatis atau jadwal real-time; verifikasi tanggal dan jam di situs resmi penyelenggara.</p>
+ <div class="addon-form">
+  <input id="calTitle" maxlength="100" placeholder="Nama rilis / acara (contoh: CPI AS)" aria-label="Nama acara"/>
+  <input id="calDate" type="datetime-local" aria-label="Tanggal dan waktu acara"/>
+  <select id="calRegion" aria-label="Wilayah"><option>Amerika Serikat</option><option>Global</option><option>Zona Euro</option><option>Inggris</option><option>Jepang</option><option>Lainnya</option></select>
+  <select id="calImpact" aria-label="Kategori dampak"><option value="Tinggi">Dampak tinggi</option><option value="Sedang">Dampak sedang</option><option value="Rendah">Dampak rendah</option><option value="Belum dinilai">Belum dinilai</option></select>
+  <textarea id="calNote" maxlength="500" placeholder="Catatan belajar / pertanyaan yang ingin diperiksa (opsional)"></textarea>
+ </div>
+ <div class="toolbar"><button id="saveCalendar" type="button">Simpan acara</button><span class="pill" id="calendarStatus">Tersimpan di perangkat ini</span></div>
+ <div class="addon-list" id="calendarList"><div class="addon-entry"><p>Belum ada acara yang dicatat.</p></div></div>
+ <div class="source-links"><a href="https://www.bls.gov/schedule/" target="_blank" rel="noopener">BLS release schedule ↗</a><a href="https://www.bea.gov/news/schedule" target="_blank" rel="noopener">BEA release schedule ↗</a><a href="https://www.federalreserve.gov/newsevents/calendar.htm" target="_blank" rel="noopener">Federal Reserve calendar ↗</a></div>
+</section>
+<section class="panel wide" id="journalPanel">
+ <h2>Market Journal · Catatan Pengamatan</h2>
+ <p class="note">Simpan observasi belajar, bukan transaksi. Entri mencatat instrumen, timeframe, waktu, dan catatan pribadi; tidak ada kolom entry, leverage, profit, atau instruksi posisi.</p>
+ <div class="addon-form">
+  <select id="journalAsset"><option>XAU/USD</option><option>BTC/USD</option></select>
+  <select id="journalTf"><option>M1</option><option>M5</option><option>M15</option><option>M30</option><option>H1</option><option>H4</option><option>D1</option></select>
+  <select id="journalTopic"><option>Struktur pasar</option><option>Indikator</option><option>Volume</option><option>Berita ekonomi</option><option>Evaluasi pembelajaran</option><option>Lainnya</option></select>
+  <input id="journalTitle" maxlength="100" placeholder="Judul pengamatan"/>
+  <textarea id="journalNote" maxlength="1200" placeholder="Apa yang terlihat pada chart? Apa yang belum pasti? Apa yang dipelajari?"></textarea>
+ </div>
+ <div class="toolbar"><button id="saveJournal" type="button">Simpan catatan</button><span class="pill" id="journalStatus">Disimpan lokal</span></div>
+ <div class="addon-list" id="journalList"><div class="addon-entry"><p>Belum ada catatan.</p></div></div>
+</section>
+<section class="panel wide" id="structurePanel">
+ <h2>Advanced Market Structure · Struktur Pasar</h2>
+ <p class="note">Pembacaan swing historis HH, HL, LH, LL, BOS, dan CHOCH. Pivot memerlukan candle di sisi kanan dan kiri sehingga label terakhir dapat berubah. Ini bukan sinyal atau rekomendasi transaksi.</p>
+ <div class="structure-grid">
+  <div class="stat"><small>SWING HIGH</small><div class="structure-value" id="structureHighState">—</div><div class="addon-meta" id="structureHighPrice">—</div></div>
+  <div class="stat"><small>SWING LOW</small><div class="structure-value" id="structureLowState">—</div><div class="addon-meta" id="structureLowPrice">—</div></div>
+  <div class="stat"><small>BREAK STRUCTURE</small><strong id="structureBreak">Menunggu data</strong></div>
+  <div class="stat"><small>LIQUIDITY OBSERVATION</small><strong id="structureSweep">Menunggu data</strong></div>
+ </div>
+ <p class="note" id="structureCaveat">Perlu data candle yang memadai.</p>
+</section>
+<section class="panel wide" id="volumePanel">
+ <h2>Volume Analysis · Aktivitas Volume</h2>
+ <p class="note">Histogram 30 candle terakhir. Volume hanya ditampilkan jika sumber menyediakannya. Volume XAU dari penyedia spot dapat berupa tick/volume indikatif, bukan volume terpusat seluruh pasar.</p>
+ <div class="volume-bars" id="volumeBars" aria-label="Histogram volume"><span class="addon-meta">Menunggu data volume…</span></div>
+ <div class="stats" style="grid-template-columns:repeat(3,minmax(0,1fr))">
+  <div class="stat"><small>VOLUME TERAKHIR</small><strong id="volumeLast">—</strong></div>
+  <div class="stat"><small>RATA-RATA 20</small><strong id="volumeAverage">—</strong></div>
+  <div class="stat"><small>SUMBER</small><strong id="volumeSource">—</strong></div>
+ </div>
+ <p class="note" id="volumeNote">Belum ada data volume yang bisa ditampilkan.</p>
+</section>
+<section class="panel wide" id="researchPanel">
+ <h2>AI Research Report · Laporan Riset Edukatif</h2>
+ <p class="note">Laporan merangkum data yang sedang dimuat, indikator historis, struktur, dan keterbatasan sumber. Tidak memberikan instruksi buy/sell, level entry, atau prediksi.</p>
+ <div class="toolbar"><button id="buildResearchReport" type="button">Buat laporan edukatif</button><button id="runResearchAI" type="button">Minta penjelasan AI</button></div>
+ <div class="report-text" id="researchReport">Tekan “Buat laporan edukatif” setelah data chart tersedia.</div>
+ <div class="report-text" id="researchAIResult" style="margin-top:10px">Penjelasan AI belum diminta.</div>
+</section>
+<section class="panel wide" id="dashboardSettings">
+ <h2>Custom Dashboard · Atur Tampilan</h2>
+ <p class="note">Pilih panel yang ingin ditampilkan. Preferensi disimpan di browser perangkat ini.</p>
+ <div class="dashboard-options" id="dashboardOptions"></div>
+</section>
 <footer>HAIMI WORKER · v3.0 · Khusus edukasi · Bukan nasihat investasi, sinyal transaksi, atau layanan eksekusi broker.</footer>
 </main>
 <script src="https://unpkg.com/lightweight-charts@4.2.2/dist/lightweight-charts.standalone.production.js"></script>
@@ -870,6 +954,117 @@ $('exportReport').onclick=exportLearningReport;
 const originalRenderBtcLive=renderBtcLive;
 const originalLoadMarketData=loadMarketData;
 const originalStartBtcLive=startBtcLive;
+
+
+/* HAIMI WORKER educational add-ons */
+const HAIMI_STORE={calendar:'haimi_calendar_v1',journal:'haimi_journal_v1',layout:'haimi_layout_v1'};
+function readLocal(key){try{const v=JSON.parse(localStorage.getItem(key)||'[]');return Array.isArray(v)?v:[]}catch(_){return []}}
+function writeLocal(key,value){try{localStorage.setItem(key,JSON.stringify(value));return true}catch(_){return false}}
+function safeText(el,value){el.textContent=String(value??'')}
+function makeEntry(container,title,meta,note,removeFn){
+ const card=document.createElement('div');card.className='addon-entry';
+ const h=document.createElement('strong');h.textContent=title;card.appendChild(h);
+ const m=document.createElement('div');m.className='addon-meta';m.textContent=meta;card.appendChild(m);
+ if(note){const p=document.createElement('p');p.textContent=note;card.appendChild(p)}
+ if(removeFn){const b=document.createElement('button');b.type='button';b.textContent='Hapus';b.addEventListener('click',removeFn);card.appendChild(b)}
+ container.appendChild(card);
+}
+function renderCalendar(){
+ const list=$('calendarList'),items=readLocal(HAIMI_STORE.calendar).sort((a,b)=>String(a.when).localeCompare(String(b.when)));
+ list.replaceChildren();
+ if(!items.length){makeEntry(list,'Belum ada acara','Tambahkan jadwal yang ingin dipelajari.','',null);return}
+ items.forEach(item=>makeEntry(list,item.title,(new Date(item.when)).toLocaleString('id-ID')+' · '+item.region+' · Dampak: '+item.impact,item.note,()=>{writeLocal(HAIMI_STORE.calendar,readLocal(HAIMI_STORE.calendar).filter(x=>x.id!==item.id));renderCalendar()}));
+}
+$('saveCalendar').addEventListener('click',()=>{
+ const title=$('calTitle').value.trim(),when=$('calDate').value;
+ if(!title||!when||!Number.isFinite(new Date(when).getTime())){$('calendarStatus').textContent='Isi nama acara dan tanggal yang valid.';return}
+ const items=readLocal(HAIMI_STORE.calendar);items.push({id:Date.now()+'-'+Math.random().toString(36).slice(2,7),title,when,region:$('calRegion').value,impact:$('calImpact').value,note:$('calNote').value.trim()});
+ if(!writeLocal(HAIMI_STORE.calendar,items)){$('calendarStatus').textContent='Penyimpanan browser penuh atau diblokir.';return}
+ $('calTitle').value='';$('calNote').value='';$('calendarStatus').textContent='Acara tersimpan.';renderCalendar();
+});
+function renderJournal(){
+ const list=$('journalList'),items=readLocal(HAIMI_STORE.journal).sort((a,b)=>b.created-a.created);list.replaceChildren();
+ if(!items.length){makeEntry(list,'Belum ada catatan','Simpan observasi pertamamu.','',null);return}
+ items.forEach(item=>makeEntry(list,item.title||'Pengamatan tanpa judul',new Date(item.created).toLocaleString('id-ID')+' · '+item.asset+' · '+item.tf+' · '+item.topic,item.note,()=>{writeLocal(HAIMI_STORE.journal,readLocal(HAIMI_STORE.journal).filter(x=>x.id!==item.id));renderJournal()}));
+}
+$('saveJournal').addEventListener('click',()=>{
+ const note=$('journalNote').value.trim(),title=$('journalTitle').value.trim();
+ if(!note){$('journalStatus').textContent='Tulis catatan pengamatan terlebih dahulu.';return}
+ const items=readLocal(HAIMI_STORE.journal);items.push({id:Date.now()+'-'+Math.random().toString(36).slice(2,7),created:Date.now(),asset:$('journalAsset').value,tf:$('journalTf').value,topic:$('journalTopic').value,title,note});
+ if(!writeLocal(HAIMI_STORE.journal,items)){$('journalStatus').textContent='Penyimpanan browser penuh atau diblokir.';return}
+ $('journalTitle').value='';$('journalNote').value='';$('journalStatus').textContent='Catatan tersimpan.';renderJournal();
+});
+function renderStructureModule(){
+ const s=analyzeMarketStructure(candles);
+ if(s.status!=='ok'){['structureHighState','structureLowState','structureHighPrice','structureLowPrice','structureBreak','structureSweep'].forEach(id=>safeText($(id),'Data belum cukup'));safeText($('structureCaveat'),s.description);return}
+ const fmt=v=>Number.isFinite(v)?v.toLocaleString('en-US',{maximumFractionDigits:3}):'—';
+ safeText($('structureHighState'),s.swingHighState);safeText($('structureLowState'),s.swingLowState);
+ safeText($('structureHighPrice'),'Swing: '+fmt(s.lastSwingHigh));safeText($('structureLowPrice'),'Swing: '+fmt(s.lastSwingLow));
+ safeText($('structureBreak'),s.breakEvent);safeText($('structureSweep'),s.liquiditySweep);safeText($('structureCaveat'),s.description);
+}
+function renderVolumeModule(){
+ const list=$('volumeBars');list.replaceChildren();
+ const rows=candles.slice(-30),vols=rows.map(x=>Number(x.volume)).filter(Number.isFinite),positive=vols.filter(x=>x>0);
+ if(!rows.length||!positive.length){const msg=document.createElement('span');msg.className='addon-meta';msg.textContent='Sumber tidak menyediakan volume yang dapat digunakan untuk histogram.';list.appendChild(msg);['volumeLast','volumeAverage'].forEach(id=>safeText($(id),'—'));safeText($('volumeSource'),'Tidak tersedia');safeText($('volumeNote'),'Volume tidak tersedia atau bernilai nol pada candle yang dimuat.');return}
+ const max=Math.max(...vols,1);
+ rows.forEach((row,i)=>{const v=Math.max(0,Number(row.volume)||0),bar=document.createElement('div');bar.className='volume-bar';bar.style.height=Math.max(2,(v/max)*88)+'%';bar.title='Candle '+(i+1)+' · volume '+v.toLocaleString('en-US');list.appendChild(bar)});
+ const last=Number(rows.at(-1).volume)||0,avg=positive.reduce((a,b)=>a+b,0)/positive.length;
+ safeText($('volumeLast'),last.toLocaleString('en-US',{maximumFractionDigits:3}));safeText($('volumeAverage'),avg.toLocaleString('en-US',{maximumFractionDigits:3}));
+ safeText($('volumeSource'),$('asset').value==='BTC/USD'?'Binance BTC/USDT':'XAUS / sumber XAU');
+ safeText($('volumeNote'),$('asset').value==='BTC/USD'?'Volume base-asset dari candle BTC/USDT.':'Volume sebagaimana dilaporkan penyedia XAU; interpretasikan sebagai data indikatif, bukan total volume pasar global.');
+}
+function buildLocalResearchReport(){
+ if(candles.length<20){safeText($('researchReport'),'Data belum cukup. Diperlukan setidaknya 20 candle untuk ringkasan indikator dasar.');return}
+ const close=candles.map(x=>x.close),last=candles.at(-1),e13=ema(close,13),e20=ema(close,20),e50=ema(close,50),rsi=calcRSI(close),structure=analyzeMarketStructure(candles),patterns=analyzeCandlePatterns(candles),levels=findKeyLevels(candles);
+ const tr=candles.slice(1).map((x,i)=>Math.max(x.tinggi-x.rendah,Math.abs(x.tinggi-candles[i].close),Math.abs(x.rendah-candles[i].close))),atr=tr.length>=14?tr.slice(-14).reduce((a,b)=>a+b,0)/14:null;
+ const lines=[
+  'HAIMI WORKER — LAPORAN RISET EDUKATIF',
+  'Instrumen: '+$('asset').value+' | Timeframe: '+tfNames[$('tf').value],
+  'Sumber: '+activeSource+' | Update: '+$('updated').textContent,
+  'Jumlah candle: '+candles.length,
+  '',
+  'RINGKASAN DATA',
+  'Harga candle terakhir: '+last.close,
+  'EMA 13 / 20 / 50: '+[e13,e20,e50].map(x=>Number.isFinite(x)?x.toFixed(4):'belum tersedia').join(' / '),
+  'RSI 14: '+(rsi===null?'belum tersedia':rsi.toFixed(2)),
+  'ATR 14: '+(atr===null?'belum tersedia':atr.toFixed(4)),
+  'Support / resistance historis: '+[levels.support,levels.resistance].map(x=>Number.isFinite(x)?x.toFixed(4):'—').join(' / '),
+  '',
+  'STRUKTUR PASAR',
+  structure.status==='ok'?structure.swingHighState+' / '+structure.swingLowState+'; '+structure.breakEvent:structure.description,
+  structure.status==='ok'?structure.liquiditySweep:'',
+  '',
+  'BENTUK CANDLE TERAKHIR',
+  patterns.patterns.map(x=>x.name+': '+x.meaning).join(' | '),
+  '',
+  'BATASAN',
+  'Ringkasan ini menjelaskan data historis yang tersedia. Pivot dapat berubah, volume bergantung pada penyedia, dan snapshot dapat tertunda. Bukan prediksi atau instruksi transaksi.'
+ ];
+ safeText($('researchReport'),lines.join('\n'));
+}
+$('buildResearchReport').addEventListener('click',buildLocalResearchReport);
+$('runResearchAI').addEventListener('click',async()=>{
+ $('runResearchAI').disabled=true;safeText($('researchAIResult'),'Meminta penjelasan edukatif dari AI…');
+ try{await requestAIAnalysis();safeText($('researchAIResult'),$('aiResult').textContent||'AI belum memberikan penjelasan.')}
+ catch(e){safeText($('researchAIResult'),'Penjelasan AI tidak tersedia: '+e.message)}
+ finally{$('runResearchAI').disabled=false}
+});
+const dashboardPanels=[['calendarPanel','Economic Calendar'],['journalPanel','Market Journal'],['structurePanel','Market Structure'],['volumePanel','Volume Analysis'],['researchPanel','AI Research Report'],['dataMonitorPanel','Live Data Monitor'],['replayPanel','Chart Replay'],['learningPanel','Pusat Belajar']];
+function initDashboardSettings(){
+ const root=$('dashboardOptions'),saved=(()=>{try{return JSON.parse(localStorage.getItem(HAIMI_STORE.layout)||'{}')}catch(_){return {}}})();
+ dashboardPanels.forEach(([id,label])=>{
+  const panel=$(id),wrap=document.createElement('label'),input=document.createElement('input');
+  input.type='checkbox';input.checked=saved[id]!==false;panel.hidden=!input.checked;
+  input.addEventListener('change',()=>{panel.hidden=!input.checked;saved[id]=input.checked;try{localStorage.setItem(HAIMI_STORE.layout,JSON.stringify(saved))}catch(_){}});
+  wrap.append(input,document.createTextNode(label));root.appendChild(wrap);
+ });
+}
+function renderHaimiAddons(){
+ renderStructureModule();renderVolumeModule();
+}
+const drawBeforeAddons=draw;
+draw=function(){drawBeforeAddons();renderHaimiAddons()};
+renderCalendar();renderJournal();initDashboardSettings();
 
 $('tfLabel').textContent=tfNames[$('tf').value];
 refresh().then(()=>{startAutoRefresh();updateDataMonitor();refreshReplay()});
