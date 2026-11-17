@@ -812,7 +812,9 @@ $('replayPlay').onclick=()=>{
 $('replayPause').onclick=stopReplay;
 $('replayReset').onclick=()=>{stopReplay();replayIndex=0;updateReplayReadout()};
 function updateDataMonitor(){
- const src=$('source').textContent||'Belum ada sumber',isBtc=$('asset').value==='BTC/USD';
+ const replayKey=$('asset').value+'|'+$('tf').value+'|'+candles.length+'|'+(candles.at(-1)?.time||'');
+ if(replayKey!==replaySourceKey){const firstLoad=!replaySourceKey;replaySourceKey=replayKey;if(!replayTimer){replayIndex=firstLoad?Math.max(0,candles.length-1):Math.min(replayIndex,Math.max(0,candles.length-1));updateReplayReadout()}}
+ const src=$('source').textContent||'Belum ada sumber';
  const live=src.includes('LIVE STREAM')||src.includes('DATA SPOT XAU');
  const failed=/GAGAL|TERPUTUS|TERGANGGU|BELUM TERSEDIA|TIDAK ADA PEMBARUAN/i.test(src);
  $('monitorConnection').textContent=failed?'Gangguan / mencoba ulang':live?'Terhubung':'Snapshot / menunggu';
