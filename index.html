@@ -6,7 +6,7 @@
 
 <style>
 :root{color-scheme:dark;--bg:#090d16;--panel:#111b2a;--line:#29384b;--muted:#91a0b5;--text:#eef3fb;--cyan:#57d6d0;--green:#38c990;--red:#ff7185}
-*{box-sizing:border-box}body{margin:0;background:radial-gradient(900px 450px at 70% -10%,#17304a 0%,transparent 65%),var(--bg);color:var(--text);font:15px Inter,system-ui,Arial,sans-serif}.wrap{max-width:1180px;margin:auto;padding:26px 20px 48px}.top{display:flex;justify-content:space-between;align-items:center;gap:16px;margin-bottom:30px}.brand{display:flex;align-items:center;gap:12px;font-size:20px;font-weight:800;letter-spacing:.5px}.logo{width:40px;height:40px;border-radius:12px;background:linear-gradient(135deg,#4be0cf,#4285f4);display:grid;place-items:center;color:#06111a;font-weight:900}.tag{color:var(--muted);font-size:11px;border:1px solid var(--line);padding:8px 11px;border-radius:20px}h1{font-size:clamp(27px,4vw,39px);margin:0 0 8px}.sub{color:var(--muted);margin:0 0 25px;line-height:1.6}.grid{display:grid;grid-template-columns:1.65fr 1fr;gap:16px}.panel{background:linear-gradient(160deg,#131e2e,#0f1724);border:1px solid var(--line);border-radius:16px;padding:19px;min-width:0;box-shadow:0 12px 36px #0002}.panel h2{font-size:15px;margin:0 0 16px;color:#cbd7e8}.toolbar{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-bottom:16px}select,button{background:#1a2637;color:var(--text);border:1px solid #34445a;border-radius:9px;padding:10px 12px;font:inherit}button{cursor:pointer}.price{font-size:28px;font-weight:780}.change{font-size:13px;margin-left:9px}.chartbox{height:310px;position:relative}#chart{position:absolute;inset:0}#drawLayer{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;z-index:4}.chartbox.drawing-active #drawLayer{pointer-events:auto;touch-action:none;cursor:crosshair}.chart-tools{margin:10px 0 7px}.chart-tools select,.chart-tools button{padding:8px 10px;font-size:12px}.chart-tools label{font-size:12px;color:var(--muted)}.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:14px}.mtf-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(145px,1fr));gap:9px;margin-top:10px}.mtf-card{min-width:0}.mtf-card small{font-size:10px}.mtf-card strong{display:block;overflow-wrap:anywhere}.mtf-card .mtf-meta{font-size:11px;color:var(--muted);line-height:1.6;margin-top:6px}.stat{background:#0b1320;border:1px solid var(--line);padding:12px;border-radius:11px}.stat small{display:block;color:var(--muted);margin-bottom:7px}.stat strong{font-size:15px}.note{font-size:12px;color:var(--muted);line-height:1.6;margin-top:12px}.status{display:inline-flex;align-items:center;gap:7px;color:#f2c879;font-size:12px}.dot{width:7px;height:7px;border-radius:50%;background:#e6b85c}.insight{font-size:14px;line-height:1.8;color:#d1dbea}.insight b{color:#fff}.list{display:grid;gap:9px}.item{display:flex;justify-content:space-between;gap:12px;padding:11px 0;border-bottom:1px solid var(--line)}.item:last-child{border:0}.muted{color:var(--muted)}.pill{font-size:11px;border:1px solid var(--line);border-radius:20px;padding:5px 8px;color:var(--muted)}.wide{margin-top:16px}.newslinks a{color:var(--cyan);text-decoration:none}.newslinks a:hover{text-decoration:underline}footer{color:var(--muted);font-size:12px;text-align:center;margin-top:25px}
+*{box-sizing:border-box}body{margin:0;background:radial-gradient(900px 450px at 70% -10%,#17304a 0%,transparent 65%),var(--bg);color:var(--text);font:15px Inter,system-ui,Arial,sans-serif}.wrap{max-width:1180px;margin:auto;padding:26px 20px 48px}.top{display:flex;justify-content:space-between;align-items:center;gap:16px;margin-bottom:30px}.brand{display:flex;align-items:center;gap:12px;font-size:20px;font-weight:800;letter-spacing:.5px}.logo{width:40px;height:40px;border-radius:12px;background:linear-gradient(135deg,#4be0cf,#4285f4);display:grid;place-items:center;color:#06111a;font-weight:900}.tag{color:var(--muted);font-size:11px;border:1px solid var(--line);padding:8px 11px;border-radius:20px}h1{font-size:clamp(27px,4vw,39px);margin:0 0 8px}.sub{color:var(--muted);margin:0 0 25px;line-height:1.6}.grid{display:grid;grid-template-columns:1.65fr 1fr;gap:16px}.panel{background:linear-gradient(160deg,#131e2e,#0f1724);border:1px solid var(--line);border-radius:16px;padding:19px;min-width:0;box-shadow:0 12px 36px #0002}.panel h2{font-size:15px;margin:0 0 16px;color:#cbd7e8}.toolbar{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-bottom:16px}select,button{background:#1a2637;color:var(--text);border:1px solid #34445a;border-radius:9px;padding:10px 12px;font:inherit}button{cursor:pointer}.price{font-size:28px;font-weight:780}.change{font-size:13px;margin-left:9px}.chartbox{height:310px;position:relative}#chart{position:absolute;inset:0}#drawLayer{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;z-index:4}.chartbox.drawing-active #drawLayer{pointer-events:auto;touch-action:none;cursor:crosshair}.chart-tools{margin:10px 0 7px}.indicator-heading{display:flex;justify-content:space-between;gap:10px;align-items:center;margin-top:15px;color:#cbd7e8;font-size:12px}.indicator-heading span{color:var(--muted);font-size:11px}.stoch-chart{height:118px;margin-top:4px}.indicator-stats{grid-template-columns:repeat(3,1fr);margin-top:8px}.kalimasada-box{margin-top:9px}.kalimasada-box strong{display:block;font-size:14px;margin-bottom:6px}.kalimasada-box .mtf-meta{font-size:12px;line-height:1.6;color:var(--muted)}.chart-tools select,.chart-tools button{padding:8px 10px;font-size:12px}.chart-tools label{font-size:12px;color:var(--muted)}.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:14px}.mtf-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(145px,1fr));gap:9px;margin-top:10px}.mtf-card{min-width:0}.mtf-card small{font-size:10px}.mtf-card strong{display:block;overflow-wrap:anywhere}.mtf-card .mtf-meta{font-size:11px;color:var(--muted);line-height:1.6;margin-top:6px}.stat{background:#0b1320;border:1px solid var(--line);padding:12px;border-radius:11px}.stat small{display:block;color:var(--muted);margin-bottom:7px}.stat strong{font-size:15px}.note{font-size:12px;color:var(--muted);line-height:1.6;margin-top:12px}.status{display:inline-flex;align-items:center;gap:7px;color:#f2c879;font-size:12px}.dot{width:7px;height:7px;border-radius:50%;background:#e6b85c}.insight{font-size:14px;line-height:1.8;color:#d1dbea}.insight b{color:#fff}.list{display:grid;gap:9px}.item{display:flex;justify-content:space-between;gap:12px;padding:11px 0;border-bottom:1px solid var(--line)}.item:last-child{border:0}.muted{color:var(--muted)}.pill{font-size:11px;border:1px solid var(--line);border-radius:20px;padding:5px 8px;color:var(--muted)}.wide{margin-top:16px}.newslinks a{color:var(--cyan);text-decoration:none}.newslinks a:hover{text-decoration:underline}footer{color:var(--muted);font-size:12px;text-align:center;margin-top:25px}
 @media(max-width:800px){.grid{grid-template-columns:1fr}.wrap{padding:20px 14px 36px}.chartbox{height:270px}}@media(max-width:430px){.stats{grid-template-columns:1fr 1fr}.tag{display:none}}
 </style></head>
 <body><main class="wrap">
@@ -20,7 +20,19 @@
  <button id="undoDrawing" type="button">Undo</button><button id="clearDrawings" type="button">Hapus garis</button><button id="fitChart" type="button">Reset zoom</button>
 </div>
 <div class="chartbox" id="chartWrap"><div id="chart"></div><canvas id="drawLayer"></canvas></div>
-<p class="note" id="chartHint">Scroll/pinch untuk zoom · tarik chart untuk geser · pilih alat gambar untuk membuat garis atau Fibonacci. Chart engine: <a href="https://www.tradingview.com/" target="_blank" rel="noopener" style="color:#91a0b5">TradingView Lightweight Charts</a>.</p><div class="stats" style="grid-template-columns:1fr 1fr;margin-top:10px"><div class="stat"><small>SUPPORT TERDEKAT</small><strong id="supportLevel">—</strong></div><div class="stat"><small>RESISTANCE TERDEKAT</small><strong id="resistanceLevel">—</strong></div></div>
+<p class="note" id="chartHint">Scroll/pinch untuk zoom · tarik chart untuk geser · pilih alat gambar untuk membuat garis atau Fibonacci. Chart engine: <a href="https://www.tradingview.com/" target="_blank" rel="noopener" style="color:#91a0b5">TradingView Lightweight Charts</a>.</p>
+<div class="indicator-heading"><strong>STOCHASTIC (5,3,3)</strong><span id="stochState">Menunggu data</span></div>
+<div id="stochChart" class="stoch-chart"></div>
+<div class="stats indicator-stats">
+ <div class="stat"><small>EMA 13</small><strong id="ema13Value">—</strong></div>
+ <div class="stat"><small>STOCH %K</small><strong id="stochKValue">—</strong></div>
+ <div class="stat"><small>STOCH %D</small><strong id="stochDValue">—</strong></div>
+</div>
+<div class="stat kalimasada-box">
+ <small>KALIMASADA · ZONA PANTAUAN</small>
+ <strong id="kalimasadaStatus">Jalankan analisis AI untuk menghitung zona.</strong>
+ <div id="kalimasadaDetails" class="mtf-meta">EMA 13 + Stochastic 5,3,3 + struktur harga.</div>
+</div><div class="stats" style="grid-template-columns:1fr 1fr;margin-top:10px"><div class="stat"><small>SUPPORT TERDEKAT</small><strong id="supportLevel">—</strong></div><div class="stat"><small>RESISTANCE TERDEKAT</small><strong id="resistanceLevel">—</strong></div></div>
 <div class="stats"><div class="stat"><small>SUMBER DATA</small><strong id="dataSource">Loading</strong></div><div class="stat"><small>PERUBAHAN 24 JAM</small><strong id="dayChange">—</strong></div><div class="stat"><small>KERANGKA WAKTU</small><strong id="tfLabel">M1</strong></div></div>
 <p class="note" id="dataNote">BTC/USD menggunakan data pasar publik BTC/USDT sebagai acuan perkiraan terhadap dolar AS. Instrumen lain akan diberi label simulasi.</p></section>
 <aside class="panel"><h2>Mesin Analisis HAIMI</h2><p class="status"><span class="dot"></span> Analisis edukatif berbasis data</p><div class="insight" id="brief">Menunggu data pasar…</div><div class="stats" style="grid-template-columns:1fr 1fr;margin-top:14px"><div class="stat"><small>BIAS KONDISI</small><strong id="marketBias">—</strong></div><div class="stat"><small>STRUKTUR PASAR</small><strong id="structure">—</strong></div><div class="stat"><small>MOMENTUM (RSI 14)</small><strong id="rsi">—</strong></div><div class="stat"><small>EMA 20 / EMA 50</small><strong id="emaState">—</strong></div><div class="stat"><small>VOLATILITAS (ATR%)</small><strong id="atr">—</strong></div><div class="stat"><small>RENTANG 20 CANDLE</small><strong id="marketRange">—</strong></div></div><button id="explain" style="margin-top:15px">Analisis data saat ini</button><button id="askAI" style="margin-top:10px;background:#2563eb">Analisis Multi-Timeframe AI</button>
@@ -176,7 +188,7 @@ function analyzeMarketData(){
  $('engineNote').textContent='Mesin analisis otomatis berbasis aturan: EMA20/50, RSI14, momentum 5 candle, breakout rentang 20 candle, bentuk candle, dan ATR. '+candles.length+' candle dianalisis. Skor menunjukkan keselarasan indikator, bukan probabilitas keberhasilan.';
 }
 
-let chartApi=null,candleSeries=null,ema20Series=null,ema50Series=null,drawings=[],drawingTool='cursor',pendingDrawing=null,chartPriceLines=[],lastChartKey='';
+let chartApi=null,candleSeries=null,ema13Series=null,ema20Series=null,ema50Series=null,stochApi=null,stochKSeries=null,stochDSeries=null,drawings=[],drawingTool='cursor',pendingDrawing=null,chartPriceLines=[],lastChartKey='',kalimasadaZone=null,lastKalimasada=null,rangeSyncing=false;
 function ensureChart(){
  if(chartApi)return true;
  if(!window.LightweightCharts){$('chart').innerHTML='<div style="padding:18px;color:#91a0b5">Mesin chart belum termuat. Periksa koneksi lalu muat ulang halaman.</div>';return false}
@@ -193,10 +205,36 @@ function ensureChart(){
  });
  candleSeries=chartApi.addCandlestickSeries({upColor:'#28b98b',downColor:'#f06478',borderUpColor:'#28b98b',borderDownColor:'#f06478',wickUpColor:'#28b98b',wickDownColor:'#f06478',priceLineVisible:true,lastValueVisible:true});
  ema20Series=chartApi.addLineSeries({color:'#f4c66a',lineWidth:1,priceLineVisible:false,lastValueVisible:false,crosshairMarkerVisible:false});
- ema50Series=chartApi.addLineSeries({color:'#68a8ff',lineWidth:1,priceLineVisible:false,lastValueVisible:false,crosshairMarkerVisible:false});
- chartApi.timeScale().subscribeVisibleLogicalRangeChange(()=>drawOverlay());
+  ema50Series=chartApi.addLineSeries({color:'#68a8ff',lineWidth:1,priceLineVisible:false,lastValueVisible:false,crosshairMarkerVisible:false});
+ ema13Series=chartApi.addLineSeries({color:'#f4c66a',lineWidth:2,priceLineVisible:false,lastValueVisible:true,crosshairMarkerVisible:false});
+ const stochBox=$('stochChart');
+ stochApi=LightweightCharts.createChart(stochBox,{
+  width:Math.max(300,stochBox.clientWidth),height:Math.max(100,stochBox.clientHeight),
+  layout:{background:{type:'solid',color:'#0b1320'},textColor:'#91a0b5',fontFamily:'Inter,system-ui,sans-serif'},
+  grid:{vertLines:{color:'#1b293a'},horzLines:{color:'#1b293a'}},
+  rightPriceScale:{borderColor:'#29384b',scaleMargins:{top:.04,bottom:.04}},
+  timeScale:{visible:false,borderColor:'#29384b',rightOffset:8,barSpacing:8,minBarSpacing:2},
+  crosshair:{mode:LightweightCharts.CrosshairMode.Magnet},
+  handleScroll:{mouseWheel:true,pressedMouseMove:true,horzTouchDrag:true,vertTouchDrag:false},
+  handleScale:{axisPressedMouseMove:false,mouseWheel:true,pinch:true}
+ });
+ stochKSeries=stochApi.addLineSeries({color:'#43c7b5',lineWidth:2,priceLineVisible:false,lastValueVisible:true,autoscaleInfoProvider:()=>({priceRange:{minValue:0,maxValue:100}})});
+ stochDSeries=stochApi.addLineSeries({color:'#e7b75e',lineWidth:1,priceLineVisible:false,lastValueVisible:true,autoscaleInfoProvider:()=>({priceRange:{minValue:0,maxValue:100}})});
+ stochKSeries.createPriceLine({price:20,color:'#53677e',lineWidth:1,lineStyle:LightweightCharts.LineStyle.Dashed,axisLabelVisible:false,title:'20'});
+ stochKSeries.createPriceLine({price:80,color:'#53677e',lineWidth:1,lineStyle:LightweightCharts.LineStyle.Dashed,axisLabelVisible:false,title:'80'});
+ chartApi.timeScale().subscribeVisibleLogicalRangeChange(range=>{
+  drawOverlay();
+  if(!rangeSyncing&&range&&stochApi){rangeSyncing=true;try{stochApi.timeScale().setVisibleLogicalRange(range)}catch(_){}rangeSyncing=false}
+ });
+ stochApi.timeScale().subscribeVisibleLogicalRangeChange(range=>{
+  if(!rangeSyncing&&range&&chartApi){rangeSyncing=true;try{chartApi.timeScale().setVisibleLogicalRange(range)}catch(_){}rangeSyncing=false}
+ });
  chartApi.subscribeCrosshairMove(()=>drawOverlay());
- if(window.ResizeObserver){new ResizeObserver(entries=>{const r=entries[0]?.contentRect;if(r&&chartApi)chartApi.applyOptions({width:Math.max(300,r.width),height:Math.max(220,r.height)});drawOverlay()}).observe(box)}
+ stochApi.subscribeCrosshairMove(()=>drawOverlay());
+ if(window.ResizeObserver){
+  new ResizeObserver(entries=>{const r=entries[0]?.contentRect;if(r&&chartApi)chartApi.applyOptions({width:Math.max(300,r.width),height:Math.max(220,r.height)});drawOverlay()}).observe(box);
+  new ResizeObserver(entries=>{const r=entries[0]?.contentRect;if(r&&stochApi)stochApi.applyOptions({width:Math.max(300,r.width),height:Math.max(100,r.height)})}).observe(stochBox);
+ }
  return true;
 }
 function normalizedChartCandles(){
@@ -212,6 +250,48 @@ function emaChartData(rows,period){
  for(let i=period;i<rows.length;i++){value=rows[i].close*k+value*(1-k);out.push({time:rows[i].time,value})}
  return out;
 }
+function stochasticData(rows,period=5,smoothK=3,smoothD=3){
+ const raw=[];
+ for(let i=period-1;i<rows.length;i++){
+  const window=rows.slice(i-period+1,i+1),highest=Math.max(...window.map(x=>x.high)),lowest=Math.min(...window.map(x=>x.low));
+  raw.push({time:rows[i].time,value:highest===lowest?50:((rows[i].close-lowest)/(highest-lowest))*100});
+ }
+ const k=[];
+ for(let i=smoothK-1;i<raw.length;i++)k.push({time:raw[i].time,value:raw.slice(i-smoothK+1,i+1).reduce((s,x)=>s+x.value,0)/smoothK});
+ const d=[];
+ for(let i=smoothD-1;i<k.length;i++)d.push({time:k[i].time,value:k.slice(i-smoothD+1,i+1).reduce((s,x)=>s+x.value,0)/smoothD});
+ return {k,d};
+}
+function buildKalimasadaAnalysis(){
+ const rows=normalizedChartCandles(),ema13=emaChartData(rows,13),stoch=stochasticData(rows,5,3,3);
+ if(rows.length<25||ema13.length<2||stoch.k.length<2||stoch.d.length<2)return {status:'insufficient_data',message:'Data candle belum cukup untuk menghitung EMA 13 dan Stochastic 5,3,3.'};
+ const last=rows.at(-1),k=stoch.k.at(-1).value,d=stoch.d.at(-1).value,pk=stoch.k.at(-2).value,pd=stoch.d.at(-2).value;
+ const emaNow=ema13.at(-1).value,emaPrev=ema13.at(-2).value,emaRising=emaNow>emaPrev,aboveEma=last.close>emaNow;
+ const bullishCross=pk<=pd&&k>d,bearishCross=pk>=pd&&k<d;
+ const levels=findKeyLevels(candles),support=levels.support;
+ const tr=rows.slice(1).map((x,i)=>Math.max(x.high-x.low,Math.abs(x.high-rows[i].close),Math.abs(x.low-rows[i].close)));
+ const atr=tr.length>=14?tr.slice(-14).reduce((s,x)=>s+x,0)/14:null;
+ const distance=Number.isFinite(support)?Math.abs(last.close-support):null;
+ const nearSupport=Number.isFinite(distance)&&Number.isFinite(atr)&&atr>0&&distance<=atr*1.5;
+ const bullishCandle=last.close>last.open;
+ const zone=Number.isFinite(support)&&Number.isFinite(atr)&&atr>0?{low:support-atr*.15,high:support+atr*.35,support,atr}:null;
+ const confirmation=Boolean(zone&&nearSupport&&aboveEma&&emaRising&&bullishCross&&k<=30&&bullishCandle);
+ const statusText=confirmation?'Konfluensi bullish terdeteksi — tetap perlu validasi lanjutan.':zone&&nearSupport?'Harga dekat area support; konfirmasi EMA/Stochastic belum lengkap.':zone?'Zona support terpetakan, tetapi harga belum berada dekat area tersebut.':'Belum ada zona support yang layak dipetakan.';
+ return {status:'ok',method:'Kalimasada-inspired · konfigurasi EMA 13 + Stochastic 5,3,3',ema13:emaNow,ema13Rising:emaRising,priceAboveEma13:aboveEma,stochastic:{k,d,previousK:pk,previousD:pd,bullishCross,bearishCross,oversold:k<=20,overbought:k>=80},support,resistance:levels.resistance,atr,nearSupport,bullishCandle,watchZone:zone,confirmation,statusText,conditions:{priceAboveEMA13:aboveEma,EMA13Rising:emaRising,stochasticBullishCross:bullishCross,stochasticBelow30:k<=30,nearSupport,bullishCandle},caveat:'Zona ini adalah area observasi berbasis support dan ATR, bukan rekomendasi transaksi. Stochastic dapat bertahan di area ekstrem; sinyal perlu diuji pada data historis.'};
+}
+function renderKalimasadaAnalysis(result){
+ lastKalimasada=result;kalimasadaZone=result.status==='ok'?result.watchZone:null;
+ if(result.status!=='ok'){
+  $('kalimasadaStatus').textContent=result.message;$('kalimasadaDetails').textContent='Menunggu jumlah candle yang memadai.';$('stochState').textContent='Data belum cukup';$('ema13Value').textContent='—';$('stochKValue').textContent='—';$('stochDValue').textContent='—';drawOverlay();return;
+ }
+ $('ema13Value').textContent=result.ema13.toLocaleString('en-US',{maximumFractionDigits:2});
+ $('stochKValue').textContent=result.stochastic.k.toFixed(1);$('stochDValue').textContent=result.stochastic.d.toFixed(1);
+ $('stochState').textContent=result.stochastic.bullishCross?'Bullish cross':result.stochastic.bearishCross?'Bearish cross':result.stochastic.k<=20?'Oversold zone':result.stochastic.k>=80?'Overbought zone':'Netral';
+ $('kalimasadaStatus').textContent=result.statusText;
+ const z=result.watchZone,fmt=v=>Number.isFinite(v)?v.toLocaleString('en-US',{maximumFractionDigits:2}):'—';
+ $('kalimasadaDetails').textContent='EMA 13 '+(result.ema13Rising?'menanjak':'belum menanjak')+' · Harga '+(result.priceAboveEma13?'di atas':'di bawah')+' EMA 13 · Stoch K/D '+result.stochastic.k.toFixed(1)+' / '+result.stochastic.d.toFixed(1)+' · '+(z?'Zona support '+fmt(z.low)+' – '+fmt(z.high):'Zona support belum tersedia')+'.';
+ drawOverlay();
+}
 function updateChartPriceLines(){
  if(!candleSeries)return;
  chartPriceLines.forEach(line=>{try{candleSeries.removePriceLine(line)}catch(_){}});
@@ -224,13 +304,15 @@ function updateChartPriceLines(){
 function draw(){
  if(!ensureChart())return;
  const rows=normalizedChartCandles();
- if(!rows.length){candleSeries.setData([]);ema20Series.setData([]);ema50Series.setData([]);updateChartPriceLines();$('chartHint').textContent='Data candle belum tersedia. Chart akan tampil setelah data valid dimuat.';drawOverlay();return}
+ if(!rows.length){candleSeries.setData([]);ema13Series.setData([]);ema20Series.setData([]);ema50Series.setData([]);stochKSeries.setData([]);stochDSeries.setData([]);updateChartPriceLines();$('chartHint').textContent='Data candle belum tersedia. Chart akan tampil setelah data valid dimuat.';drawOverlay();return}
  candleSeries.setData(rows);
+ ema13Series.setData(emaChartData(rows,13));
  ema20Series.setData(emaChartData(rows,20));
  ema50Series.setData(emaChartData(rows,50));
+ const stoch=stochasticData(rows,5,3,3);stochKSeries.setData(stoch.k);stochDSeries.setData(stoch.d);
  updateChartPriceLines();
  const key=$('asset').value+'|'+$('tf').value;
- if(lastChartKey!==key){chartApi.timeScale().fitContent();lastChartKey=key}
+ if(lastChartKey!==key){chartApi.timeScale().fitContent();const range=chartApi.timeScale().getVisibleLogicalRange();if(range&&stochApi)stochApi.timeScale().setVisibleLogicalRange(range);lastChartKey=key}
  drawOverlay();
 }
 function canvasPoint(point){
@@ -244,7 +326,16 @@ function drawOverlay(){
  canvas.width=Math.round(w*dpr);canvas.height=Math.round(h*dpr);canvas.style.width=w+'px';canvas.style.height=h+'px';
  const ctx=canvas.getContext('2d');ctx.setTransform(dpr,0,0,dpr,0,0);ctx.clearRect(0,0,w,h);
  if(!chartApi||!candleSeries)return;
- const items=pendingDrawing?[...drawings,pendingDrawing]:drawings;
+ if(kalimasadaZone){
+  const y1=candleSeries.priceToCoordinate(kalimasadaZone.high),y2=candleSeries.priceToCoordinate(kalimasadaZone.low);
+  if(y1!==null&&y2!==null){
+   const top=Math.min(y1,y2),bottom=Math.max(y1,y2);
+   ctx.fillStyle='rgba(40,185,139,.12)';ctx.fillRect(0,top,Math.max(0,w-64),bottom-top);
+   ctx.strokeStyle='rgba(40,185,139,.8)';ctx.setLineDash([5,4]);ctx.beginPath();ctx.moveTo(0,top);ctx.lineTo(w-64,top);ctx.moveTo(0,bottom);ctx.lineTo(w-64,bottom);ctx.stroke();ctx.setLineDash([]);
+   ctx.fillStyle='#8ce0c6';ctx.font='11px system-ui';ctx.fillText('KALIMASADA WATCH ZONE',8,Math.max(12,top-5));
+  }
+ }
+  const items=pendingDrawing?[...drawings,pendingDrawing]:drawings;
  items.forEach(item=>{
   ctx.save();ctx.lineWidth=1.5;ctx.strokeStyle='#f4c66a';ctx.fillStyle='#f4c66a';ctx.font='11px system-ui';ctx.setLineDash([]);
   if(item.type==='hline'){
@@ -610,11 +701,15 @@ async function requestAIAnalysis(){
   atrPercent:atr&&last?Number((atr/last*100).toFixed(4)):null,
   recentCandles:candles.slice(-12).map(c=>({open:c.open,high:c.tinggi,low:c.rendah,close:c.close})),
   candleAnalysis:analyzeCandlePatterns(candles),
+  kalimasada:buildKalimasadaAnalysis(),
   marketStructure:analyzeMarketStructure(candles),
-  analysisGuidance:'Berikan pembacaan edukatif berdasarkan data yang tersedia. Jelaskan bukti candle, struktur HH/HL/LH/LL, BOS/CHOCH, potensi liquidity sweep, EMA, RSI, ATR, support/resistance dan keselarasan timeframe. Pisahkan fakta teramati dari interpretasi, sebutkan konflik dan data yang tidak tersedia, serta kondisi yang dapat membatalkan interpretasi. Jangan memberi instruksi buy/sell, entry, leverage, atau menjanjikan hasil.'
+  analysisGuidance:'Berikan pembacaan edukatif berdasarkan data yang tersedia. Jelaskan bukti candle, struktur HH/HL/LH/LL, BOS/CHOCH, potensi liquidity sweep, EMA, RSI, ATR, support/resistance, keselarasan timeframe, EMA 13 dan Stochastic 5,3,3. Uraikan kondisi zona pantauan Kalimasada dan faktor yang belum terpenuhi. Pisahkan fakta teramati dari interpretasi, sebutkan konflik dan data yang tidak tersedia, serta kondisi yang dapat membatalkan interpretasi. Jangan memberi instruksi buy/sell, entry, leverage, atau menjanjikan hasil.'
  };
  try{
   output.textContent='Mengambil timeframe pendukung dan menghitung zona support/resistance…';
+  const kalimasada=buildKalimasadaAnalysis();
+  analysis.kalimasada=kalimasada;
+  renderKalimasadaAnalysis(kalimasada);
   const multiTimeframe=await fetchAdaptiveAnalysis($('asset').value,$('tf').value);
   renderAdaptiveDashboard(multiTimeframe);
   analysis.multiTimeframe=multiTimeframe;
